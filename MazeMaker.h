@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Disjsets.h"
 #import "CommonProtocols.h"
+#import "MazeRequirements.h"
 
 @interface MazeMaker : NSObject
 {
@@ -17,6 +18,8 @@
     NSInteger rows;
     NSInteger cols;
     MazeContents *realMaze;
+    
+    MazeRequirements *requirements;
 }
 
 @property (readwrite) NSInteger rows;
@@ -25,7 +28,10 @@
 
 //can take out singleton
 + (MazeMaker *) createSingleton;
--(id) initWithSize: (NSInteger) numRows: (NSInteger) numCols: (MazeContents*) maze;
+-(id) initWithSizeAndRequirements: 
+                (NSInteger) numRows: 
+                (NSInteger) numCols: 
+            (MazeRequirements*) reqs:   
+                (MazeContents*) maze;
 -(Boolean) createMaze;
-
 @end

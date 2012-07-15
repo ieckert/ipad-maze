@@ -40,7 +40,7 @@
         return num;
     }
     else {
-        find:[[arr objectAtIndex:num] intValue];
+        return [self find:[[arr objectAtIndex:num] intValue]];
     }
 }
 
@@ -61,25 +61,6 @@
         }
         [arr replaceObjectAtIndex:root2 withObject:[NSNumber numberWithInt:root1]];
     }
-}
-
--(Boolean) isComplete
-{
-    NSInteger count = 0;
-    for (NSInteger i = 0; i < [arr count]; i++)
-    {
-        NSLog(@"in isComplete arr[%i]: %i", i, [[arr objectAtIndex:i]intValue]);
-        if ([[arr objectAtIndex:i]intValue] < 0)
-        {
-            count++;
-        }
-        if (count > 1)
-        {
-            return false;
-        }
-    }
-    return true;
- 
 }
 
 -(void) print

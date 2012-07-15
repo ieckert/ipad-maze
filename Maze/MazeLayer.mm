@@ -33,7 +33,7 @@
 
 
 - (void)setupWorld {
-    b2Vec2 gravity = b2Vec2(0.0f, -20.0f);
+    b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
     bool doSleep = true;
     world = new b2World(gravity, doSleep);
 }
@@ -109,9 +109,9 @@
 - (void)accelerometer:(UIAccelerometer *)accelerometer 
         didAccelerate:(UIAcceleration *)acceleration
 {
-    [filter addAcceleration:acceleration];
-
-    b2Vec2 gravity(-filter.y * 4, filter.x * 4);
+//    [filter addAcceleration:acceleration];
+//    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
+    b2Vec2 gravity(-acceleration.y * 4, acceleration.x * 4);
     world->SetGravity(gravity);
 }
 
@@ -205,22 +205,28 @@
         
         [self setupWorld];
         [self setupDebugDraw];
-        [self createGround];
+//        [self createGround];
         
         statsKeeper = [StatsKeeper createSingleton];
 //setup accelerometer and data filter     
         UIAccelerometer *accel = [UIAccelerometer sharedAccelerometer];
         accel.delegate         = self;
         accel.updateInterval   = 1.0f / 60.0f;
-        [self changeFilter:[LowpassFilter class]];
+//        [self changeFilter:[LowpassFilter class]];
 
 //setup basic window-size and touch
         CGSize screenSize = [CCDirector sharedDirector].winSize;
         self.isTouchEnabled = YES;
 
 //begin creating the maze
-//        mazeMaker = [[MazeMaker alloc] init];
-        mazeMaker = [[MazeMaker alloc] initWithSize:kMazeRows :kMazeCols: mazeGrid];
+        requirements = [[MazeRequirements alloc] initWithRequirements:5 
+                                                                     :0 
+                                                                     :NO 
+                                                                     :CGPointMake(1, kTrueMazeCols-1)];
+        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMazeRows 
+                                                                  :kMazeCols
+                                                                  :requirements
+                                                                  :mazeGrid];
         [mazeMaker createMaze];
         //        [mazeMaker release];
         
@@ -242,7 +248,7 @@
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
 
         [self createObjectOfType:tBall
-                      atLocation:ccp(screenSize.width/2, screenSize.height/2)
+                      atLocation:ccp(48+30, 48*(kTrueMazeRows-1)-10)
                       withZValue:kBallZValue]; 
         
         for(int y = 0; y < kTrueMazeRows; y++)

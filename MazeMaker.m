@@ -31,7 +31,7 @@ static MazeMaker *singleton = nil;
 	[super dealloc];
 }
 
--(id) initWithSize: (NSInteger) numRows: (NSInteger) numCols: (MazeContents*) maze
+-(id) initWithSizeAndRequirements: (NSInteger) numRows: (NSInteger) numCols: (MazeRequirements*) reqs: (MazeContents*) maze
 {
     if (self = [super init])
     {
@@ -39,9 +39,12 @@ static MazeMaker *singleton = nil;
         cols = numCols;
         disjsets = [[Disjsets alloc] initWithSize:rows :cols];
         realMaze = maze;
+        requirements = reqs;
+        wallList = [[NSMutableDictionary alloc] init];
         for (int i = 0; i < rows*kTrueScale*cols*kTrueScale; i++)
         {
             realMaze[i] = cWall;
+            [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
         }
     }
     return self;
@@ -57,6 +60,65 @@ static MazeMaker *singleton = nil;
     return singleton;
 }
 
+-(BOOL) properWallRemoval: (NSInteger) wall1: (NSInteger) wall2
+{
+    if ([requirements straightShot] == FALSE) {        
+        int t1, count, diff;
+        t1=0;
+        count = 0;
+        diff=0;
+        for (int x = 0; x < 8; x++) {
+            switch (x) {
+                case 0:
+                    diff = 1;
+                    break;
+                case 1:
+                    diff = cols; 
+                    break;
+                case 2:
+                    diff = -1;
+                    break;
+                case 3:
+                    diff = -cols;
+                    break;
+                case 4:
+                    diff = 1;
+                    break;
+                case 5:
+                    diff = cols; 
+                    break;
+                case 6:
+                    diff = -1;
+                    break;
+                case 7:
+                    diff = -cols;
+                    break;
+                default:
+                    break;
+            }
+            if (x < 4)
+                t1 = wall1;
+            else
+                t1 = wall2;
+
+            count = 0;
+            if (t1+(diff*3) >= 0 && t1+(diff*3) < rows*cols) {
+                for (int i = 0; i < 3; i++) {
+                    if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
+                         containsObject:[NSNumber numberWithInt:(t1+diff)]] ) 
+                        count++;
+                    t1 += diff;
+                }
+                if (count == 3)
+                    return FALSE;
+            }
+        }
+        
+    }
+    
+    return TRUE;
+}
+
 -(NSInteger) sameSet
 {
 	int c=0;	//counter
@@ -67,7 +129,6 @@ static MazeMaker *singleton = nil;
 			c++;	//track how many sets are in the same adt set
 		}
 	}
-    NSLog(@"sameSet: %i", c);
 	return c;
 }
 
@@ -77,11 +138,9 @@ static MazeMaker *singleton = nil;
     for (int i = 0; i < numCoins; i++) {
         rnum = arc4random() % (rows*kTrueScale*cols*kTrueScale);
         if (realMaze[rnum] == cNone) {
-            NSLog(@"placing coin at: %i", rnum);
             realMaze[rnum] = cCoin;
         }
         else {
-            NSLog(@"not placing coin. i: %i", i);
             i--;
             continue;
         }
@@ -105,17 +164,16 @@ static MazeMaker *singleton = nil;
 */    
     NSInteger num1, num2, randAdd;
     
-//    while( ![disjsets isComplete] )
     while( [self sameSet] != rows*cols )
     {
         num1 = 0;
         num2 = 0;
         randAdd = 0;
         num1 = arc4random() % (rows*cols);    //first selected random slot of maze
-        NSLog(@"number chosen first: %i", num1);
+//        NSLog(@"number chosen first: %i", num1);
         if (num1 == 0) {
             //case 0
-            NSLog(@"case0");
+//            NSLog(@"case0");
             randAdd = arc4random() % 1;
             switch (randAdd) {
                 case 0:
@@ -130,7 +188,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 > 0 && num1 < (cols - 1)) {
             //case 1
-            NSLog(@"case1");
+//            NSLog(@"case1");
             randAdd = arc4random() % 2;
             switch (randAdd) {
                 case 0:
@@ -149,7 +207,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 == cols -1) {
             //case 2
-            NSLog(@"case2");
+//            NSLog(@"case2");
             randAdd = arc4random() % 1;
             switch (randAdd) {
                 case 0:
@@ -165,7 +223,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 > 0 && num1 < ((rows * cols) - cols) && (num1 % cols) == 0) {
             //case 3
-            NSLog(@"case3");
+//            NSLog(@"case3");
             randAdd = arc4random() % 2;
             switch (randAdd) {
                 case 0:
@@ -183,7 +241,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 > (cols - 1) && num1 < ((rows * cols) - 1) && ((num1+1) % cols) == 0) {
             //case 5
-            NSLog(@"case5");
+//            NSLog(@"case5");
             randAdd = arc4random() % 2;
             switch (randAdd) {
                 case 0:
@@ -201,7 +259,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 == ((rows * cols) - cols)) {
             //case 6
-            NSLog(@"case6");
+//            NSLog(@"case6");
             randAdd = arc4random() % 1;
             switch (randAdd) {
                 case 0:
@@ -216,7 +274,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 > ((rows * cols) - cols) && num1 < ((rows * cols)-1)) {
             //case 7
-            NSLog(@"case7");
+//            NSLog(@"case7");
             randAdd = arc4random() % 2;
             switch (randAdd) {
                 case 0:
@@ -235,7 +293,7 @@ static MazeMaker *singleton = nil;
         }
         else if (num1 == ((rows * cols) - 1)) {
             //case 8
-            NSLog(@"case8");
+//            NSLog(@"case8");
             randAdd = arc4random() % 1;
             switch (randAdd) {
                 case 0:
@@ -250,7 +308,7 @@ static MazeMaker *singleton = nil;
         }
         else {
             //case 4
-            NSLog(@"case4");
+//            NSLog(@"case4");
             randAdd = arc4random() % 3;
             switch (randAdd) {
                 case 0:
@@ -271,7 +329,13 @@ static MazeMaker *singleton = nil;
         }
         if ([disjsets find:num1] == [disjsets find:num2]) 
             continue;
+        if ([self properWallRemoval:num1:num2] == FALSE ) {
+            NSLog(@"skipping wall breakdown for because not proper wall removal");
+            continue;
+        }
         [disjsets unionSets:[disjsets find:num1] :[disjsets find:num2]];
+        [[wallList objectForKey:[NSNumber numberWithInt:num1]] addObject:[NSNumber numberWithInt:num2]];
+        [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
 
         int row1, row2, col1, col2;
         int newNum1, newNum2;
@@ -316,10 +380,11 @@ static MazeMaker *singleton = nil;
             NSLog(@"when breaking down walls in true maze... found an impossible situation");
         }
          
-        [disjsets print];
+//        [disjsets print];
 
     }
-    [self placeCoins:5];
+    [self placeCoins:[requirements numCoins]];
+
     return true;
 }
 

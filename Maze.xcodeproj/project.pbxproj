@@ -199,6 +199,7 @@
 		3CE1A0E815AA9D25003CEA87 /* PlayGameButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DF15AA9D25003CEA87 /* PlayGameButtonSelected.png */; };
 		3CE1A0E915AA9D25003CEA87 /* VikingFloating.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
+		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -570,6 +571,8 @@
 		3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VikingFloating.png; sourceTree = "<group>"; };
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		3CE54D2615AA3EE10067B70B /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
+		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
+		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeRequirements.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1232,6 +1235,8 @@
 			children = (
 				3C29B8921597A22200F28168 /* MazeMaker.h */,
 				3C29B8931597A22200F28168 /* MazeMaker.m */,
+				3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */,
+				3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */,
 			);
 			name = MazeMaker;
 			sourceTree = "<group>";
@@ -1540,6 +1545,7 @@
 				3C128AE815AA728E00883E52 /* MainMenuScene.m in Sources */,
 				3C128AEC15AA72B000883E52 /* MainMenuLayer.m in Sources */,
 				3C128AF015AA73C200883E52 /* GameManager.mm in Sources */,
+				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

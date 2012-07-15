@@ -16,6 +16,7 @@
 #import "cocos2d.h"
 
 #import "MazeMaker.h"
+#import "MazeRequirements.h"
 #import "StatsLayer.h"
 #import "StatsKeeper.h"
 
@@ -34,6 +35,7 @@
 {
     MazeMaker *mazeMaker;
     StatsKeeper *statsKeeper;
+    MazeRequirements *requirements;
     
     BallObject *ball;
     b2World * world;

@@ -18,7 +18,6 @@
 -(id) initWithSize: (NSInteger) numRows: (NSInteger) numCols;
 -(NSInteger) find: (NSInteger)num;
 -(void) unionSets: (NSInteger)root1: (NSInteger)root2;
--(Boolean) isComplete;
 -(void) print;
 
 @end

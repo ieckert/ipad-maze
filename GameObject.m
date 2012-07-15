@@ -16,7 +16,7 @@
 
 -(id) init {
     if((self=[super init])){
-        CCLOG(@"GameObject init");
+//        CCLOG(@"GameObject init");
         screenSize = [CCDirector sharedDirector].winSize;
         isActive = TRUE;
         gameObjectType = tNone;
