@@ -15,6 +15,7 @@
 {
     self = [super init];
     if (self) {
+        NSLog(@"StatsObject Init");
         self.time = 0;
         self.coins = 0;
 

@@ -15,12 +15,8 @@
     
     CCLabelTTF *timeLabel;
     CCLabelTTF *coinsLabel;
-    
+    CCLabelTTF *levelLabel;
     
 }
-+(StatsLayer *) createSingleton;
-
--(void) updateTime: (NSInteger)time;
--(void) updateCoins;
 
 @end

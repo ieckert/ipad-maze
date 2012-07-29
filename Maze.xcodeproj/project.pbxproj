@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C128AE815AA728E00883E52 /* MainMenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AE715AA728E00883E52 /* MainMenuScene.m */; };
-		3C128AEC15AA72B000883E52 /* MainMenuLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AEB15AA72B000883E52 /* MainMenuLayer.m */; };
+		3C128AE815AA728E00883E52 /* MainMenuScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AE715AA728E00883E52 /* MainMenuScene.mm */; };
+		3C128AEC15AA72B000883E52 /* MainMenuLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */; };
 		3C128AF015AA73C200883E52 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AEF15AA73C200883E52 /* GameManager.mm */; };
 		3C189DA315A4D43D000F2345 /* StatsLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DA215A4D43D000F2345 /* StatsLayer.m */; };
 		3C189DAE15A4D4F2000F2345 /* StatsKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */; };
@@ -199,14 +199,15 @@
 		3CE1A0E815AA9D25003CEA87 /* PlayGameButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DF15AA9D25003CEA87 /* PlayGameButtonSelected.png */; };
 		3CE1A0E915AA9D25003CEA87 /* VikingFloating.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
+		3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.m */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		3C128AE615AA728E00883E52 /* MainMenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuScene.h; sourceTree = "<group>"; };
-		3C128AE715AA728E00883E52 /* MainMenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuScene.m; sourceTree = "<group>"; };
+		3C128AE715AA728E00883E52 /* MainMenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuScene.mm; sourceTree = "<group>"; };
 		3C128AEA15AA72B000883E52 /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
-		3C128AEB15AA72B000883E52 /* MainMenuLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuLayer.m; sourceTree = "<group>"; };
+		3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuLayer.mm; sourceTree = "<group>"; };
 		3C128AEE15AA73C200883E52 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		3C128AEF15AA73C200883E52 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
 		3C189D9B15A4D390000F2345 /* MazeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeLayer.h; sourceTree = "<group>"; };
@@ -571,6 +572,8 @@
 		3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VikingFloating.png; sourceTree = "<group>"; };
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		3CE54D2615AA3EE10067B70B /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
+		3CE6B7AC15C46E93006C2664 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pair.h; sourceTree = "<group>"; };
+		3CE6B7AD15C46E93006C2664 /* Pair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pair.m; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeRequirements.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -619,10 +622,10 @@
 		3C128AE415AA718200883E52 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
-				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
-				3C128AEB15AA72B000883E52 /* MainMenuLayer.m */,
 				3C128AE615AA728E00883E52 /* MainMenuScene.h */,
-				3C128AE715AA728E00883E52 /* MainMenuScene.m */,
+				3C128AE715AA728E00883E52 /* MainMenuScene.mm */,
+				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
+				3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -1237,6 +1240,8 @@
 				3C29B8931597A22200F28168 /* MazeMaker.m */,
 				3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */,
 				3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */,
+				3CE6B7AC15C46E93006C2664 /* Pair.h */,
+				3CE6B7AD15C46E93006C2664 /* Pair.m */,
 			);
 			name = MazeMaker;
 			sourceTree = "<group>";
@@ -1542,10 +1547,11 @@
 				3C189F2815A7A165000F2345 /* b2WeldJoint.cpp in Sources */,
 				3C189F2D15A7A72C000F2345 /* Box2DSprite.mm in Sources */,
 				3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */,
-				3C128AE815AA728E00883E52 /* MainMenuScene.m in Sources */,
-				3C128AEC15AA72B000883E52 /* MainMenuLayer.m in Sources */,
+				3C128AE815AA728E00883E52 /* MainMenuScene.mm in Sources */,
+				3C128AEC15AA72B000883E52 /* MainMenuLayer.mm in Sources */,
 				3C128AF015AA73C200883E52 /* GameManager.mm in Sources */,
 				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */,
+				3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1597,6 +1603,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Maze/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Maze/libs;
 				INFOPLIST_FILE = Maze/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
@@ -1615,6 +1622,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Maze/Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Maze/libs;
 				INFOPLIST_FILE = Maze/Resources/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;

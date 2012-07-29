@@ -48,6 +48,7 @@ return nil;
         isSoundEffectsON = YES;
         hasPlayerDied = NO;
         currentScene = kNoSceneUninitialized;
+        statsKeeper = [StatsKeeper createSingleton];
     }
     return self;
 }

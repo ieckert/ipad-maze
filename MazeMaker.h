@@ -15,6 +15,7 @@
 {
     Disjsets *disjsets;
     NSMutableDictionary *wallList;
+    NSMutableDictionary *fullBreakdownOptionsList;
     NSInteger rows;
     NSInteger cols;
     MazeContents *realMaze;
@@ -25,7 +26,6 @@
 @property (readwrite) NSInteger rows;
 @property (readwrite) NSInteger cols;
 @property (readwrite, retain) NSMutableDictionary *wallList;
-
 //can take out singleton
 + (MazeMaker *) createSingleton;
 -(id) initWithSizeAndRequirements: 
@@ -34,4 +34,6 @@
             (MazeRequirements*) reqs:   
                 (MazeContents*) maze;
 -(Boolean) createMaze;
+-(Boolean) createMaze2;
+
 @end

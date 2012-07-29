@@ -43,6 +43,9 @@
 }
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
+    
+    srandom(time(NULL)); // Seeds the random number generator
+
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	

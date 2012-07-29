@@ -24,19 +24,19 @@
     
     switch (newState) {
         case sBallIdle:
-            CCLOG(@"Ball->Starting the Spawning Animation");
+//            CCLOG(@"Ball->Starting the Spawning Animation");
             action = [CCAnimate actionWithAnimation:idleAnim
                                restoreOriginalFrame:NO];
             break;
             
         case sBallColliding:
-            CCLOG(@"Ball->Changing State to Idle");
+//            CCLOG(@"Ball->Changing State to Idle");
             action = [CCAnimate actionWithAnimation:collisionAnim
                                restoreOriginalFrame:NO];
             break;
         
         case sBallRolling:
-            CCLOG(@"Ball->Changing State to Idle");
+//            CCLOG(@"Ball->Changing State to Idle");
             action = [CCAnimate actionWithAnimation:rollingAnim
                                restoreOriginalFrame:NO];
             break;

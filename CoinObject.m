@@ -30,19 +30,19 @@
 
             break;
         case sCoinCaptured:
-            NSLog(@"Coin->Starting the Captured Animation");
+//            NSLog(@"Coin->Starting the Captured Animation");
             action = [CCSequence actions:
                                       [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:capturedAnim restoreOriginalFrame:NO] times:5],
                                       [CCFadeOut actionWithDuration:2.0f],
                                       nil];
             break;
         case sCoinSpinning:
-            NSLog(@"Coin->Changing State to Spinning");
+//            NSLog(@"Coin->Changing State to Spinning");
             action = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:spinningAnim
                                      restoreOriginalFrame:NO]];
             break;
         case sCoinRemoving:
-            NSLog(@"Coin->Changing State to Removing");
+//            NSLog(@"Coin->Changing State to Removing");
             action = [CCAnimate actionWithAnimation:removingAnim
                                restoreOriginalFrame:NO];
             break;    
@@ -73,10 +73,12 @@
                     if (characterState != sCoinCaptured) {
                         
                         [self changeState:sCoinCaptured];
+
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddCoin" 
                                                                             object:self];
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCoinLabel" 
                                                                             object:self];
+                        
                         [self setIsActive:FALSE];
                     } 
                     
@@ -104,7 +106,7 @@
 
 -(id) init {
     if( (self=[super init]) ) {
-        CCLOG(@"### Coin initialized");
+//        CCLOG(@"### Coin initialized");
         [self initAnimations];                                   // 1// 2
         gameObjectType = tCoin;                    // 3
         [self changeState:sCoinSpinning];                       // 4

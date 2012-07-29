@@ -13,6 +13,8 @@
 
 - (void) dealloc
 {
+    NSLog(@"MazeRequirements Dealloc");
+
 	[super dealloc];
 }
 
@@ -37,6 +39,7 @@
 {
     if (self = [super init])
     {
+        NSLog(@"MazeRequirements Init");
         numCoins = coins;
         numEnemies = enemies;
         straightShot = allowStraights;

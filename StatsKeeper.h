@@ -15,10 +15,12 @@
     NSMutableArray *statsArr;
     StatsObject *currentStats;
     int currentLevel;
+    BOOL active;
 
 }
 
 @property (readwrite, assign) int currentLevel;
+@property (readwrite) BOOL active;
 
 +(StatsKeeper *) createSingleton;
 
@@ -31,5 +33,7 @@
 
 -(NSInteger) returnCurrentCoinCount;
 -(NSInteger) returnCurrentTime;
+-(NSInteger) returnCurrentLevel;
+
 
 @end

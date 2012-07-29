@@ -22,14 +22,11 @@
 
 #import "Constants.h"
 #import "CommonProtocols.h"
-#import "AccelerometerFilter.h"
 #import "GameManager.h"
 
 #import "WallObject.h"
 #import "BallObject.h"
 #import "CoinObject.h"
-
-@class AccelerometerFilter;
 
 @interface MazeLayer : CCLayer <UIAccelerometerDelegate>
 {
@@ -37,21 +34,20 @@
     StatsKeeper *statsKeeper;
     MazeRequirements *requirements;
     
-    BallObject *ball;
-    b2World * world;
-    GLESDebugDraw * debugDraw;
-    b2Body * groundBody;
+    b2World *world;
+    GLESDebugDraw *debugDraw;
+    b2Body *groundBody;
 
-    CCSprite *wallSprite;
-    CCSprite *ballSprite;
     CCSpriteBatchNode *sceneSpriteBatchNode;
-    AccelerometerFilter *filter;
     
     NSTimer *repeatingTimer;
     
     MazeContents mazeGrid[kTrueMazeCols * kTrueMazeRows];
 
 }
+
+@property (nonatomic, assign) NSTimer *repeatingTimer;
+@property (nonatomic, assign) UIAccelerometer *accel;
 
 // returns a CCScene that contains the HelloWorldLayer as the only child
 +(CCScene *) scene;

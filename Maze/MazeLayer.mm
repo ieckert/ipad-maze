@@ -10,23 +10,23 @@
 // Import the interfaces
 #import "MazeLayer.h"
 #import "StatsLayer.h"
-#import "AccelerometerFilter.h"
 
 #define kUpdateFrequency	60.0
 
 @implementation MazeLayer
+@synthesize repeatingTimer, accel;
 
 +(CCScene *) scene
 {
 	// 'scene' is an autorelease object.
 	CCScene *scene = [CCScene node];
-	
+    
 	// 'layer' is an autorelease object.
 	MazeLayer *layer = [MazeLayer node];
-	
+    
 	// add layer as a child to scene
 	[scene addChild: layer];
-	
+    
 	// return the scene
 	return scene;
 }
@@ -59,57 +59,9 @@
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-- (void)createGround {
-    CGSize winSize = [[CCDirector sharedDirector] winSize];
-    float32 margin = 10.0f;
-    b2Vec2 lowerLeft = b2Vec2(margin/PTM_RATIO, margin/PTM_RATIO);
-    b2Vec2 lowerRight = b2Vec2((winSize.width-margin)/PTM_RATIO,
-                               margin/PTM_RATIO);
-    b2Vec2 upperRight = b2Vec2((winSize.width-margin)/PTM_RATIO,
-                               (winSize.height-margin)/PTM_RATIO);
-    b2Vec2 upperLeft = b2Vec2(margin/PTM_RATIO,
-                              (winSize.height-margin)/PTM_RATIO);
-    
-    b2BodyDef groundBodyDef;
-    groundBodyDef.type = b2_staticBody;
-    groundBodyDef.position.Set(0, 0);
-    groundBody = world->CreateBody(&groundBodyDef);
-    
-    b2PolygonShape groundShape;
-    b2FixtureDef groundFixtureDef;
-    groundFixtureDef.shape = &groundShape;
-    groundFixtureDef.density = 0.0;
-    
-    groundShape.SetAsEdge(lowerLeft, lowerRight);
-    groundBody->CreateFixture(&groundFixtureDef);
-    groundShape.SetAsEdge(lowerRight, upperRight);
-    groundBody->CreateFixture(&groundFixtureDef);
-    groundShape.SetAsEdge(upperRight, upperLeft);
-    groundBody->CreateFixture(&groundFixtureDef);
-    groundShape.SetAsEdge(upperLeft, lowerLeft);
-    groundBody->CreateFixture(&groundFixtureDef);
-}
-
--(void)changeFilter:(Class)filterClass
-{
-	// Ensure that the new filter class is different from the current one...
-	if(filterClass != [filter class])
-	{
-		// And if it is, release the old one and create a new one.
-		[filter release];
-		filter = [[filterClass alloc] initWithSampleRate:kUpdateFrequency cutoffFrequency:5.0];
-	}
-}
-
--(void)filterSelect
-{
-    [self changeFilter:[LowpassFilter class]];
-}
-
 - (void)accelerometer:(UIAccelerometer *)accelerometer 
         didAccelerate:(UIAcceleration *)acceleration
 {
-//    [filter addAcceleration:acceleration];
 //    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
     b2Vec2 gravity(-acceleration.y * 4, acceleration.x * 4);
     world->SetGravity(gravity);
@@ -122,11 +74,11 @@
     int32 velocityIterations = 3;
     int32 positionIterations = 2;
     world->Step(deltaTime, velocityIterations, positionIterations);
- 
-//    if ( [statsKeeper returnCurrentCoinCount] == 1 ) {
-//        [[GameManager sharedGameManager]
-//         runSceneWithID:kMainMenuScene];
-//    }
+    
+        if ( [statsKeeper returnCurrentCoinCount] == 5 ) {
+            [self endingDuties];
+            
+        }
     
     for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
         if (b->GetUserData() != NULL) {
@@ -142,7 +94,8 @@
     [sceneSpriteBatchNode children];                     
     for (GameObject *tempObject in listOfGameObjects) {         
         [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
-         listOfGameObjects];                         
+         listOfGameObjects]; 
+
     }
     
 }
@@ -153,17 +106,16 @@
                withZValue:(int)ZValue {
     
     if (objectType == tBall) {
-        ball = [[BallObject alloc] initWithWorld:world
+        BallObject *ball = [[BallObject alloc] initWithWorld:world
                                       atLocation:spawnLocation
                                  withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
                                                   spriteFrameByName:@"ball_2.png"]];
         [sceneSpriteBatchNode addChild:ball
-                                     z:kBallZValue
+                                     z:ZValue
                                    tag:kBallTagValue];  
-         [ball release];
+        [ball release];
     }
     else if (objectType == tCoin) {
-        NSLog(@"Creating a coin");
         CoinObject *coin = [[CoinObject alloc] initWithSpriteFrameName:
                             @"coin_1.png"];
         [coin setPosition:spawnLocation];
@@ -174,24 +126,14 @@
     }
     else if (objectType == tWall) {
         WallObject *wall = [[WallObject alloc] initWithWorld:world
-                                      atLocation:spawnLocation
-                                 withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
-                                                  spriteFrameByName:@"wall_4.png"]];
+                                                  atLocation:spawnLocation
+                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                                              spriteFrameByName:@"wall_4.png"]];
         [sceneSpriteBatchNode addChild:wall
-                                     z:kWallZValue
+                                     z:ZValue
                                    tag:kWallTagValue];  
         [wall release];
-
-/*
-        NSLog(@"Creating a wall");
-        CCSprite *wallImage;
-        wallImage = [CCSprite
-                     spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] 
-                                            spriteFrameByName:@"wall_4.png"]];
-        [wallImage setPosition:spawnLocation];
-        [self addChild:wallImage z:kWallZValue tag:kWallTagValue]; 
- */   
- }
+    }
     else {
         NSLog(@"trying to create something that doesn't exist");
     }
@@ -202,35 +144,33 @@
 -(id) init
 {
 	if( (self=[super init])) {   
-        
+        NSLog(@"MazeLayer Init");
+
         [self setupWorld];
         [self setupDebugDraw];
-//        [self createGround];
         
         statsKeeper = [StatsKeeper createSingleton];
-//setup accelerometer and data filter     
-        UIAccelerometer *accel = [UIAccelerometer sharedAccelerometer];
-        accel.delegate         = self;
-        accel.updateInterval   = 1.0f / 60.0f;
-//        [self changeFilter:[LowpassFilter class]];
-
-//setup basic window-size and touch
-        CGSize screenSize = [CCDirector sharedDirector].winSize;
+        [statsKeeper setActive:TRUE];
+        //setup accelerometer     
+        [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+        [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
+        
+        //setup basic window-size and touch
         self.isTouchEnabled = YES;
-
-//begin creating the maze
+        
+        //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithRequirements:5 
                                                                      :0 
-                                                                     :NO 
+                                                                     :FALSE 
                                                                      :CGPointMake(1, kTrueMazeCols-1)];
+        
         mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMazeRows 
                                                                   :kMazeCols
                                                                   :requirements
                                                                   :mazeGrid];
-        [mazeMaker createMaze];
-        //        [mazeMaker release];
+        [mazeMaker createMaze2
+         ];
         
-        srandom(time(NULL)); // Seeds the random number generator
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[CCSpriteFrameCache sharedSpriteFrameCache]
@@ -246,7 +186,7 @@
         }
         
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
-
+        
         [self createObjectOfType:tBall
                       atLocation:ccp(48+30, 48*(kTrueMazeRows-1)-10)
                       withZValue:kBallZValue]; 
@@ -259,20 +199,16 @@
                 if (mazeGrid[num] == cWall) {
                     [self createObjectOfType:tWall
                                   atLocation:ccp(48*x+25, 48*y+25)
-                                  withZValue:10];   
+                                  withZValue:kWallZValue];   
                 }
                 else if (mazeGrid[num] == cCoin){
                     //create coin as GameObject:
                     [self createObjectOfType:tCoin
                                   atLocation:ccp(48*x+25, 48*y+25)
-                                  withZValue:10];   
+                                  withZValue:kCoinZValue];   
                 }
-                
-                
             }
-            
         }
-        
         
     }
     [self scheduleUpdate];                                    
@@ -281,9 +217,46 @@
 	return self;
 }
 
+- (void) endingDuties
+{
+    NSLog(@"endingDuties reached");
+    [statsKeeper nextLevel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadLevelLabel" 
+                                                        object:self];
+    NSLog(@"going to level: %i", [statsKeeper currentLevel]);
+    [statsKeeper setActive:FALSE];
+
+    [repeatingTimer invalidate];
+
+    /*
+    CCArray *listOfGameObjects =
+    [sceneSpriteBatchNode children];                 
+    
+    for (GameObject *tempObject in listOfGameObjects) {       
+        id action = [CCMoveTo actionWithDuration:5.0f position:ccp(500,500)];
+        [tempObject runAction:action];
+    }
+    */
+    
+    [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+    
+    [[GameManager sharedGameManager]
+     runSceneWithID:kBasicLevel];
+}
+
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
+    NSLog(@"MazeLayer Dealloc");
+
+    [requirements release];
+    [mazeMaker release];
+    
+    //might need to remove all things in the world first!
+    delete world;
+    world = NULL;
+    delete debugDraw;
+
 	[super dealloc];
 }
 
@@ -299,6 +272,11 @@
 {  
     [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddTime" object:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
+}
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    NSLog(@"stop touchin mah screen");
+    
 }
 
 

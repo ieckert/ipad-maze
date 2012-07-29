@@ -9,7 +9,7 @@
 #import "StatsKeeper.h"
 
 @implementation StatsKeeper
-@synthesize currentLevel;
+@synthesize currentLevel, active;
 static StatsKeeper *singleton = nil;
 
 
@@ -17,6 +17,7 @@ static StatsKeeper *singleton = nil;
 {
     self = [super init];
     if (self) {
+        NSLog(@"StatsKeeper Init");
         statsArr = [[NSMutableArray alloc] init];
         self.currentLevel = 0;
         currentStats = [[StatsObject alloc] init];
@@ -24,6 +25,7 @@ static StatsKeeper *singleton = nil;
         [currentStats setCoins:0];
         
         [statsArr insertObject:currentStats atIndex:currentLevel];
+        active = false;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(addCoinDueToNotification:) 
@@ -48,6 +50,7 @@ static StatsKeeper *singleton = nil;
 
 -(void)dealloc
 {
+    NSLog(@"StatsKeeper Dealloc");
     [singleton release];
     [statsArr release];
     
@@ -71,12 +74,14 @@ static StatsKeeper *singleton = nil;
 
 -(void) addCoin
 {
-    [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
+    if (active == true)
+        [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
 }
 
 -(void) addTime
 {
-    [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
+    if (active == true)
+        [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
 }
 
 -(NSInteger) returnStatFromLevel:(TrackedStats)stat :(NSInteger)level
@@ -111,12 +116,19 @@ static StatsKeeper *singleton = nil;
     return [[statsArr objectAtIndex:currentLevel]time];
 }
 
+-(NSInteger) returnCurrentLevel
+{
+    return currentLevel;
+}
+
 - (void)addCoinDueToNotification:(NSNotification *)notification {
-    [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
+    if (active == true)
+        [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
 }
 
 - (void)addTimeDueToNotification:(NSNotification *)notification {
-    [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
+    if (active == true)
+        [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
 }
 
 @end

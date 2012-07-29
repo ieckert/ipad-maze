@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import "Constants.h"
+#import "StatsKeeper.h"
 
 @interface GameManager : NSObject {
     BOOL isMusicON;
     BOOL isSoundEffectsON;
     BOOL hasPlayerDied;
     SceneTypes currentScene;
+    
+    StatsKeeper *statsKeeper;
+    
 }
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;

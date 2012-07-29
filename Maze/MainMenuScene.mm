@@ -13,7 +13,7 @@
     self = [super init];
     if (self != nil) {
         mainMenuLayer = [MainMenuLayer node];
-        [self addChild:mainMenuLayer];
+        [self addChild:mainMenuLayer z:10];
     }
     return self;
 }

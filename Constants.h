@@ -8,6 +8,12 @@
 #define kTrueMazeCols kMazeCols*kTrueScale
 #define kTrueMazeRows kMazeRows*kTrueScale
 
+#define kMenuMazeCols 4
+#define kMenuMazeRows 3
+
+#define kTrueMenuMazeCols kMenuMazeCols*kTrueScale
+#define kTrueMenuMazeRows kMenuMazeRows*kTrueScale
+
 #define kBallZValue 100
 #define kBallTagValue 0
 

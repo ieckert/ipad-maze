@@ -24,13 +24,13 @@
     
     switch (newState) {
         case sWallIdle:
-            CCLOG(@"Wall->Starting the Spawning Animation");
+//            CCLOG(@"Wall->Starting the Spawning Animation");
             action = [CCAnimate actionWithAnimation:idleAnim
                                restoreOriginalFrame:NO];
             break;
             
         case sWallColliding:
-            CCLOG(@"Wall->Changing State to Idle");
+//            CCLOG(@"Wall->Changing State to Idle");
             action = [CCAnimate actionWithAnimation:collisionAnim
                                restoreOriginalFrame:NO];
             break;
@@ -91,7 +91,6 @@
 
 -(id) init {
     if( (self=[super init]) ) {
-        CCLOG(@"### Wall initialized");
         [self initAnimations];                                   // 1// 2
         gameObjectType = tWall;                    // 3
         [self changeState:sWallIdle];                       // 4
