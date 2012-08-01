@@ -34,3 +34,12 @@ typedef enum {
     kOptionsScene=2,
     kBasicLevel=101
 } SceneTypes;
+
+typedef enum {
+    kInGameMenuHome=0,
+    kInGameMenuReloadLevel=1,
+    kInGameMenuCancel=2,
+    kProgressNextLevel=3
+} inGameMenuOptions;
+
+

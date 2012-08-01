@@ -113,6 +113,7 @@
         [self setDisplayFrame:frame];
         gameObjectType = tBall;
         [self createBodyAtLocation:location];
+        
     }
     return self;
 }

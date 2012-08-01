@@ -7,6 +7,7 @@
 //
 
 #import "MainMenuLayer.h"
+
 @interface MainMenuLayer()
 -(void)displayMainMenu;
 -(void)displaySceneSelection;
@@ -85,15 +86,6 @@
         [mainMenu removeFromParentAndCleanup:YES];
     }
     
-//OLD MENU
-//    CCLabelBMFont *playScene1Label =
-//    [CCLabelBMFont labelWithString:@"Ole Awakes!"
-//                           fntFile:@"VikingSpeechFont64.fnt"];
-//    CCMenuItemLabel *playScene1 =
-//    [CCMenuItemLabel itemWithLabel:playScene1Label target:self
-//                          selector:@selector(playScene:)];
-//    [playScene1 setTag:1];
-    
     CCMenuItemFont *level1 = [CCMenuItemFont itemFromString:@"Level 1" 
                                                    target:self 
                                                  selector:@selector(playScene:)];
@@ -125,7 +117,7 @@
 
 - (void)setupWorld {
     b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
-    bool doSleep = true;
+    bool doSleep = false;
     world = new b2World(gravity, doSleep);
 }
 
@@ -159,6 +151,9 @@
 }
 -(void) update:(ccTime)deltaTime
 {
+    if (world == nil) {
+        NSLog(@"got no world to go back to :(");
+    }
     int32 velocityIterations = 3;
     int32 positionIterations = 2;
     world->Step(deltaTime, velocityIterations, positionIterations);
@@ -182,47 +177,6 @@
     
 }
 
--(void)createObjectOfType:(GameObjectType)objectType
-               atLocation:(CGPoint)spawnLocation
-               withZValue:(int)ZValue {
-    
-    if (objectType == tBall) {
-        BallObject *ball = [[BallObject alloc] initWithWorld:world
-                                                  atLocation:spawnLocation
-                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
-                                                              spriteFrameByName:@"ball_2.png"]];
-        [sceneSpriteBatchNode addChild:ball
-                                     z:ZValue
-                                   tag:kBallTagValue];  
-        [ball release];
-    }
-    else if (objectType == tCoin) {
-        NSLog(@"Creating a coin");
-        CoinObject *coin = [[CoinObject alloc] initWithSpriteFrameName:
-                            @"coin_1.png"];
-        [coin setPosition:spawnLocation];
-        [sceneSpriteBatchNode addChild:coin
-                                     z:ZValue
-                                   tag:kCoinTagValue];
-        [coin release];
-    }
-    else if (objectType == tWall) {
-        WallObject *wall = [[WallObject alloc] initWithWorld:world
-                                                  atLocation:spawnLocation
-                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
-                                                              spriteFrameByName:@"wall_4.png"]];
-        [sceneSpriteBatchNode addChild:wall
-                                     z:ZValue
-                                   tag:kWallTagValue];  
-        [wall release];
-         
-    }
-    else {
-        NSLog(@"trying to create something that doesn't exist");
-    }
-    
-}
-
 - (void) dealloc
 {
     NSLog(@"MainMenuLayer Dealloc");
@@ -237,18 +191,29 @@
 	[super dealloc];
 }
 
--(void) onExit
+-(void)randomlyPlaceItem:(GameObjectType)item
 {
-    NSLog(@"MainMenuLayer onExit");
-    
-
+    int randX, randY, randNum;
+    while (1) {
+        randX = arc4random()%kTrueMenuMazeCols;
+        randY = arc4random()%kTrueMenuMazeRows;
+        randNum = randY * kTrueMenuMazeCols + randX;
+        if (menuMaze[randNum] == tNone) {
+            menuMaze[randNum] = item;
+            [objectFactory createObjectOfType:item
+                                   atLocation:ccp(48*randX+150, 48*randY+150)
+                                   withZValue:item
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+        }
+    }
 }
 
 -(id)init {
     self = [super init];
     if (self != nil) {   
         NSLog(@"MainMenuLayer Init");
-
+        
 //        CCSprite *background =
 //        [CCSprite spriteWithFile:@"MainMenuBackground.png"];
 //        [background setPosition:ccp(screenSize.width/2,
@@ -257,7 +222,7 @@
         
         [self setupWorld];
         [self setupDebugDraw];
-        
+        objectFactory = [ObjectFactory createSingleton];
         //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithRequirements:5 
                                                                      :0 
@@ -268,7 +233,7 @@
                                                                   :kMenuMazeCols
                                                                   :requirements
                                                                   :menuMaze];
-        [mazeMaker createMaze2];
+        [mazeMaker createMaze];
         
         //setup accelerometer and data filter     
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
@@ -288,31 +253,34 @@
         }
         
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
-        
-        [self createObjectOfType:tBall
-                      atLocation:ccp(48+150, (48*(kTrueMazeRows-1)-30)-150)
-                      withZValue:kBallZValue]; 
+         
+        [objectFactory createObjectOfType:tBall
+                               atLocation:ccp(48+150, (48*(kTrueMazeRows-1)-30)-150) 
+                               withZValue:kBallZValue 
+                                  inWorld:world 
+                addToSceneSpriteBatchNode:sceneSpriteBatchNode]; 
         
         for(int y = 0; y < kTrueMenuMazeRows; y++)
         {
             for(int x = 0; x < kTrueMenuMazeCols; x++)
             {
                 int num = y * kTrueMenuMazeCols + x;
-                if (menuMaze[num] == cWall) {
-                    [self createObjectOfType:tWall
-                                  atLocation:ccp(48*x+150, 48*y+150)
-                                  withZValue:kWallZValue];   
+                if (menuMaze[num] == tWall) {
+                    [objectFactory createObjectOfType:tWall 
+                                           atLocation:ccp(48*x+150, 48*y+150) 
+                                           withZValue:kWallZValue 
+                                              inWorld:world 
+                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
                 }
-                else if (menuMaze[num] == cCoin){
+                else if (menuMaze[num] == tCoin){
                     //create coin as GameObject:
-                    [self createObjectOfType:tCoin
-                                  atLocation:ccp(48*x+150, 48*y+150)
-                                  withZValue:kCoinZValue];   
+                    [objectFactory createObjectOfType:tCoin
+                                           atLocation:ccp(48*x+150, 48*y+150)
+                                           withZValue:kCoinZValue 
+                                              inWorld:world 
+                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
                 }
-                
-                
             }
-            
         }
         [self scheduleUpdate];                                    
         [self displayMainMenu];

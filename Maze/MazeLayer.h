@@ -28,12 +28,15 @@
 #import "BallObject.h"
 #import "CoinObject.h"
 
+#import "ObjectFactory.h"
 @interface MazeLayer : CCLayer <UIAccelerometerDelegate>
 {
     MazeMaker *mazeMaker;
     StatsKeeper *statsKeeper;
+    ObjectFactory *objectFactory;
     MazeRequirements *requirements;
-    
+    CCMenu *pausedMenu;
+
     b2World *world;
     GLESDebugDraw *debugDraw;
     b2Body *groundBody;
@@ -42,7 +45,9 @@
     
     NSTimer *repeatingTimer;
     
-    MazeContents mazeGrid[kTrueMazeCols * kTrueMazeRows];
+    GameObjectType mazeGrid[kTrueMazeCols * kTrueMazeRows];
+    
+    BOOL paused;
 
 }
 

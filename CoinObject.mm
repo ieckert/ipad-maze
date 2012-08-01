@@ -31,7 +31,7 @@
             break;
         case sCoinCaptured:
 //            NSLog(@"Coin->Starting the Captured Animation");
-            action = [CCSequence actions:
+            action = [CCSpawn actions:
                                       [CCRepeat actionWithAction:[CCAnimate actionWithAnimation:capturedAnim restoreOriginalFrame:NO] times:5],
                                       [CCFadeOut actionWithDuration:2.0f],
                                       nil];

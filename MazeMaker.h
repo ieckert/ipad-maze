@@ -16,9 +16,10 @@
     Disjsets *disjsets;
     NSMutableDictionary *wallList;
     NSMutableDictionary *fullBreakdownOptionsList;
+    NSMutableArray *fullKeysList;
     NSInteger rows;
     NSInteger cols;
-    MazeContents *realMaze;
+    GameObjectType *realMaze;
     
     MazeRequirements *requirements;
 }
@@ -32,8 +33,7 @@
                 (NSInteger) numRows: 
                 (NSInteger) numCols: 
             (MazeRequirements*) reqs:   
-                (MazeContents*) maze;
+                (GameObjectType*) maze;
 -(Boolean) createMaze;
--(Boolean) createMaze2;
 
 @end

@@ -15,12 +15,6 @@ typedef enum {
 } TrackedStats;
 
 typedef enum {
-    cWall,
-    cCoin,
-    cNone
-} MazeContents;
-
-typedef enum {
     dLeft,
     dRight,
     dUp,

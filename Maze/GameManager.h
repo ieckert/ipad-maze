@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Constants.h"
 #import "StatsKeeper.h"
+#import "ObjectFactory.h"
 
 @interface GameManager : NSObject {
     BOOL isMusicON;
@@ -17,6 +18,7 @@
     SceneTypes currentScene;
     
     StatsKeeper *statsKeeper;
+    ObjectFactory *objectFactory;
     
 }
 @property (readwrite) BOOL isMusicON;

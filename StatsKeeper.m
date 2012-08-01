@@ -51,6 +51,7 @@ static StatsKeeper *singleton = nil;
 -(void)dealloc
 {
     NSLog(@"StatsKeeper Dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [singleton release];
     [statsArr release];
     
@@ -130,5 +131,12 @@ static StatsKeeper *singleton = nil;
     if (active == true)
         [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
 }
+
+-(void) dropStatsFromCurrentLevel
+{
+    [[statsArr objectAtIndex:currentLevel] setCoins:0];
+    [[statsArr objectAtIndex:currentLevel] setTime:0];
+}
+
 
 @end

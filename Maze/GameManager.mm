@@ -49,6 +49,7 @@ return nil;
         hasPlayerDied = NO;
         currentScene = kNoSceneUninitialized;
         statsKeeper = [StatsKeeper createSingleton];
+        objectFactory = [ObjectFactory createSingleton];
     }
     return self;
 }

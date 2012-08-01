@@ -35,5 +35,5 @@
 -(NSInteger) returnCurrentTime;
 -(NSInteger) returnCurrentLevel;
 
-
+-(void) dropStatsFromCurrentLevel;
 @end

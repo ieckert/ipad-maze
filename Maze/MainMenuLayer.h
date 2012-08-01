@@ -22,6 +22,8 @@
 #import "BallObject.h"
 #import "CoinObject.h"
 
+#import "ObjectFactory.h"
+
 @interface MainMenuLayer : CCLayer <UIAccelerometerDelegate>
 {
     CCMenu *mainMenu;
@@ -32,9 +34,10 @@
 
     CCSpriteBatchNode *sceneSpriteBatchNode;
     
-    MazeContents menuMaze[kTrueMenuMazeCols * kTrueMenuMazeRows];
+    GameObjectType menuMaze[kTrueMenuMazeCols * kTrueMenuMazeRows];
     MazeMaker *mazeMaker;
     MazeRequirements *requirements;
+    ObjectFactory *objectFactory;
 }
 
 @property (nonatomic, assign) UIAccelerometer *accel;
