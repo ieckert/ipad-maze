@@ -188,19 +188,10 @@
 		3C29B900159EF80500F28168 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8FF159EF80500F28168 /* AccelerometerFilter.m */; };
 		3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B901159F67B600F28168 /* CoreMotion.framework */; };
 		3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */; };
-		3CE1A0D415AA9CE7003CEA87 /* VikingSpeechFont64.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0D215AA9CE7003CEA87 /* VikingSpeechFont64.fnt */; };
-		3CE1A0D515AA9CE7003CEA87 /* VikingSpeechFont64.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0D315AA9CE7003CEA87 /* VikingSpeechFont64.png */; };
-		3CE1A0E115AA9D25003CEA87 /* BuyBookButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0D815AA9D25003CEA87 /* BuyBookButtonNormal.png */; };
-		3CE1A0E215AA9D25003CEA87 /* BuyBookButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0D915AA9D25003CEA87 /* BuyBookButtonSelected.png */; };
-		3CE1A0E315AA9D25003CEA87 /* MainMenuBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DA15AA9D25003CEA87 /* MainMenuBackground.png */; };
-		3CE1A0E415AA9D25003CEA87 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DB15AA9D25003CEA87 /* menu.png */; };
-		3CE1A0E515AA9D25003CEA87 /* OptionsButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DC15AA9D25003CEA87 /* OptionsButtonNormal.png */; };
-		3CE1A0E615AA9D25003CEA87 /* OptionsButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DD15AA9D25003CEA87 /* OptionsButtonSelected.png */; };
-		3CE1A0E715AA9D25003CEA87 /* PlayGameButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DE15AA9D25003CEA87 /* PlayGameButtonNormal.png */; };
-		3CE1A0E815AA9D25003CEA87 /* PlayGameButtonSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0DF15AA9D25003CEA87 /* PlayGameButtonSelected.png */; };
-		3CE1A0E915AA9D25003CEA87 /* VikingFloating.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
 		3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.m */; };
+		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
+		3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CE972DB15CA4559001307BC /* Model.xcdatamodeld */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */; };
 /* End PBXBuildFile section */
 
@@ -562,21 +553,12 @@
 		3C728B59159F867D00C8DC81 /* BackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLayer.h; sourceTree = "<group>"; };
 		3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundLayer.mm; sourceTree = "<group>"; };
 		3C728B5D159F884100C8DC81 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
-		3CE1A0D215AA9CE7003CEA87 /* VikingSpeechFont64.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VikingSpeechFont64.fnt; sourceTree = "<group>"; };
-		3CE1A0D315AA9CE7003CEA87 /* VikingSpeechFont64.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VikingSpeechFont64.png; sourceTree = "<group>"; };
-		3CE1A0D815AA9D25003CEA87 /* BuyBookButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyBookButtonNormal.png; sourceTree = "<group>"; };
-		3CE1A0D915AA9D25003CEA87 /* BuyBookButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BuyBookButtonSelected.png; sourceTree = "<group>"; };
-		3CE1A0DA15AA9D25003CEA87 /* MainMenuBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MainMenuBackground.png; sourceTree = "<group>"; };
-		3CE1A0DB15AA9D25003CEA87 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
-		3CE1A0DC15AA9D25003CEA87 /* OptionsButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OptionsButtonNormal.png; sourceTree = "<group>"; };
-		3CE1A0DD15AA9D25003CEA87 /* OptionsButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OptionsButtonSelected.png; sourceTree = "<group>"; };
-		3CE1A0DE15AA9D25003CEA87 /* PlayGameButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayGameButtonNormal.png; sourceTree = "<group>"; };
-		3CE1A0DF15AA9D25003CEA87 /* PlayGameButtonSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayGameButtonSelected.png; sourceTree = "<group>"; };
-		3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = VikingFloating.png; sourceTree = "<group>"; };
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		3CE54D2615AA3EE10067B70B /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		3CE6B7AC15C46E93006C2664 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pair.h; sourceTree = "<group>"; };
 		3CE6B7AD15C46E93006C2664 /* Pair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pair.m; sourceTree = "<group>"; };
+		3CE972D715CA432D001307BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3CE972DC15CA4559001307BC /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeRequirements.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -586,6 +568,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */,
 				3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */,
 				3C29B71615979E5B00F28168 /* QuartzCore.framework in Frameworks */,
 				3C29B71815979E5B00F28168 /* OpenGLES.framework in Frameworks */,
@@ -638,6 +621,7 @@
 		3C128AE515AA722E00883E52 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3CE972DA15CA453E001307BC /* DataModel */,
 				3C128AED15AA739500883E52 /* AccelerometerFilter */,
 				3C189DA015A4D3F6000F2345 /* StatsKeeper */,
 				3C29B8A6159924FF00F28168 /* MazeMaker */,
@@ -847,6 +831,7 @@
 		3C29B71415979E5B00F28168 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3CE972D715CA432D001307BC /* CoreData.framework */,
 				3C29B901159F67B600F28168 /* CoreMotion.framework */,
 				3C29B71515979E5B00F28168 /* QuartzCore.framework */,
 				3C29B71715979E5B00F28168 /* OpenGLES.framework */,
@@ -866,7 +851,7 @@
 				3C29B8A71599252A00F28168 /* GameObjects */,
 				3C189D9F15A4D3AD000F2345 /* Scenes */,
 				3C29B72615979E5B00F28168 /* Resources */,
-				3C29B73A15979E5B00F28168 /* libs */,
+				3C29B73A15979E5B00F28168 /* Libs */,
 				3C29B87315979E6800F28168 /* Supporting Files */,
 				3C29B87715979E6800F28168 /* AppDelegate.h */,
 				3C29B87815979E6800F28168 /* AppDelegate.mm */,
@@ -882,8 +867,6 @@
 		3C29B72615979E5B00F28168 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				3CE1A0D715AA9D25003CEA87 /* Main Menu Images */,
-				3CE1A0D115AA9CE7003CEA87 /* Fonts */,
 				3C29B8D0159E4A3400F28168 /* Animation Plists */,
 				3C29B8951598135700F28168 /* Images */,
 				3C29B72715979E5B00F28168 /* Default.png */,
@@ -900,7 +883,7 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		3C29B73A15979E5B00F28168 /* libs */ = {
+		3C29B73A15979E5B00F28168 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
 				3C189EB715A7A164000F2345 /* Box2D */,
@@ -914,7 +897,7 @@
 				3C29B84B15979E6600F28168 /* TouchJSON */,
 				3C29B86115979E6700F28168 /* FontLabel */,
 			);
-			name = libs;
+			name = Libs;
 			sourceTree = "<group>";
 		};
 		3C29B73B15979E5B00F28168 /* cocos2d */ = {
@@ -1286,30 +1269,12 @@
 			name = "Animation Plists";
 			sourceTree = "<group>";
 		};
-		3CE1A0D115AA9CE7003CEA87 /* Fonts */ = {
+		3CE972DA15CA453E001307BC /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				3CE1A0D215AA9CE7003CEA87 /* VikingSpeechFont64.fnt */,
-				3CE1A0D315AA9CE7003CEA87 /* VikingSpeechFont64.png */,
+				3CE972DB15CA4559001307BC /* Model.xcdatamodeld */,
 			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		3CE1A0D715AA9D25003CEA87 /* Main Menu Images */ = {
-			isa = PBXGroup;
-			children = (
-				3CE1A0D815AA9D25003CEA87 /* BuyBookButtonNormal.png */,
-				3CE1A0D915AA9D25003CEA87 /* BuyBookButtonSelected.png */,
-				3CE1A0DA15AA9D25003CEA87 /* MainMenuBackground.png */,
-				3CE1A0DB15AA9D25003CEA87 /* menu.png */,
-				3CE1A0DC15AA9D25003CEA87 /* OptionsButtonNormal.png */,
-				3CE1A0DD15AA9D25003CEA87 /* OptionsButtonSelected.png */,
-				3CE1A0DE15AA9D25003CEA87 /* PlayGameButtonNormal.png */,
-				3CE1A0DF15AA9D25003CEA87 /* PlayGameButtonSelected.png */,
-				3CE1A0E015AA9D25003CEA87 /* VikingFloating.png */,
-			);
-			name = "Main Menu Images";
-			path = Main;
+			name = DataModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1384,17 +1349,6 @@
 				3C189DBC15A51F08000F2345 /* atlas2.plist in Resources */,
 				3C189DBD15A51F08000F2345 /* atlas2.png in Resources */,
 				3C189DC215A5224B000F2345 /* CoinObject.plist in Resources */,
-				3CE1A0D415AA9CE7003CEA87 /* VikingSpeechFont64.fnt in Resources */,
-				3CE1A0D515AA9CE7003CEA87 /* VikingSpeechFont64.png in Resources */,
-				3CE1A0E115AA9D25003CEA87 /* BuyBookButtonNormal.png in Resources */,
-				3CE1A0E215AA9D25003CEA87 /* BuyBookButtonSelected.png in Resources */,
-				3CE1A0E315AA9D25003CEA87 /* MainMenuBackground.png in Resources */,
-				3CE1A0E415AA9D25003CEA87 /* menu.png in Resources */,
-				3CE1A0E515AA9D25003CEA87 /* OptionsButtonNormal.png in Resources */,
-				3CE1A0E615AA9D25003CEA87 /* OptionsButtonSelected.png in Resources */,
-				3CE1A0E715AA9D25003CEA87 /* PlayGameButtonNormal.png in Resources */,
-				3CE1A0E815AA9D25003CEA87 /* PlayGameButtonSelected.png in Resources */,
-				3CE1A0E915AA9D25003CEA87 /* VikingFloating.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1558,6 +1512,7 @@
 				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */,
 				3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */,
 				3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */,
+				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1662,6 +1617,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3CE972DB15CA4559001307BC /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3CE972DC15CA4559001307BC /* Model.xcdatamodel */,
+			);
+			currentVersion = 3CE972DC15CA4559001307BC /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3C29B70815979E5A00F28168 /* Project object */;
 }

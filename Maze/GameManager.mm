@@ -9,6 +9,7 @@
 #import "GameManager.h"
 #import "GameScene.h"
 #import "MainMenuScene.h"
+#import "CCTransition.h"
 
 @implementation GameManager
 static GameManager* _sharedGameManager = nil;                      
@@ -55,6 +56,7 @@ return nil;
 }
            
 -(void)runSceneWithID:(SceneTypes)sceneID {
+    
     SceneTypes oldScene = currentScene;
     currentScene = sceneID;
     id sceneToRun = nil;
@@ -99,11 +101,19 @@ return nil;
         }
     }
     
+/*
+[[Director sharedDirector] replaceScene: 
+[ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
+*/
+//    CCTransitionShrinkGrow* transition = [CCTransitionShrinkGrow transitionWithDuration:1.0f scene:sceneToRun];
     if ([[CCDirector sharedDirector] runningScene] == nil) {
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
         
     } else {
-        [[CCDirector sharedDirector] replaceScene:sceneToRun];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipAngular transitionWithDuration:3 
+                                                                                           scene:sceneToRun]];
+//        [[CCDirector sharedDirector] replaceScene:sceneToRun];
+        //        [[CCDirector sharedDirector] replaceScene:transition];
     }
 }
 

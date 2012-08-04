@@ -38,6 +38,16 @@
     MazeMaker *mazeMaker;
     MazeRequirements *requirements;
     ObjectFactory *objectFactory;
+    
+    //for debugging
+    CCMenu *debugMenu;
+    CCLabelTTF *accelLabel;
+    CCLabelTTF *angDampLabel;
+    CCLabelTTF *gravityScaleLabel;
+    
+    float gravityScale;
+    float angDamp;
+    int accelNum;
 }
 
 @property (nonatomic, assign) UIAccelerometer *accel;

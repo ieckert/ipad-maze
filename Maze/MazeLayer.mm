@@ -11,10 +11,39 @@
 #import "MazeLayer.h"
 #import "StatsLayer.h"
 
-#define kUpdateFrequency	60.0
-
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
+
+-(void) countdownToStart:(NSNumber *) num
+{
+    CGSize screenSize = [CCDirector sharedDirector].winSize;
+    CCLabelTTF *startLabel;
+    if ([num intValue] != 0) {
+        startLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i",[num intValue]] 
+                           fontName:@"AmericanTypewriter-CondensedBold"
+                           fontSize:64];                                                
+    }
+    else {
+        startLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i",[num intValue]] 
+                           fontName:@"AmericanTypewriter-CondensedBold"
+                           fontSize:64];
+    }
+    [startLabel setPosition:ccp(screenSize.width/2,screenSize.height/2)];    
+    [self addChild:startLabel];     
+    id labelAction = [CCAnimate actionWithAnimation:[CCFadeOut actionWithDuration:1.2f]];
+    [startLabel runAction:labelAction];    
+}
+
+//transition from previous scene to this one
+-(void) onEnterTransitionDidFinish
+{
+//    NSNumber *tmp;
+//    for (int i = 3; i > -1; i--) {
+//        tmp = [NSNumber numberWithInt:i];
+//        [self performSelector:@selector(countdownToStart:) withObject:tmp afterDelay:1.0f];
+//    }
+    paused = FALSE; //so the timer does not increment and the ball does not move
+}
 
 +(CCScene *) scene
 {
@@ -30,7 +59,6 @@
 	// return the scene
 	return scene;
 }
-
 
 - (void)setupWorld {
     b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
@@ -59,11 +87,42 @@
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
+- (void)createGround {
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+    float32 margin = 0.0f;
+    b2Vec2 lowerLeft = b2Vec2(margin/PTM_RATIO, margin/PTM_RATIO);
+    b2Vec2 lowerRight = b2Vec2((winSize.width-margin)/PTM_RATIO,
+                               margin/PTM_RATIO);
+    b2Vec2 upperRight = b2Vec2((winSize.width-margin)/PTM_RATIO,
+                               (winSize.height-margin)/PTM_RATIO);
+    b2Vec2 upperLeft = b2Vec2(margin/PTM_RATIO,
+                              (winSize.height-margin)/PTM_RATIO);
+    
+    b2BodyDef groundBodyDef;
+    groundBodyDef.type = b2_staticBody;
+    groundBodyDef.position.Set(0, 0);
+    groundBody = world->CreateBody(&groundBodyDef);
+    
+    b2PolygonShape groundShape;
+    b2FixtureDef groundFixtureDef;
+    groundFixtureDef.shape = &groundShape;
+    groundFixtureDef.density = 0.0;
+    
+    groundShape.SetAsEdge(lowerLeft, lowerRight);
+    groundBody->CreateFixture(&groundFixtureDef);
+    groundShape.SetAsEdge(lowerRight, upperRight);
+    groundBody->CreateFixture(&groundFixtureDef);
+    groundShape.SetAsEdge(upperRight, upperLeft);
+    groundBody->CreateFixture(&groundFixtureDef);
+    groundShape.SetAsEdge(upperLeft, lowerLeft);
+    groundBody->CreateFixture(&groundFixtureDef);
+}
+
 - (void)accelerometer:(UIAccelerometer *)accelerometer 
         didAccelerate:(UIAcceleration *)acceleration
 {
 //    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
-    b2Vec2 gravity(-acceleration.y * 4, acceleration.x * 4);
+    b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
     world->SetGravity(gravity);
 }
 
@@ -84,9 +143,10 @@
         int32 positionIterations = 2;
         world->Step(deltaTime, velocityIterations, positionIterations);
         
-            if ( [statsKeeper returnCurrentCoinCount] == 5 ) {
-                [self endingDuties:kProgressNextLevel];
-                
+            if ( [statsKeeper returnCurrentCoinCount] == 5 && mazeComplete == FALSE) {
+                //prevents this from being called over and over while update still works
+                mazeComplete = TRUE;
+                [self endingTransition];
             }
         
         for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
@@ -113,11 +173,15 @@
 {
 	if( (self=[super init])) {   
         NSLog(@"MazeLayer Init");
-
-        paused = FALSE;
+        angDamp = kAngularDamp;
+        accelNum = kAccelerometerConstant;
+        paused = TRUE;
+        mazeComplete = FALSE;
+        
         objectFactory = [ObjectFactory createSingleton];
         [self setupWorld];
-        [self setupDebugDraw];
+//        [self setupDebugDraw];
+        [self createGround];
         
         statsKeeper = [StatsKeeper createSingleton];
         [statsKeeper setActive:TRUE];
@@ -192,9 +256,30 @@
 	return self;
 }
 
-- (void) endingDuties: (NSInteger)option
+-(void) endingTransition
 {
-    switch (option) {
+    NSLog(@"playing ending transition");
+
+    NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
+    [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
+    
+    CCArray *listOfGameObjects =
+    [sceneSpriteBatchNode children];                     
+    for (GameObject *tempObject in listOfGameObjects) {         
+        [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
+    }
+    
+    for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
+        if (b->GetUserData() != NULL) {
+            b->SetType(b2_dynamicBody);
+//            b->ApplyForce(b2Vec2(arc4random()%50, arc4random()%50), b->GetWorldCenter() );
+        }
+    }
+}
+
+- (void) endingDuties: (NSNumber*)option
+{
+    switch ([option intValue]) {
         case kInGameMenuHome:
             NSLog(@"chose main menu");
             [statsKeeper setActive:FALSE];
@@ -218,6 +303,7 @@
                 paused = FALSE;
             }
             break;
+            
         case kProgressNextLevel:
             NSLog(@"moving to next level");
             [statsKeeper nextLevel];
@@ -229,13 +315,17 @@
             [repeatingTimer invalidate];
             
             [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+/*
+ [[Director sharedDirector] replaceScene: 
+ [ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
+*/
             
             [[GameManager sharedGameManager]
              runSceneWithID:kBasicLevel];
             break;
             
         default:
-            NSLog(@"when in ending duties -> found unidentified case: %i", option);
+//            NSLog(@"when in ending duties -> found unidentified case: %i", option);
             break;
             
         /*
@@ -277,17 +367,22 @@
 
 -(void) timerDuties
 {  
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddTime" object:self];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
+    if (mazeComplete == FALSE) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddTime" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
+
+    }
 }
 
 - (void) menuManager: (CCMenuItemFont*)option
 {
+    NSNumber *tmp;
     switch ([option tag]) {
         case kInGameMenuHome:
             NSLog(@"chose main menu");
             //need to save off game data here!!
-            [self endingDuties:kInGameMenuHome];
+            tmp = [NSNumber numberWithInt:kInGameMenuHome];
+            [self endingDuties:tmp];
             break;
         
         case kInGameMenuReloadLevel:

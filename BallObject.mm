@@ -91,8 +91,10 @@
     bodyDef.type = b2_dynamicBody;
     bodyDef.position =
     b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    
     body = world->CreateBody(&bodyDef);
     body->SetUserData(self);
+    body->SetAngularDamping(kAngularDamp);
     
     b2FixtureDef fixtureDef;
     b2CircleShape circleShape;

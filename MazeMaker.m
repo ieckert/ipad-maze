@@ -60,7 +60,7 @@ static MazeMaker *singleton = nil;
         int currentNum=0;
         for (int i=0; currentNum < rows*cols; i++)
         {
-            NSLog(@"building the fullBreakdownOptionsList. currentNum: %i", currentNum);
+//            NSLog(@"building the fullBreakdownOptionsList. currentNum: %i", currentNum);
 
             /*
              cases:

@@ -28,6 +28,9 @@
 #define kMainMenuTagValue 10
 #define kSceneMenuTagValue 20
 
+#define kAngularDamp 3
+#define kAccelerometerConstant 13
+
 typedef enum {
     kNoSceneUninitialized=0,
     kMainMenuScene=1,

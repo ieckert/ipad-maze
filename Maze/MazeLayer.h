@@ -48,6 +48,10 @@
     GameObjectType mazeGrid[kTrueMazeCols * kTrueMazeRows];
     
     BOOL paused;
+    BOOL mazeComplete;
+    
+    float angDamp;
+    int accelNum;
 
 }
 

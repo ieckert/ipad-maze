@@ -18,7 +18,7 @@
 
 @implementation AppDelegate
 
-@synthesize window;
+@synthesize window, managedObjectModel, managedObjectContext, persistentStoreCoordinator;
 
 - (void) removeStartupFlicker
 {
@@ -43,7 +43,8 @@
 }
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
-    
+    [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
+
     srandom(time(NULL)); // Seeds the random number generator
 
 	// Init the window
@@ -143,6 +144,20 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    NSError *error = nil;
+    
+    if (managedObjectContext != nil) {
+        
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+            
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            
+            abort();
+            
+        }
+        
+    }
+
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];
@@ -157,6 +172,85 @@
 - (void)applicationSignificantTimeChange:(UIApplication *)application {
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
+
+- (NSManagedObjectContext *) managedObjectContext {
+    
+    if (managedObjectContext != nil) {
+        
+        return managedObjectContext;
+        
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    
+    if (coordinator != nil) {
+        
+        managedObjectContext = [[NSManagedObjectContext alloc] init];
+        
+        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+        
+    }
+    
+    return managedObjectContext;
+    
+}
+
+- (NSManagedObjectModel *)managedObjectModel
+
+{
+    
+    if (managedObjectModel != nil) {
+        
+        return managedObjectModel;
+        
+    }
+    
+    else
+        
+    {
+        
+        managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+        
+        return managedObjectModel;
+        
+    }
+    
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    
+    if (persistentStoreCoordinator != nil) {
+        
+        return persistentStoreCoordinator;
+        
+    }
+    
+    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Model.sqlite"]];
+    
+    NSError *error = nil;
+    
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
+        
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        
+        abort();
+        
+    }
+    
+    return persistentStoreCoordinator;
+    
+}
+
+- (NSString *)applicationDocumentsDirectory
+
+{
+    
+    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    
+}
+
 
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
