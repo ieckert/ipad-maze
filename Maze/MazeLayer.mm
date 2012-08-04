@@ -14,35 +14,43 @@
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
 
--(void) countdownToStart:(NSNumber *) num
+-(void) countdownToStart:(NSString *) str
 {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
-    CCLabelTTF *startLabel;
-    if ([num intValue] != 0) {
-        startLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i",[num intValue]] 
-                           fontName:@"AmericanTypewriter-CondensedBold"
-                           fontSize:64];                                                
-    }
-    else {
-        startLabel = [CCLabelTTF labelWithString:[NSString stringWithFormat:@"%i",[num intValue]] 
-                           fontName:@"AmericanTypewriter-CondensedBold"
-                           fontSize:64];
-    }
-    [startLabel setPosition:ccp(screenSize.width/2,screenSize.height/2)];    
-    [self addChild:startLabel];     
-    id labelAction = [CCAnimate actionWithAnimation:[CCFadeOut actionWithDuration:1.2f]];
-    [startLabel runAction:labelAction];    
+    CGSize screenSize = [[CCDirector sharedDirector] winSize];
+
+    CGPoint location = CGPointMake(screenSize.width/2,screenSize.height/2);
+    CCLabelTTF *l1 = [CCLabelTTF labelWithString:@"" 
+                                        fontName:@"AmericanTypewriter-CondensedBold"
+                                        fontSize:100];                                                
+    [self addChild:l1];
+    [l1 setPosition:location];    
+    [l1 setString:str];
+    id la1 = [CCSequence actions:[CCFadeIn actionWithDuration:.75f], 
+              [CCFadeOut actionWithDuration:.75f], 
+              nil];
+    [l1 runAction:la1];    
+}
+
+-(void) pauseGame
+{
+    paused = TRUE;
+    [statsKeeper setActive:FALSE];
+}
+
+-(void) unpauseGame
+{
+    paused = FALSE;
+    [statsKeeper setActive:TRUE];
 }
 
 //transition from previous scene to this one
 -(void) onEnterTransitionDidFinish
 {
-//    NSNumber *tmp;
-//    for (int i = 3; i > -1; i--) {
-//        tmp = [NSNumber numberWithInt:i];
-//        [self performSelector:@selector(countdownToStart:) withObject:tmp afterDelay:1.0f];
-//    }
-    paused = FALSE; //so the timer does not increment and the ball does not move
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"3"] afterDelay:.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"2"] afterDelay:2.0f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"1"] afterDelay:3.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:5.0f];
+    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:5.2f];
 }
 
 +(CCScene *) scene
@@ -133,40 +141,41 @@
     if (world == nil) {
         NSLog(@"got no world to go back to :(");
     }
-    if (paused) {
-        [statsKeeper setActive:FALSE];
-    }
-    else {
-        [statsKeeper setActive:TRUE];
-
         int32 velocityIterations = 3;
         int32 positionIterations = 2;
         world->Step(deltaTime, velocityIterations, positionIterations);
         
-            if ( [statsKeeper returnCurrentCoinCount] == 5 && mazeComplete == FALSE) {
-                //prevents this from being called over and over while update still works
-                mazeComplete = TRUE;
-                [self endingTransition];
-            }
+        if ( [statsKeeper returnCurrentCoinCount] == 5 && mazeComplete == FALSE) {
+            //prevents this from being called over and over while update still works
+            mazeComplete = TRUE;
+            [self endingTransition];
+        }
         
         for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
             if (b->GetUserData() != NULL) {
                 Box2DSprite *sprite = (Box2DSprite *) b->GetUserData();
+//the if statement below prevents the ball from moving while the 3..2..1..GO! is visible                
+                if (sprite.gameObjectType == tBall && paused) {
+                    b->SetAwake(FALSE);
+                }
+                else if (sprite.gameObjectType == tBall && !paused) {
+                    b->SetAwake(TRUE);
+                }
+                
                 sprite.position = ccp(b->GetPosition().x * PTM_RATIO,
-                                      b->GetPosition().y * PTM_RATIO);
+                                          b->GetPosition().y * PTM_RATIO);
                 sprite.rotation =
-                CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+                    CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+                
             }
         }
         
         CCArray *listOfGameObjects =
         [sceneSpriteBatchNode children];                     
-        for (GameObject *tempObject in listOfGameObjects) {         
-            [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
-             listOfGameObjects]; 
-
+        for (GameObject *tempObject in listOfGameObjects) { 
+                [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
+                 listOfGameObjects]; 
         }
-    }
 }
 
 -(id) init
@@ -175,16 +184,16 @@
         NSLog(@"MazeLayer Init");
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
-        paused = TRUE;
         mazeComplete = FALSE;
-        
+
         objectFactory = [ObjectFactory createSingleton];
         [self setupWorld];
-//        [self setupDebugDraw];
+        [self setupDebugDraw];
         [self createGround];
         
         statsKeeper = [StatsKeeper createSingleton];
         [statsKeeper setActive:TRUE];
+
         //setup accelerometer     
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
@@ -250,9 +259,9 @@
         }
         
     }
+    [self pauseGame];
     [self scheduleUpdate];                                    
     [self setTimer];
-    
 	return self;
 }
 
@@ -261,6 +270,7 @@
     NSLog(@"playing ending transition");
 
     NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
+
     [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
     
     CCArray *listOfGameObjects =
@@ -294,14 +304,6 @@
             
         case kInGameMenuReloadLevel:
             NSLog(@"chose reload");
-            break;
-            
-        case kInGameMenuCancel:
-            NSLog(@"chose cancel");
-            if (pausedMenu != nil) {
-                [pausedMenu removeFromParentAndCleanup:YES];
-                paused = FALSE;
-            }
             break;
             
         case kProgressNextLevel:
@@ -367,10 +369,9 @@
 
 -(void) timerDuties
 {  
-    if (mazeComplete == FALSE) {
+    if ([statsKeeper active] == TRUE) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddTime" object:self];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
-
     }
 }
 
@@ -393,7 +394,7 @@
             NSLog(@"chose cancel");
             if (pausedMenu != nil) {
                 [pausedMenu removeFromParentAndCleanup:YES];
-                paused = FALSE;
+                [self unpauseGame];
             }
             break;
         
@@ -444,7 +445,7 @@
     
 //the if statement prevents the user from tapping multiple times and having the game crash
     if (paused == FALSE) {
-        paused = TRUE;
+        [self pauseGame];
         [self pausedAnimation];
         CCMenuItemFont *home = [CCMenuItemFont itemFromString:@"Main Menu" 
                                                          target:self 
