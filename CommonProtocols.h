@@ -45,9 +45,6 @@ typedef enum {
 -(void)createObjectOfType:(GameObjectType)objectType
                atLocation:(CGPoint)spawnLocation
                withZValue:(int)ZValue;
-
--(void)createBallWithDirection:(BallDirection)ballDirection
-                     andPosition:(CGPoint)spawnPosition;
 @end
 
 

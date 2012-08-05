@@ -30,6 +30,7 @@ static StatsKeeper *singleton = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(addCoinDueToNotification:) 
                                                      name:@"statsKeeperAddCoin" object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(addTimeDueToNotification:) 
                                                      name:@"statsKeeperAddTime" object:nil];
@@ -54,6 +55,7 @@ static StatsKeeper *singleton = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [singleton release];
     [statsArr release];
+    [currentStats release];
     
     [super dealloc];
 }
@@ -73,17 +75,17 @@ static StatsKeeper *singleton = nil;
     return self.currentLevel;
 }
 
--(void) addCoin
-{
-    if (active == true)
-        [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
-}
-
--(void) addTime
-{
-    if (active == true)
-        [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
-}
+//-(void) addCoin
+//{
+//    if (active == true)
+//        [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
+//}
+//
+//-(void) addTime
+//{
+//    if (active == true)
+//        [[statsArr objectAtIndex:currentLevel] setTime:[[statsArr objectAtIndex:currentLevel]time]+1];
+//}
 
 -(NSInteger) returnStatFromLevel:(TrackedStats)stat :(NSInteger)level
 {
@@ -125,6 +127,8 @@ static StatsKeeper *singleton = nil;
 - (void)addCoinDueToNotification:(NSNotification *)notification {
     if (active == true)
         [[statsArr objectAtIndex:currentLevel] setCoins:[[statsArr objectAtIndex:currentLevel]coins]+1];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"coinAddedToStats" 
+                                                        object:self];
 }
 
 - (void)addTimeDueToNotification:(NSNotification *)notification {

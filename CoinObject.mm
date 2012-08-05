@@ -16,6 +16,7 @@
     [capturedAnim release];
     [removingAnim release];
     [idleAnim release];
+    [objectInfo release];
 
     [super dealloc];
 }
@@ -76,6 +77,11 @@
 
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddCoin" 
                                                                             object:self];
+                        
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"positionOfCapturedCoin" 
+                                                                            object:self
+                                                                          userInfo:objectInfo];
+                        
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCoinLabel" 
                                                                             object:self];
                         
@@ -104,12 +110,29 @@
                             andClassName:NSStringFromClass([self class])]];
 }
 
+- (id)initWithSpriteFrame:(CCSpriteFrame *)frame AtLocation:(CGPoint)location  {
+    if ((self = [super init])) {
+        gameObjectType = tCoin;                    // 3
+
+        [self initAnimations];                                   // 1// 2
+        [self changeState:sCoinSpinning]; 
+        
+        [self setDisplayFrame:frame];
+        [self setPosition:location];
+        
+        objectInfo = [[NSMutableDictionary alloc] init];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:@"position-x"];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:@"position-y"];
+        NSLog(@"when creating coin x: %f y: %f", self.position.x, self.position.y);
+        
+    }
+    return self;
+}
+
 -(id) init {
     if( (self=[super init]) ) {
-//        CCLOG(@"### Coin initialized");
-        [self initAnimations];                                   // 1// 2
-        gameObjectType = tCoin;                    // 3
-        [self changeState:sCoinSpinning];                       // 4
+//        CCLOG(@"### Coin initialized");                      // 4
+    
     }
     return self;
 }

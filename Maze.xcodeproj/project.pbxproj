@@ -187,6 +187,7 @@
 		3C29B8F1159E5B0B00F28168 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8EF159E5B0A00F28168 /* atlas1.png */; };
 		3C29B900159EF80500F28168 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8FF159EF80500F28168 /* AccelerometerFilter.m */; };
 		3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B901159F67B600F28168 /* CoreMotion.framework */; };
+		3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */; };
 		3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
 		3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.m */; };
@@ -550,6 +551,8 @@
 		3C29B8FE159EF80500F28168 /* AccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccelerometerFilter.h; sourceTree = "<group>"; };
 		3C29B8FF159EF80500F28168 /* AccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccelerometerFilter.m; sourceTree = "<group>"; };
 		3C29B901159F67B600F28168 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		3C48348415CF006500EF9C7A /* ObjectInfoConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectInfoConstants.h; sourceTree = "<group>"; };
+		3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectInfoConstants.m; sourceTree = "<group>"; };
 		3C728B59159F867D00C8DC81 /* BackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLayer.h; sourceTree = "<group>"; };
 		3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundLayer.mm; sourceTree = "<group>"; };
 		3C728B5D159F884100C8DC81 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
@@ -1255,6 +1258,8 @@
 				3C189E3A15A79A20000F2345 /* Box2D */,
 				3C29B8AC159925FB00F28168 /* Constants.h */,
 				3C29B8AF1599264B00F28168 /* CommonProtocols.h */,
+				3C48348415CF006500EF9C7A /* ObjectInfoConstants.h */,
+				3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -1513,6 +1518,7 @@
 				3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */,
 				3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */,
 				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
+				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

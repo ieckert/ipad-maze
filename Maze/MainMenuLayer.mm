@@ -7,6 +7,7 @@
 //
 
 #import "MainMenuLayer.h"
+#import "ObjectInfoConstants.h"
 
 @interface MainMenuLayer()
 -(void)displayMainMenu;
@@ -149,7 +150,7 @@
 - (void)accelerometer:(UIAccelerometer *)accelerometer 
         didAccelerate:(UIAcceleration *)acceleration
 {
-    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
+//    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
 //    b2Vec2 gravity(-acceleration.y * 4, acceleration.x * 4);
     b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
 
@@ -186,6 +187,7 @@
 - (void) dealloc
 {
     NSLog(@"MainMenuLayer Dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [requirements release];
     [mazeMaker release];
 
@@ -197,22 +199,75 @@
 	[super dealloc];
 }
 
+-(void)placeParticleEmitterAtLocation:(CGPoint)location{
+    //coin collection: sun
+    //end of level: fireworks
+    CCSprite *coinSprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"coin_1.png"]];
+    ccColor4F emitterColor = {255, 255, 0, 255};
+    
+    CCParticleSystemQuad *partEmitter = [[CCParticleSun alloc] initWithTotalParticles:20];
+    [partEmitter setTexture:coinSprite.texture withRect:coinSprite.textureRect];
+    
+    [partEmitter setEmitterMode:kCCParticleModeGravity];
+    [partEmitter setStartSize:5.0f];
+    [partEmitter setEndSize:30.0f];
+    [partEmitter setDuration:1.5f];
+    [partEmitter setSpeed:100.0f];
+    [partEmitter setStartColor:emitterColor];
+    [partEmitter setPosition:location];
+    
+    [self addChild:partEmitter];
+    [partEmitter release];
+}
+
 -(void)randomlyPlaceItem:(GameObjectType)item
 {
+    /*
+    NSLog(@"placing item");
     int randX, randY, randNum;
-    while (1) {
+    BOOL emptyMazePositionFound = false;
+    while (emptyMazePositionFound == false) {
+        NSLog(@"placing item1");
         randX = arc4random()%kTrueMenuMazeCols;
         randY = arc4random()%kTrueMenuMazeRows;
         randNum = randY * kTrueMenuMazeCols + randX;
+        NSLog(@"x: %i, y: %i", randX, randY);
+        
         if (menuMaze[randNum] == tNone) {
+            NSLog(@"placing item2");
             menuMaze[randNum] = item;
             [objectFactory createObjectOfType:item
                                    atLocation:ccp(48*randX+150, 48*randY+150)
                                    withZValue:item
                                       inWorld:world
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            emptyMazePositionFound = true;
         }
+            
     }
+     */
+}
+
+//hacked work around to have a selector call the above function
+//couldn't do it because the selector can only pass objects, not enums
+-(void) randomlyPlaceCoin:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
+    
+    CGPoint coinPosition;
+    coinPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
+    coinPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
+    NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
+    [self placeParticleEmitterAtLocation:coinPosition];
+    [userInfo release];
+//    CCArray *listOfGameObjects =
+//    [sceneSpriteBatchNode children];                     
+//    for (GameObject *tempObject in listOfGameObjects) {     
+//        if ([tempObject gameObjectType] == tBall) {
+//            [self placeParticleEmitterAtLocation:tempObject.position];
+//        }
+//    }
+    [self randomlyPlaceItem:tCoin];
 }
 
 - (void) debugManager: (CCMenuItemFont*)option
@@ -368,6 +423,11 @@
     self = [super init];
     if (self != nil) {   
         NSLog(@"MainMenuLayer Init");
+        
+        //will respawn a coin right when one is grabbed        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(randomlyPlaceCoin:) 
+                                                     name:@"positionOfCapturedCoin" object:nil];
 
 //start debug        
         gravityScale = 0;
@@ -389,7 +449,8 @@
         //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithRequirements:5 
                                                                      :0 
-                                                                     :NO 
+                                                                     :NO
+                                                                     :2
                                                                      :CGPointMake(1, kTrueMenuMazeCols-1)];
        
         mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMenuMazeRows 
@@ -421,8 +482,8 @@
                                atLocation:ccp(48+150, (48*(kTrueMazeRows-1)-30)-150) 
                                withZValue:kBallZValue 
                                   inWorld:world 
-                addToSceneSpriteBatchNode:sceneSpriteBatchNode]; 
-        
+                addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+    
         for(int y = 0; y < kTrueMenuMazeRows; y++)
         {
             for(int x = 0; x < kTrueMenuMazeCols; x++)

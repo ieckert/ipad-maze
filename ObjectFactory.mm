@@ -56,9 +56,8 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
     }
     else if (objectType == tCoin) {
         NSLog(@"Creating a coin");
-        CoinObject *coin = [[CoinObject alloc] initWithSpriteFrameName:
-                            @"coin_1.png"];
-        [coin setPosition:spawnLocation];
+        CoinObject *coin = [[CoinObject alloc] initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                                                     spriteFrameByName:@"coin_1.png"] AtLocation:spawnLocation];
         [sceneSpriteBatchNode addChild:coin
                                      z:ZValue
                                    tag:kCoinTagValue];

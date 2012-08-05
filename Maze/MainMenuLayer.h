@@ -37,7 +37,7 @@
     GameObjectType menuMaze[kTrueMenuMazeCols * kTrueMenuMazeRows];
     MazeMaker *mazeMaker;
     MazeRequirements *requirements;
-    ObjectFactory *objectFactory;
+    ObjectFactory *objectFactory;    
     
     //for debugging
     CCMenu *debugMenu;

@@ -12,7 +12,7 @@
 #import "Constants.h"
 #import "CommonProtocols.h"
 
-@interface GameObject : CCSprite {
+@interface GameObject : CCSprite {    
     BOOL isActive;
     BOOL reactsToScreenBoundaries;
     CGSize screenSize;

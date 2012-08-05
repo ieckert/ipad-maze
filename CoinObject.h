@@ -10,6 +10,7 @@
 
 @interface CoinObject : GameObject
 {
+    NSMutableDictionary *objectInfo;
     CCAnimation *spinningAnim;
     CCAnimation *capturedAnim;
     CCAnimation *removingAnim;
@@ -18,11 +19,14 @@
     
     GameObject *ballCharacter;
     
+    NSDictionary *coinInfo;
+    
 }
 @property (nonatomic, retain) CCAnimation *spinningAnim;
 @property (nonatomic, retain) CCAnimation *capturedAnim;
 @property (nonatomic, retain) CCAnimation *idleAnim;
 @property (nonatomic, retain) CCAnimation *removingAnim;
 
+- (id)initWithSpriteFrame:(CCSpriteFrame *)frame AtLocation:(CGPoint)location;
 
 @end

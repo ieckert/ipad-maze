@@ -10,6 +10,7 @@
 // Import the interfaces
 #import "MazeLayer.h"
 #import "StatsLayer.h"
+#import "ObjectInfoConstants.h"
 
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
@@ -46,12 +47,54 @@
 //transition from previous scene to this one
 -(void) onEnterTransitionDidFinish
 {
+/*    
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"3"] afterDelay:.5f];
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"2"] afterDelay:2.0f];
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"1"] afterDelay:3.5f];
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:5.0f];
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:5.2f];
+*/
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"READY"] afterDelay:.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:2.0f];
+    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
+
+
 }
+
+-(void)placeParticleEmitterAtLocation:(CGPoint)location{
+    //coin collection: sun
+    //end of level: fireworks
+    CCSprite *coinSprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"coin_1.png"]];
+    ccColor4F emitterColor = {255, 255, 0, 255};
+
+    CCParticleSystemQuad *partEmitter = [[CCParticleSun alloc] initWithTotalParticles:20];
+    [partEmitter setTexture:coinSprite.texture withRect:coinSprite.textureRect];
+    
+    [partEmitter setEmitterMode:kCCParticleModeGravity];
+    [partEmitter setStartSize:5.0f];
+    [partEmitter setEndSize:30.0f];
+    [partEmitter setDuration:1.5f];
+    [partEmitter setSpeed:100.0f];
+    [partEmitter setStartColor:emitterColor];
+    [partEmitter setPosition:location];
+    
+    [self addChild:partEmitter];
+    [partEmitter release];
+}
+
+
+-(void) itemCapturedHandler:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
+    
+    CGPoint coinPosition;
+    coinPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
+    coinPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
+    NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
+    [self placeParticleEmitterAtLocation:coinPosition];
+    [userInfo release];
+}
+
 
 +(CCScene *) scene
 {
@@ -182,6 +225,11 @@
 {
 	if( (self=[super init])) {   
         NSLog(@"MazeLayer Init");
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(itemCapturedHandler:) 
+                                                     name:@"positionOfCapturedCoin" object:nil];
+        
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
         mazeComplete = FALSE;
@@ -204,7 +252,8 @@
         //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithRequirements:5 
                                                                      :0 
-                                                                     :FALSE 
+                                                                     :FALSE
+                                                                     :5
                                                                      :CGPointMake(1, kTrueMazeCols-1)];
         
         mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMazeRows 
@@ -268,6 +317,7 @@
 -(void) endingTransition
 {
     NSLog(@"playing ending transition");
+    [statsKeeper setActive:FALSE];
 
     NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
 
@@ -282,13 +332,13 @@
     for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
         if (b->GetUserData() != NULL) {
             b->SetType(b2_dynamicBody);
-//            b->ApplyForce(b2Vec2(arc4random()%50, arc4random()%50), b->GetWorldCenter() );
+            b->ApplyForce(b2Vec2(arc4random()%50, arc4random()%50), b->GetWorldCenter() );
         }
     }
 }
 
 - (void) endingDuties: (NSNumber*)option
-{
+{    
     switch ([option intValue]) {
         case kInGameMenuHome:
             NSLog(@"chose main menu");
@@ -297,7 +347,7 @@
             
             [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
             [statsKeeper dropStatsFromCurrentLevel];
-
+            
             [[GameManager sharedGameManager]
              runSceneWithID:kMainMenuScene];
             break;
@@ -321,7 +371,14 @@
  [[Director sharedDirector] replaceScene: 
  [ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
 */
-            
+/*
+            CCArray *listOfGameObjects =
+            [sceneSpriteBatchNode children];                 
+            for (GameObject *tempObject in listOfGameObjects) {
+                NSLog(@"cleaning up gameObjects");
+                [sceneSpriteBatchNode removeChild:tempObject cleanup:YES];
+            }
+*/            
             [[GameManager sharedGameManager]
              runSceneWithID:kBasicLevel];
             break;
@@ -329,16 +386,12 @@
         default:
 //            NSLog(@"when in ending duties -> found unidentified case: %i", option);
             break;
-            
-        /*
-         CCArray *listOfGameObjects =
-         [sceneSpriteBatchNode children];                 
-         
-         for (GameObject *tempObject in listOfGameObjects) {       
-         id action = [CCMoveTo actionWithDuration:5.0f position:ccp(500,500)];
-         [tempObject runAction:action];
-         }
-         */
+        
+//        for (CCSprite *monster in _monsters) {
+//            [_batchNode removeChild:monster cleanup:YES];
+//        }    
+        
+        
     }
     
     }
@@ -347,6 +400,7 @@
 - (void) dealloc
 {
     NSLog(@"MazeLayer Dealloc");
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [requirements release];
     [mazeMaker release];

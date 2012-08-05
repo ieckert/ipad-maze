@@ -25,6 +25,12 @@
     return self;
 }
 
+- (void) dealloc{    
+    [super dealloc];
+}
+
+
+
 -(void)changeState:(CharacterStates)newState {
     CCLOG(@"GameObject->changeState method should be overridden");
 }

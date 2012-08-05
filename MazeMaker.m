@@ -320,7 +320,6 @@ static MazeMaker *singleton = nil;
 
 -(void) shuffleIndicies {
 //    NSLog(@"shuffling the indicies");
-    
     fullKeysList = [[NSMutableArray alloc] initWithArray:[fullBreakdownOptionsList allKeys]];
     int max = [fullKeysList count];
 //    NSLog(@"tmpArray count: %i", max);
@@ -398,7 +397,6 @@ static MazeMaker *singleton = nil;
         for (id object in fullKeysList) {
             if ([self sameSet] == rows*cols)
                 break;
-            
             num1 = [[fullBreakdownOptionsList objectForKey:object] chosenBlock];
             num2 = [[fullBreakdownOptionsList objectForKey:object] breakdownBlock];
 //            NSLog(@"chose to breakdown %i, %i",num1,num2);
@@ -418,10 +416,40 @@ static MazeMaker *singleton = nil;
         }
         hallwayRange++;
     }
-    //why 3 you might ask.... cuz i made a heart :)
-    for (int i=0; i<3; i++) {
-        
+   
+//creates circles
+    hallwayRange = 2;
+    NSLog(@"numCircles:%i", [requirements circles]);
+    for (int i=0; i < [requirements circles];) {
+        [self shuffleIndicies];
+        NSLog(@"allowed hallway range: %i", hallwayRange);
+        NSLog(@"size of keys list: %i", [fullKeysList count]);
+        for (id object in fullKeysList) {
+            if (i == [requirements circles])
+                break;
+            num1 = [[fullBreakdownOptionsList objectForKey:object] chosenBlock];
+            num2 = [[fullBreakdownOptionsList objectForKey:object] breakdownBlock];
+
+            if ([self properWallRemoval:num1:num2:hallwayRange] == FALSE ) {
+//                NSLog(@"skipping wall breakdown for because not proper wall removal");
+                continue;
+            }
+            if ( [[wallList objectForKey:[NSNumber numberWithInt:num1]] containsObject:[NSNumber numberWithInt:num2] ] ) {
+                continue;
+            }
+            
+            [[wallList objectForKey:[NSNumber numberWithInt:num1]] addObject:[NSNumber numberWithInt:num2]];
+            [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
+            NSLog(@"in circles: chose to breakdown %i, %i",num1,num2);
+
+            [self cutOutOfRealMaze:num1 :num2];
+            i++;
+            //        [fullKeysList removeObject:object];
+        }
+        hallwayRange++;
     }
+    [disjsets print];
+
     [self placeCoins:[requirements numCoins]];
     return true;
 }
