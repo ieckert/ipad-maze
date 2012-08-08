@@ -250,7 +250,7 @@
 
 //hacked work around to have a selector call the above function
 //couldn't do it because the selector can only pass objects, not enums
--(void) randomlyPlaceCoin:(NSNotification *)notification
+-(void) itemCapturedHandler:(NSNotification *)notification
 {
     NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
     
@@ -426,7 +426,7 @@
         
         //will respawn a coin right when one is grabbed        
         [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(randomlyPlaceCoin:) 
+                                                 selector:@selector(itemCapturedHandler:) 
                                                      name:@"positionOfCapturedCoin" object:nil];
 
 //start debug        

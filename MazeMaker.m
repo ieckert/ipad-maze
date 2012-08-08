@@ -231,60 +231,7 @@ static MazeMaker *singleton = nil;
                 t1 -= diff;
             }
             if (count == hallwayLength)
-                return FALSE;
-        
-
-/*        
-        for (int x = 0; x < 8; x++) {
-            switch (x) {
-                case 0:
-                    diff = 1;
-                    break;
-                case 1:
-                    diff = cols; 
-                    break;
-                case 2:
-                    diff = -1;
-                    break;
-                case 3:
-                    diff = -cols;
-                    break;
-                case 4:
-                    diff = 1;
-                    break;
-                case 5:
-                    diff = cols; 
-                    break;
-                case 6:
-                    diff = -1;
-                    break;
-                case 7:
-                    diff = -cols;
-                    break;
-                default:
-                    break;
-            }
-            if (x < 4)
-                t1 = wall1;
-            else
-                t1 = wall2;
-            count = 0;
-            if ( t1+(diff*allowedRange) > 0 && t1+(diff*allowedRange) < rows*cols) {
-                for (int i = 0; i < allowedRange; i++) {
-//                    if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
-//                          containsObject:[NSNumber numberWithInt:(t1+diff)]] ) {
-                    if ( realMaze[t1+diff] == cNone ) {
-                        count++;
-                    }
-                    NSLog(@"t1: %i diff: %i count: %i", t1, diff, count);
-                    t1 += diff;
-                }
-                if (count == allowedRange)
-                    return FALSE;
-            }
-        }
- 
-*/        
+                return FALSE;        
     }
     
     return TRUE;
@@ -305,16 +252,78 @@ static MazeMaker *singleton = nil;
 
 -(void) placeCoins: (NSInteger) numCoins
 {
-    int rnum;
+/*
+main idea - split maze into 4 psudo even quadrents
+start with the quadrent closest to the end and place a coin there
+move from quadrent to quadrent placeing coins until you have no more to place
+ 
+how to:
+    3x3 maze = 9x9 actual grid on the screen
+    
+        | -halfway is 4
+    0123456789
+    1   |
+    2 Q1|  Q2
+    3   |
+   -4---------
+    5   |
+    6   |
+    7 Q3|  Q4
+    8   |
+    9   |
+    
+    use % to get the X, Y value that will put you
+    in the proper quadrent range
+*/
+    
+    int rnum, randY, randX, halfwayX, halfwayY, counter;
+    halfwayX = (cols*kTrueScale)/2;
+    halfwayY = (rows*kTrueScale)/2;
+
+    counter = 4;
+    
     for (int i = 0; i < numCoins; i++) {
-        rnum = arc4random() % (rows*kTrueScale*cols*kTrueScale);
+        randX = 0;
+        randY = 0;
+        rnum = 0;
+        switch (counter) {
+            case 1:
+                randX = arc4random()%halfwayX;
+                randY = arc4random()%halfwayY;
+                
+                break;
+            case 2:
+                randX = (arc4random()%((cols*kTrueScale)-halfwayX))+halfwayX;
+                randY = arc4random()%halfwayY;
+                
+                break;
+            case 3:
+                randX = arc4random()%halfwayX;
+                randY = (arc4random()%((rows*kTrueScale)-halfwayY))+halfwayY;                
+
+                break;
+            case 4:
+                randX = (arc4random()%((cols*kTrueScale)-halfwayX))+halfwayX;                
+                randY = (arc4random()%((rows*kTrueScale)-halfwayY))+halfwayY;                
+                
+                break;
+                
+            default:
+                break;
+        }
+
+        rnum = (randY * (cols*kTrueScale)) + randX;
         if (realMaze[rnum] == tNone) {
+//            NSLog(@"counter: %i rnum: %i randX: %i randY: %i rows: %i cols: %i", counter, rnum, randX, randY, rows, cols);
             realMaze[rnum] = tCoin;
+            counter--;
         }
         else {
             i--;
-            continue;
         }
+        //reset counter to start at area1
+        if (counter == 0)
+            counter = 4;
     }
 }
 
