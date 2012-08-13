@@ -14,12 +14,7 @@
     CCAnimation *spinningAnim;
     CCAnimation *capturedAnim;
     CCAnimation *removingAnim;
-
     CCAnimation *idleAnim;
-    
-    GameObject *ballCharacter;
-    
-    NSDictionary *coinInfo;
     
 }
 @property (nonatomic, retain) CCAnimation *spinningAnim;

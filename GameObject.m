@@ -7,6 +7,7 @@
 //
 
 #import "GameObject.h"
+#import "ObjectInfoConstants.h"
 
 @implementation GameObject
 @synthesize reactsToScreenBoundaries;

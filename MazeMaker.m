@@ -10,6 +10,7 @@
 #import "CommonProtocols.h"
 #import "Constants.h"
 #import "Pair.h"
+#import "ObjectInfoConstants.h"
 
 @implementation MazeMaker
 static MazeMaker *singleton = nil;
@@ -37,7 +38,7 @@ static MazeMaker *singleton = nil;
 	[super dealloc];
 }
 
--(id) initWithSizeAndRequirements: (NSInteger) numRows: (NSInteger) numCols: (MazeRequirements*) reqs: (GameObjectType*) maze
+-(id) initWithSizeAndRequirements: (NSInteger) numRows: (NSInteger) numCols: (MazeRequirements*) reqs: (NSMutableArray*) maze
 {
     if (self = [super init])
     {
@@ -52,9 +53,11 @@ static MazeMaker *singleton = nil;
         wallList = [[NSMutableDictionary alloc] init];
         for (int i = 0; i < rows*kTrueScale*cols*kTrueScale; i++)
         {
-            realMaze[i] = tWall;
+            [realMaze insertObject:[NSNumber numberWithInt:tWall] atIndex:i];
+//            [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tWall]];
             [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
         }
+        NSLog(@"mazeMaker - mazeSize: %i", [realMaze count] );
         
         fullBreakdownOptionsList = [[NSMutableDictionary alloc] init];
         int currentNum=0;
@@ -176,7 +179,7 @@ static MazeMaker *singleton = nil;
         }
         
         
-        
+        [self createMaze];    
     }
     return self;
 }
@@ -287,7 +290,7 @@ how to:
         randY = 0;
         rnum = 0;
         switch (counter) {
-            case 1:
+            case 3:
                 randX = arc4random()%halfwayX;
                 randY = arc4random()%halfwayY;
                 
@@ -297,7 +300,7 @@ how to:
                 randY = arc4random()%halfwayY;
                 
                 break;
-            case 3:
+            case 1:
                 randX = arc4random()%halfwayX;
                 randY = (arc4random()%((rows*kTrueScale)-halfwayY))+halfwayY;                
 
@@ -313,9 +316,9 @@ how to:
         }
 
         rnum = (randY * (cols*kTrueScale)) + randX;
-        if (realMaze[rnum] == tNone) {
+        if ([[realMaze objectAtIndex:rnum] intValue] == tNone) {
 //            NSLog(@"counter: %i rnum: %i randX: %i randY: %i rows: %i cols: %i", counter, rnum, randX, randY, rows, cols);
-            realMaze[rnum] = tCoin;
+            [realMaze replaceObjectAtIndex:rnum withObject:[NSNumber numberWithInt:tCoin]];
             counter--;
         }
         else {
@@ -341,7 +344,7 @@ how to:
     }
 }
 
--(void) cutOutOfRealMaze: (NSInteger) x1: (NSInteger) x2 {
+-(void) cutOutOfRealMaze: (NSInteger) x1: (NSInteger) x2: (BOOL) specialNodes {
     int num1, num2;
     num1 = x1;
     num2 = x2;
@@ -363,31 +366,38 @@ how to:
     //cut out walls from actual maze
     //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
     //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
-    
-    if (num1 == num2 - 1) {
-        for (int i = newNum1; i <= newNum2; i++) {
-            //                NSLog(@"removing  : %i", i);
-            realMaze[i] = tNone;
+    if (!specialNodes)
+    {
+        if (num1 == num2 - 1) {
+            for (int i = newNum1; i <= newNum2; i++) {
+                //                NSLog(@"removing  : %i", i);
+                [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
+            }
+        } else if (num1 == num2 + 1) {
+            for (int i = newNum2; i <= newNum1; i++) {
+                //                NSLog(@"removing  : %i", i);
+                [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
+            }
+        } else if (num1 == num2 + cols) {
+            for (int i = newNum2; i <= newNum1; i+= (cols * kTrueScale)) {
+                //                NSLog(@"removing  : %i", i);
+                [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
+            }
+        } else if (num1 == num2 - cols) {
+            for (int i = newNum1; i <= newNum2; i+= (cols * kTrueScale)) {
+                //                NSLog(@"removing  : %i", i);
+                [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
+            }
+        } else {
+            NSLog(@"when breaking down walls in true maze... found an impossible situation");
         }
-    } else if (num1 == num2 + 1) {
-        for (int i = newNum2; i <= newNum1; i++) {
-            //                NSLog(@"removing  : %i", i);
-            realMaze[i] = tNone;
-        }
-    } else if (num1 == num2 + cols) {
-        for (int i = newNum2; i <= newNum1; i+= (cols * kTrueScale)) {
-            //                NSLog(@"removing  : %i", i);
-            realMaze[i] = tNone;
-        }
-    } else if (num1 == num2 - cols) {
-        for (int i = newNum1; i <= newNum2; i+= (cols * kTrueScale)) {
-            //                NSLog(@"removing  : %i", i);
-            realMaze[i] = tNone;
-        }
-    } else {
-        NSLog(@"when breaking down walls in true maze... found an impossible situation");
     }
+    else {
+        //for now these will be the start / end points!
+        [realMaze replaceObjectAtIndex:newNum1 withObject:[NSNumber numberWithInt:tStart]];
+        [realMaze replaceObjectAtIndex:newNum2 withObject:[NSNumber numberWithInt:tFinish]];
 
+    }
 }
 
 -(Boolean) createMaze
@@ -406,8 +416,8 @@ how to:
         for (id object in fullKeysList) {
             if ([self sameSet] == rows*cols)
                 break;
-            num1 = [[fullBreakdownOptionsList objectForKey:object] chosenBlock];
-            num2 = [[fullBreakdownOptionsList objectForKey:object] breakdownBlock];
+            num1 = [[fullBreakdownOptionsList objectForKey:object] num1];
+            num2 = [[fullBreakdownOptionsList objectForKey:object] num2];
 //            NSLog(@"chose to breakdown %i, %i",num1,num2);
 
             if ([disjsets find:num1] == [disjsets find:num2]) 
@@ -420,7 +430,7 @@ how to:
             [[wallList objectForKey:[NSNumber numberWithInt:num1]] addObject:[NSNumber numberWithInt:num2]];
             [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
             
-            [self cutOutOfRealMaze:num1 :num2];
+            [self cutOutOfRealMaze:num1 :num2 :false];
     //        [fullKeysList removeObject:object];
         }
         hallwayRange++;
@@ -436,8 +446,8 @@ how to:
         for (id object in fullKeysList) {
             if (i == [requirements circles])
                 break;
-            num1 = [[fullBreakdownOptionsList objectForKey:object] chosenBlock];
-            num2 = [[fullBreakdownOptionsList objectForKey:object] breakdownBlock];
+            num1 = [[fullBreakdownOptionsList objectForKey:object] num1];
+            num2 = [[fullBreakdownOptionsList objectForKey:object] num2];
 
             if ([self properWallRemoval:num1:num2:hallwayRange] == FALSE ) {
 //                NSLog(@"skipping wall breakdown for because not proper wall removal");
@@ -451,14 +461,15 @@ how to:
             [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
             NSLog(@"in circles: chose to breakdown %i, %i",num1,num2);
 
-            [self cutOutOfRealMaze:num1 :num2];
+            [self cutOutOfRealMaze:num1 :num2 :false];
             i++;
             //        [fullKeysList removeObject:object];
         }
         hallwayRange++;
     }
-    [disjsets print];
 
+    //place start and end markers
+    [self cutOutOfRealMaze:[requirements startingPosition] :[requirements endingPosition] :true];
     [self placeCoins:[requirements numCoins]];
     return true;
 }

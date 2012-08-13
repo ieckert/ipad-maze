@@ -35,7 +35,6 @@
 }
 
 -(void)displayMainMenu {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
     if (sceneSelectMenu != nil) {
         [sceneSelectMenu removeFromParentAndCleanup:YES];
     }
@@ -86,7 +85,6 @@
 }
 
 -(void)displaySceneSelection {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
     if (mainMenu != nil) {
         [mainMenu removeFromParentAndCleanup:YES];
     }
@@ -220,32 +218,42 @@
     [partEmitter release];
 }
 
--(void)randomlyPlaceItem:(GameObjectType)item
-{
+-(void)randomlyPlaceItem:(NSInteger)item
+{   
     /*
     NSLog(@"placing item");
     int randX, randY, randNum;
     BOOL emptyMazePositionFound = false;
+    randX = 0;
+    randY = 0;
+    randNum = 0;
     while (emptyMazePositionFound == false) {
         NSLog(@"placing item1");
-        randX = arc4random()%kTrueMenuMazeCols;
-        randY = arc4random()%kTrueMenuMazeRows;
-        randNum = randY * kTrueMenuMazeCols + randX;
-        NSLog(@"x: %i, y: %i", randX, randY);
+        randX = arc4random()%(kTrueMenuMazeCols);
+        randY = arc4random()%(kTrueMenuMazeRows);
+        randNum = (randY * (kTrueMenuMazeCols)) + randX;
+        NSLog(@"x: %i, y: %i rand: %i", randX, randY, randNum);
         
-        if (menuMaze[randNum] == tNone) {
+        if (menuMaze[randNum] != tWall && menuMaze[randNum] != tCoin) {
             NSLog(@"placing item2");
             menuMaze[randNum] = item;
             [objectFactory createObjectOfType:item
                                    atLocation:ccp(48*randX+150, 48*randY+150)
-                                   withZValue:item
+                                   withZValue:10
                                       inWorld:world
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             emptyMazePositionFound = true;
         }
+        else if (menuMaze[randNum] == tCoin) {
+            NSLog(@"too bad, coin in the way");
+        }
+        else if (menuMaze[randNum] == tWall) {
+            NSLog(@"too bad, wall in the way");
+
+        }
             
     }
-     */
+*/
 }
 
 //hacked work around to have a selector call the above function
@@ -260,13 +268,7 @@
     NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
     [self placeParticleEmitterAtLocation:coinPosition];
     [userInfo release];
-//    CCArray *listOfGameObjects =
-//    [sceneSpriteBatchNode children];                     
-//    for (GameObject *tempObject in listOfGameObjects) {     
-//        if ([tempObject gameObjectType] == tBall) {
-//            [self placeParticleEmitterAtLocation:tempObject.position];
-//        }
-//    }
+
     [self randomlyPlaceItem:tCoin];
 }
 
@@ -337,8 +339,6 @@
 
 -(void)setupDebugLayer
 {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
-
     //labels to see the values    
     accelLabel = [CCLabelTTF labelWithString:@"Accel: 0" 
                                   dimensions:CGSizeMake(300.0f, 300.0f) 
@@ -419,10 +419,21 @@
     [self addChild:debugMenu z:1 tag:kSceneMenuTagValue];        
 }
 
+-(void)calculateMazeDimensions:(float) windowHeight: (float) windowWidth
+{
+    //for objectFactory returnObjectDimensions - num1 is height - num2 is width
+    cols = windowWidth / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
+    colsRemainder = windowWidth - (cols*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
+    rows = windowHeight / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
+    rowsRemainder = windowHeight - (rows*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
+    NSLog(@"cols: %i, colsR: %f, rows: %i, rowsR: %f", cols, colsRemainder, rows, rowsRemainder);
+}
+
 -(id)init {
     self = [super init];
     if (self != nil) {   
         NSLog(@"MainMenuLayer Init");
+        screenSize = [CCDirector sharedDirector].winSize;
         
         //will respawn a coin right when one is grabbed        
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -433,6 +444,22 @@
         gravityScale = 0;
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [[CCSpriteFrameCache sharedSpriteFrameCache]
+             addSpriteFramesWithFile:@"atlas1.plist"];           // 1
+            sceneSpriteBatchNode =
+            [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
+        } else {
+            [[CCSpriteFrameCache sharedSpriteFrameCache]
+             addSpriteFramesWithFile:@"atlas1.plist"];     // 1
+            sceneSpriteBatchNode =
+            [CCSpriteBatchNode
+             batchNodeWithFile:@"atlas1.png"];             // 2
+        }
+        
+        [self addChild:sceneSpriteBatchNode z:0];                  // 3
+        
 //        [self setupDebugLayer];
 
 
@@ -445,64 +472,60 @@
         
         [self setupWorld];
         [self setupDebugDraw];
+    
         objectFactory = [ObjectFactory createSingleton];
+        
+        [self calculateMazeDimensions:500 :600];
+
         //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithRequirements:5 
                                                                      :0 
                                                                      :NO
                                                                      :2
-                                                                     :CGPointMake(1, kTrueMenuMazeCols-1)];
-       
-        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMenuMazeRows 
-                                                                  :kMenuMazeCols
+                                                                     :0
+                                                                     :(rows*cols-1)];
+        menuMaze = [[NSMutableArray alloc] init];
+        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:rows 
+                                                                  :cols
                                                                   :requirements
                                                                   :menuMaze];
-        [mazeMaker createMaze];
-        
-        //setup accelerometer and data filter     
+                   
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas2.plist"];           // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode batchNodeWithFile:@"atlas2.png"]; // 2
-        } else {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas2.plist"];     // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode
-             batchNodeWithFile:@"atlas2.png"];             // 2
-        }
-        
-        [self addChild:sceneSpriteBatchNode z:0];                  // 3
          
-        [objectFactory createObjectOfType:tBall
-                               atLocation:ccp(48+150, (48*(kTrueMazeRows-1)-30)-150) 
-                               withZValue:kBallZValue 
-                                  inWorld:world 
+        [objectFactory createObjectOfType:tBall 
+                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
+                               withZValue:kBallZValue
+                                  inWorld:world
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-    
-        for(int y = 0; y < kTrueMenuMazeRows; y++)
+        
+        //for objectFactory returnObjectDimensions - num1 is height - num2 is width
+        for(int y = 0; y < (rows*kTrueScale); y++)
         {
-            for(int x = 0; x < kTrueMenuMazeCols; x++)
+            for(int x = 0; x < (cols*kTrueScale); x++)
             {
-                int num = y * kTrueMenuMazeCols + x;
-                if (menuMaze[num] == tWall) {
-                    [objectFactory createObjectOfType:tWall 
-                                           atLocation:ccp(48*x+150, 48*y+150) 
-                                           withZValue:kWallZValue 
-                                              inWorld:world 
+                int num = y * (cols*kTrueScale) + x;
+                if ([[menuMaze objectAtIndex:num] intValue] == tWall) {
+                    [objectFactory createObjectOfType:tWall
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                           withZValue:kWallZValue
+                                              inWorld:world
                             addToSceneSpriteBatchNode:sceneSpriteBatchNode];
                 }
-                else if (menuMaze[num] == tCoin){
+                else if ([[menuMaze objectAtIndex:num] intValue] == tCoin){
                     //create coin as GameObject:
                     [objectFactory createObjectOfType:tCoin
-                                           atLocation:ccp(48*x+150, 48*y+150)
-                                           withZValue:kCoinZValue 
-                                              inWorld:world 
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                           withZValue:kCoinZValue
+                                              inWorld:world
                             addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+                }
+                else if ([[menuMaze objectAtIndex:num] intValue] == tStart) {
+                    NSLog(@"starting position at: %i", num);
+                }
+                else if ([[menuMaze objectAtIndex:num] intValue] == tFinish) {
+                    NSLog(@"ending position at: %i", num);
                 }
             }
         }

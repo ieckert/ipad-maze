@@ -11,14 +11,16 @@
 
 @interface MazeRequirements : NSObject
 {
-    CGPoint startingPosition;
+    NSInteger startingPosition;
+    NSInteger endingPosition;
     NSInteger numCoins;
     NSInteger numEnemies;
     NSInteger circles;
     BOOL straightShot;
     
 }
-@property (readwrite) CGPoint startingPosition;
+@property (readwrite) NSInteger startingPosition;
+@property (readwrite) NSInteger endingPosition;
 @property (readwrite) NSInteger numCoins;
 @property (readwrite) NSInteger numEnemies;
 @property (readwrite) NSInteger circles;
@@ -28,6 +30,7 @@
                           : (NSInteger) enemies
                           : (BOOL) allowStraights
                           : (NSInteger) numCircles
-                          : (CGPoint) startingPoint;
+                          : (NSInteger) startingPoint
+                          : (NSInteger) endingPoint;
 
 @end

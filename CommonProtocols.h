@@ -31,18 +31,13 @@ typedef enum {
     sCoinSpinning,
     sCoinCaptured,
     sCoinIdle,
-    sCoinRemoving
+    sCoinRemoving,
+    sDoorIdle,
+    sDoorInteracting
 } CharacterStates; // 1
 
-typedef enum {
-    tNone,
-    tWall,
-    tBall,
-    tCoin
-} GameObjectType;
-
 @protocol GameplayLayerDelegate
--(void)createObjectOfType:(GameObjectType)objectType
+-(void)createObjectOfType:(NSInteger const)objectType
                atLocation:(CGPoint)spawnLocation
                withZValue:(int)ZValue;
 @end

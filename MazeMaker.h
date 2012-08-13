@@ -19,7 +19,7 @@
     NSMutableArray *fullKeysList;
     NSInteger rows;
     NSInteger cols;
-    GameObjectType *realMaze;
+    NSMutableArray *realMaze;
     
     MazeRequirements *requirements;
 }
@@ -33,7 +33,7 @@
                 (NSInteger) numRows: 
                 (NSInteger) numCols: 
             (MazeRequirements*) reqs:   
-                (GameObjectType*) maze;
+                (NSMutableArray*) maze;
 -(Boolean) createMaze;
 
 @end

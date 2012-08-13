@@ -21,4 +21,5 @@
 - (id)initWithWorld:(b2World *)theWorld 
          atLocation:(CGPoint)location 
     withSpriteFrame:(CCSpriteFrame *)frame;
+
 @end

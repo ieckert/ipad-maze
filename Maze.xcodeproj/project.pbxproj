@@ -177,14 +177,6 @@
 		3C29B8B51599317B00F28168 /* BallObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8B41599317B00F28168 /* BallObject.mm */; };
 		3C29B8D2159E4A6200F28168 /* WallObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8D1159E4A6200F28168 /* WallObject.plist */; };
 		3C29B8D4159E4B3500F28168 /* BallObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8D3159E4B3500F28168 /* BallObject.plist */; };
-		3C29B8E3159E537600F28168 /* ball_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8DD159E537600F28168 /* ball_1.png */; };
-		3C29B8E4159E537600F28168 /* ball_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8DE159E537600F28168 /* ball_2.png */; };
-		3C29B8E5159E537600F28168 /* wall_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8DF159E537600F28168 /* wall_1.png */; };
-		3C29B8E6159E537600F28168 /* wall_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8E0159E537600F28168 /* wall_2.png */; };
-		3C29B8E7159E537600F28168 /* wall_3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8E1159E537600F28168 /* wall_3.png */; };
-		3C29B8E8159E537600F28168 /* wall_4.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8E2159E537600F28168 /* wall_4.png */; };
-		3C29B8F0159E5B0B00F28168 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8EE159E5B0A00F28168 /* atlas1.plist */; };
-		3C29B8F1159E5B0B00F28168 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8EF159E5B0A00F28168 /* atlas1.png */; };
 		3C29B900159EF80500F28168 /* AccelerometerFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8FF159EF80500F28168 /* AccelerometerFilter.m */; };
 		3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B901159F67B600F28168 /* CoreMotion.framework */; };
 		3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */; };
@@ -194,6 +186,10 @@
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
 		3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CE972DB15CA4559001307BC /* Model.xcdatamodeld */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */; };
+		3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD115D8B312006D6846 /* DoorObject.mm */; };
+		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
+		3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD515D8B6B3006D6846 /* atlas1.plist */; };
+		3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD615D8B6B3006D6846 /* atlas1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -540,14 +536,6 @@
 		3C29B8B41599317B00F28168 /* BallObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BallObject.mm; sourceTree = "<group>"; };
 		3C29B8D1159E4A6200F28168 /* WallObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WallObject.plist; sourceTree = "<group>"; };
 		3C29B8D3159E4B3500F28168 /* BallObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = BallObject.plist; sourceTree = "<group>"; };
-		3C29B8DD159E537600F28168 /* ball_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_1.png; sourceTree = "<group>"; };
-		3C29B8DE159E537600F28168 /* ball_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_2.png; sourceTree = "<group>"; };
-		3C29B8DF159E537600F28168 /* wall_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wall_1.png; sourceTree = "<group>"; };
-		3C29B8E0159E537600F28168 /* wall_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wall_2.png; sourceTree = "<group>"; };
-		3C29B8E1159E537600F28168 /* wall_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wall_3.png; sourceTree = "<group>"; };
-		3C29B8E2159E537600F28168 /* wall_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wall_4.png; sourceTree = "<group>"; };
-		3C29B8EE159E5B0A00F28168 /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
-		3C29B8EF159E5B0A00F28168 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
 		3C29B8FE159EF80500F28168 /* AccelerometerFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccelerometerFilter.h; sourceTree = "<group>"; };
 		3C29B8FF159EF80500F28168 /* AccelerometerFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccelerometerFilter.m; sourceTree = "<group>"; };
 		3C29B901159F67B600F28168 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -564,6 +552,11 @@
 		3CE972DC15CA4559001307BC /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeRequirements.m; sourceTree = "<group>"; };
+		3CF2BBD015D8B312006D6846 /* DoorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorObject.h; sourceTree = "<group>"; };
+		3CF2BBD115D8B312006D6846 /* DoorObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DoorObject.mm; sourceTree = "<group>"; };
+		3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DoorObject.plist; sourceTree = "<group>"; };
+		3CF2BBD515D8B6B3006D6846 /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
+		3CF2BBD615D8B6B3006D6846 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -818,6 +811,7 @@
 				3C128AE515AA722E00883E52 /* Classes */,
 				3C29B8AB159925DF00F28168 /* Common */,
 				3C29B72515979E5B00F28168 /* Maze */,
+				3C29B72615979E5B00F28168 /* Resources */,
 				3C29B71415979E5B00F28168 /* Frameworks */,
 				3C29B71215979E5B00F28168 /* Products */,
 			);
@@ -853,7 +847,6 @@
 			children = (
 				3C29B8A71599252A00F28168 /* GameObjects */,
 				3C189D9F15A4D3AD000F2345 /* Scenes */,
-				3C29B72615979E5B00F28168 /* Resources */,
 				3C29B73A15979E5B00F28168 /* Libs */,
 				3C29B87315979E6800F28168 /* Supporting Files */,
 				3C29B87715979E6800F28168 /* AppDelegate.h */,
@@ -884,6 +877,7 @@
 				3C29B73815979E5B00F28168 /* iTunesArtwork */,
 			);
 			name = Resources;
+			path = Maze;
 			sourceTree = "<group>";
 		};
 		3C29B73A15979E5B00F28168 /* Libs */ = {
@@ -1210,16 +1204,10 @@
 		3C29B8951598135700F28168 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3CF2BBD515D8B6B3006D6846 /* atlas1.plist */,
+				3CF2BBD615D8B6B3006D6846 /* atlas1.png */,
 				3C189DBA15A51F08000F2345 /* atlas2.plist */,
 				3C189DBB15A51F08000F2345 /* atlas2.png */,
-				3C29B8EE159E5B0A00F28168 /* atlas1.plist */,
-				3C29B8EF159E5B0A00F28168 /* atlas1.png */,
-				3C29B8DD159E537600F28168 /* ball_1.png */,
-				3C29B8DE159E537600F28168 /* ball_2.png */,
-				3C29B8DF159E537600F28168 /* wall_1.png */,
-				3C29B8E0159E537600F28168 /* wall_2.png */,
-				3C29B8E1159E537600F28168 /* wall_3.png */,
-				3C29B8E2159E537600F28168 /* wall_4.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1247,6 +1235,8 @@
 				3C29B8B41599317B00F28168 /* BallObject.mm */,
 				3C189DBE15A51F8B000F2345 /* CoinObject.h */,
 				3C189DBF15A51F8B000F2345 /* CoinObject.mm */,
+				3CF2BBD015D8B312006D6846 /* DoorObject.h */,
+				3CF2BBD115D8B312006D6846 /* DoorObject.mm */,
 			);
 			name = GameObjects;
 			path = ..;
@@ -1268,6 +1258,7 @@
 			isa = PBXGroup;
 			children = (
 				3C189DC115A5224B000F2345 /* CoinObject.plist */,
+				3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */,
 				3C29B8D1159E4A6200F28168 /* WallObject.plist */,
 				3C29B8D3159E4B3500F28168 /* BallObject.plist */,
 			);
@@ -1343,17 +1334,12 @@
 				3C29B73915979E5B00F28168 /* iTunesArtwork in Resources */,
 				3C29B8D2159E4A6200F28168 /* WallObject.plist in Resources */,
 				3C29B8D4159E4B3500F28168 /* BallObject.plist in Resources */,
-				3C29B8E3159E537600F28168 /* ball_1.png in Resources */,
-				3C29B8E4159E537600F28168 /* ball_2.png in Resources */,
-				3C29B8E5159E537600F28168 /* wall_1.png in Resources */,
-				3C29B8E6159E537600F28168 /* wall_2.png in Resources */,
-				3C29B8E7159E537600F28168 /* wall_3.png in Resources */,
-				3C29B8E8159E537600F28168 /* wall_4.png in Resources */,
-				3C29B8F0159E5B0B00F28168 /* atlas1.plist in Resources */,
-				3C29B8F1159E5B0B00F28168 /* atlas1.png in Resources */,
 				3C189DBC15A51F08000F2345 /* atlas2.plist in Resources */,
 				3C189DBD15A51F08000F2345 /* atlas2.png in Resources */,
 				3C189DC215A5224B000F2345 /* CoinObject.plist in Resources */,
+				3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */,
+				3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */,
+				3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1519,6 +1505,7 @@
 				3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */,
 				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
 				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,
+				3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 #import "Pair.h"
 
 @implementation Pair
-@synthesize chosenBlock, breakdownBlock;
+@synthesize num1, num2;
 
 -(id)init
 {
@@ -25,8 +25,8 @@
 {
     if (self = [super init])
     {
-        chosenBlock = b1;
-        breakdownBlock = b2;
+        num1 = b1;
+        num2 = b2;
     }
     return self;
 }

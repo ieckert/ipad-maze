@@ -9,7 +9,7 @@
 #import "MazeRequirements.h"
 
 @implementation MazeRequirements
-@synthesize numCoins, numEnemies, straightShot, startingPosition, circles;
+@synthesize numCoins, numEnemies, straightShot, startingPosition, endingPosition, circles;
 
 - (void) dealloc
 {
@@ -27,7 +27,7 @@
         numEnemies = 0;
         circles = 3;
         straightShot = FALSE;
-        startingPosition = CGPointMake(1.0f, kTrueMazeRows-1);
+        startingPosition = 0;
     }
     return self;
 }
@@ -36,7 +36,8 @@
                           : (NSInteger) enemies
                           : (BOOL) allowStraights
                           : (NSInteger) numCircles
-                          : (CGPoint) startingPoint
+                          : (NSInteger) startingPoint
+                          : (NSInteger) endingPoint
 
 {
     if (self = [super init])
@@ -47,6 +48,7 @@
         straightShot = allowStraights;
         circles = numCircles;
         startingPosition = startingPoint;
+        endingPosition = endingPoint;
     }
     return self;
 }

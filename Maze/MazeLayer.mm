@@ -17,8 +17,6 @@
 
 -(void) countdownToStart:(NSString *) str
 {
-    CGSize screenSize = [[CCDirector sharedDirector] winSize];
-
     CGPoint location = CGPointMake(screenSize.width/2,screenSize.height/2);
     CCLabelTTF *l1 = [CCLabelTTF labelWithString:@"" 
                                         fontName:@"AmericanTypewriter-CondensedBold"
@@ -188,7 +186,8 @@
         int32 positionIterations = 2;
         world->Step(deltaTime, velocityIterations, positionIterations);
         
-        if ( [statsKeeper returnCurrentCoinCount] == 5 && mazeComplete == FALSE) {
+        if ( [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
+                && mazeComplete == FALSE) {
             //prevents this from being called over and over while update still works
             mazeComplete = TRUE;
             [self endingTransition];
@@ -221,10 +220,22 @@
         }
 }
 
+-(void)calculateMazeDimensions:(float) windowHeight: (float) windowWidth
+{
+//for objectFactory returnObjectDimensions - num1 is height - num2 is width
+    cols = windowWidth / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
+    colsRemainder = windowWidth - (cols*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
+    rows = windowHeight / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
+    rowsRemainder = windowHeight - (rows*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
+    NSLog(@"cols: %i, colsR: %f, rows: %i, rowsR: %f", cols, colsRemainder, rows, rowsRemainder);
+
+}
+
 -(id) init
 {
 	if( (self=[super init])) {   
         NSLog(@"MazeLayer Init");
+        screenSize = [CCDirector sharedDirector].winSize;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(itemCapturedHandler:) 
@@ -233,8 +244,26 @@
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
         mazeComplete = FALSE;
-
+        
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [[CCSpriteFrameCache sharedSpriteFrameCache]
+             addSpriteFramesWithFile:@"atlas1.plist"];           // 1
+            sceneSpriteBatchNode =
+            [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
+        } else {
+            [[CCSpriteFrameCache sharedSpriteFrameCache]
+             addSpriteFramesWithFile:@"atlas1.plist"];     // 1
+            sceneSpriteBatchNode =
+            [CCSpriteBatchNode
+             batchNodeWithFile:@"atlas1.png"];             // 2
+        }
+        
+        [self addChild:sceneSpriteBatchNode z:0];                  // 3
+        
         objectFactory = [ObjectFactory createSingleton];
+//calculate depends on objectFactory width/height for walls - so call after objectFactory's init
+        [self calculateMazeDimensions:screenSize.height :screenSize.width];
+
         [self setupWorld];
         [self setupDebugDraw];
         [self createGround];
@@ -250,67 +279,69 @@
         self.isTouchEnabled = YES;
         
         //begin creating the maze
-        requirements = [[MazeRequirements alloc] initWithRequirements:5 
+        mazeGrid = [[NSMutableArray alloc] init];
+        requirements = [[MazeRequirements alloc] initWithRequirements:25 
                                                                      :0 
                                                                      :FALSE
                                                                      :5
-                                                                     :CGPointMake(1, kTrueMazeCols-1)];
+                                                                     :((rows-1)*cols)
+                                                                     :cols-1];
         
-        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:kMazeRows 
-                                                                  :kMazeCols
+        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:rows 
+                                                                  :cols
                                                                   :requirements
                                                                   :mazeGrid];
-        [mazeMaker createMaze];
-        
-        
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas2.plist"];           // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode batchNodeWithFile:@"atlas2.png"]; // 2
-        } else {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas2.plist"];     // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode
-             batchNodeWithFile:@"atlas2.png"];             // 2
-        }
-        
-        [self addChild:sceneSpriteBatchNode z:0];                  // 3
         
         [objectFactory createObjectOfType:tBall 
-                               atLocation:ccp(48+30, 48*(kTrueMazeRows-1)-10) 
+                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+30, [objectFactory returnObjectDimensions:tWall].num2 * ((rows*kTrueScale)-1)-10) 
                                withZValue:kBallZValue
                                   inWorld:world
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-        
-        for(int y = 0; y < kTrueMazeRows; y++)
+
+//for objectFactory returnObjectDimensions - num1 is height - num2 is width
+        for(int y = 0; y < rows*kTrueScale; y++)
         {
-            for(int x = 0; x < kTrueMazeCols; x++)
+            for(int x = 0; x < cols*kTrueScale; x++)
             {
-                int num = y * kTrueMazeCols + x;
-                if (mazeGrid[num] == tWall) {
+                int num = y * (kTrueScale*cols) + x;
+                if ([[mazeGrid objectAtIndex:num] intValue] == tWall) {
                     [objectFactory createObjectOfType:tWall
-                                           atLocation:ccp(48*x+25, 48*y+25)
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
                                            withZValue:kWallZValue
                                               inWorld:world
                             addToSceneSpriteBatchNode:sceneSpriteBatchNode];
                 }
-                else if (mazeGrid[num] == tCoin){
+                else if ([[mazeGrid objectAtIndex:num] intValue] == tCoin){
                     //create coin as GameObject:
                     [objectFactory createObjectOfType:tCoin
-                                           atLocation:ccp(48*x+25, 48*y+25)
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
                                            withZValue:kCoinZValue
+                                              inWorld:world
+                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+                }
+                else if ([[mazeGrid objectAtIndex:num] intValue] == tStart) {
+                    NSLog(@"starting position at: %i", num);
+                    [objectFactory createObjectOfType:tStart
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                           withZValue:kDoorZValue
+                                              inWorld:world
+                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+                }
+                else if ([[mazeGrid objectAtIndex:num] intValue] == tFinish) {
+                    NSLog(@"ending position at: %i", num);
+                    [objectFactory createObjectOfType:tFinish
+                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                           withZValue:kDoorZValue
                                               inWorld:world
                             addToSceneSpriteBatchNode:sceneSpriteBatchNode];
                 }
             }
         }
-        
+
+        [self pauseGame];
+        [self scheduleUpdate];                                    
+        [self setTimer];
     }
-    [self pauseGame];
-    [self scheduleUpdate];                                    
-    [self setTimer];
 	return self;
 }
 
@@ -325,8 +356,9 @@
     
     CCArray *listOfGameObjects =
     [sceneSpriteBatchNode children];                     
-    for (GameObject *tempObject in listOfGameObjects) {         
-        [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
+    for (GameObject *tempObject in listOfGameObjects) {
+        if ([tempObject isActive] == true)
+            [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
     }
     
     for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
@@ -404,7 +436,7 @@
 
     [requirements release];
     [mazeMaker release];
-    
+    [mazeGrid release];
     //might need to remove all things in the world first!
     delete world;
     world = NULL;
@@ -460,7 +492,6 @@
 
 -(void)pausedAnimation
 {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
     int randNum = arc4random() % 4; 
     int angle = 0;
     switch (randNum) {
@@ -483,7 +514,7 @@
     CCLabelTTF *pausedLabel =
     [CCLabelTTF labelWithString:@"PAUSED!" fontName:@"AmericanTypewriter-CondensedBold"
                        fontSize:64];                                                
-    [pausedLabel setPosition:ccp(screenSize.width/2,screenSize.height/2)];
+    [pausedLabel setPosition:ccp(screenSize.width/2, screenSize.height/2)];
     
     [self addChild:pausedLabel];                                    
     id labelAction = [CCSpawn actions:
@@ -495,10 +526,9 @@
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    CGSize screenSize = [CCDirector sharedDirector].winSize;
     
 //the if statement prevents the user from tapping multiple times and having the game crash
-    if (paused == FALSE) {
+    if (paused == FALSE && mazeComplete == FALSE) {
         [self pauseGame];
         [self pausedAnimation];
         CCMenuItemFont *home = [CCMenuItemFont itemFromString:@"Main Menu" 

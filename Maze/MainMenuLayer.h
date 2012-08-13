@@ -34,7 +34,7 @@
 
     CCSpriteBatchNode *sceneSpriteBatchNode;
     
-    GameObjectType menuMaze[kTrueMenuMazeCols * kTrueMenuMazeRows];
+    NSMutableArray *menuMaze;
     MazeMaker *mazeMaker;
     MazeRequirements *requirements;
     ObjectFactory *objectFactory;    
@@ -48,6 +48,14 @@
     float gravityScale;
     float angDamp;
     int accelNum;
+    
+    int rows;
+    int cols;
+    float rowsRemainder;
+    float colsRemainder;
+    
+    CGSize screenSize;
+    
 }
 
 @property (nonatomic, assign) UIAccelerometer *accel;

@@ -17,11 +17,14 @@
 #define kBallZValue 100
 #define kBallTagValue 0
 
-#define kWallZValue 100
+#define kWallZValue 25
 #define kWallTagValue 1
 
 #define kCoinZValue 100
 #define kCoinTagValue 2
+
+#define kDoorZValue 25
+#define kDoorTagValue 3
 
 #define PTM_RATIO ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 100.0 : 50.0)
 
@@ -45,5 +48,14 @@ typedef enum {
     kInGameMenuCancel=2,
     kProgressNextLevel=3
 } inGameMenuOptions;
+
+typedef enum {
+    tNone=0,
+    tWall=1,
+    tBall=2,
+    tCoin=3,
+    tStart=4,
+    tFinish=5
+} GameObjectType;
 
 

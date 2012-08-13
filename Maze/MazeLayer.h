@@ -45,13 +45,20 @@
     
     NSTimer *repeatingTimer;
     
-    GameObjectType mazeGrid[kTrueMazeCols * kTrueMazeRows];
+    NSMutableArray *mazeGrid;
     
     BOOL paused;
     BOOL mazeComplete;
     
     float angDamp;
     int accelNum;
+    
+    int rows;
+    int cols;
+    float rowsRemainder;
+    float colsRemainder;
+    
+    CGSize screenSize;
 
 }
 

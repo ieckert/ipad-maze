@@ -7,6 +7,7 @@
 //
 
 #import "WallObject.h"
+#import "ObjectInfoConstants.h"
 
 @implementation WallObject
 @synthesize collisionAnim, idleAnim;

@@ -7,6 +7,7 @@
 //
 
 #import "BallObject.h"
+#import "ObjectInfoConstants.h"
 
 @implementation BallObject
 @synthesize rollingAnim, idleAnim, collisionAnim;

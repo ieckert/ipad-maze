@@ -7,6 +7,7 @@
 //
 
 #import "CoinObject.h"
+#import "ObjectInfoConstants.h"
 
 @implementation CoinObject
 @synthesize spinningAnim, capturedAnim, removingAnim, idleAnim;
@@ -65,7 +66,7 @@
     // Change this to keep the object count from querying it each time
     CGRect myBoundingBox = [self adjustedBoundingBox];
     for (GameObject *object in listOfGameObjects) {
-        if ([object tag] == tCoin)
+        if ([object tag] == [self gameObjectType])
             continue;
         else {
             CGRect characterBox = [object adjustedBoundingBox];
@@ -121,9 +122,8 @@
         [self setPosition:location];
         
         objectInfo = [[NSMutableDictionary alloc] init];
-        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:@"position-x"];
-        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:@"position-y"];
-        NSLog(@"when creating coin x: %f y: %f", self.position.x, self.position.y);
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
         
     }
     return self;

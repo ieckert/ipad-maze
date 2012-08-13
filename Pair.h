@@ -10,11 +10,11 @@
 
 @interface Pair : NSObject
 {
-    NSInteger chosenBlock;
-    NSInteger breakdownBlock;
+    NSInteger num1;
+    NSInteger num2;
 }
-@property (readwrite) NSInteger chosenBlock;
-@property (readwrite) NSInteger breakdownBlock;
+@property (readwrite) NSInteger num1;
+@property (readwrite) NSInteger num2;
 
 -(id) initWithRequirements: (NSInteger) b1
                           : (NSInteger) b2;
