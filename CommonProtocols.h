@@ -36,12 +36,11 @@ typedef enum {
     sDoorInteracting,
     sEnemyPatrol,
     sEnemyPathFinding,
-    sEnemyAlert,
     sEnemyAggressive,
     sEnemySleeping,
     sEnemyReloading,
     sEnemyShooting
-} CharacterStates; // 1
+} CharacterStates;
 
 @protocol GameplayLayerDelegate
 -(void)createObjectOfType:(NSInteger const)objectType

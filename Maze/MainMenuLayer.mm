@@ -501,6 +501,13 @@
                                   inWorld:world
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         
+        [objectFactory createEnemyOfType:tEnemy 
+                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
+                               withZValue:kBallZValue
+                                  inWorld:world
+                addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                     withKnowledgeOfMaze:mazeMaker];
+        
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width
         int x, y, num, mazeSize;
         Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];

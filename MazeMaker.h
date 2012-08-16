@@ -35,7 +35,7 @@
 
 @property (readwrite) NSInteger rows;
 @property (readwrite) NSInteger cols;
-@property (readwrite, retain) NSMutableDictionary *wallList;
+@property (readwrite, assign) NSMutableDictionary *wallList;
 
 -(id) initWithSizeAndRequirements: 
                 (NSInteger) numRows: 

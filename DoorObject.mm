@@ -60,7 +60,7 @@
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
                 if ([object gameObjectType] == tBall) {
                     if (characterState != sDoorInteracting) {
-                        NSLog(@"enterin' a door!");    
+//                        NSLog(@"enterin' a door!");    
 //                        [self changeState:sDoorInteracting];
 
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"doorEntered" 

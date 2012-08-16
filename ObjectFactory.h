@@ -16,6 +16,7 @@
 #import "BallObject.h"
 #import "CoinObject.h"
 #import "Pair.h"
+#import "MazeMaker.h"
 
 @interface ObjectFactory : NSObject
 {
@@ -29,6 +30,13 @@
                withZValue:(int)ZValue
                   inWorld:(b2World*)world
 addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode;
+
+-(void)createEnemyOfType:(NSInteger const)objectType
+               atLocation:(CGPoint)spawnLocation
+               withZValue:(int)ZValue
+                  inWorld:(b2World*)world
+addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
+     withKnowledgeOfMaze:(MazeMaker*)maze;
 
 -(Pair *) returnObjectDimensions:(GameObjectType)object;
 

@@ -12,6 +12,7 @@
 #import "CoinObject.h"
 #import "WallObject.h"
 #import "DoorObject.h"
+#import "EnemyObject.h"
 #import "ObjectInfoConstants.h"
 
 @implementation ObjectFactory
@@ -55,13 +56,29 @@ static ObjectFactory *singleton = nil;
     return objectInfo;
 }
 
+-(void)createEnemyOfType:(NSInteger const)objectType
+              atLocation:(CGPoint)spawnLocation
+              withZValue:(int)ZValue
+                 inWorld:(b2World*)world
+addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
+     withKnowledgeOfMaze:(MazeMaker*)maze
+{
+    if (objectType == tEnemy) {
+        EnemyObject *enemy = [[EnemyObject alloc] initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                                                       spriteFrameByName:@"wall_2.png"] AtLocation:spawnLocation
+                                                                        WithKnowledgeOfMaze:maze];
+        [sceneSpriteBatchNode addChild:enemy
+                                     z:ZValue
+                                   tag:kDoorTagValue];
+        [enemy release];
+    }    
+}
 -(void)createObjectOfType:(NSInteger)objectType
                atLocation:(CGPoint)spawnLocation
                withZValue:(int)ZValue
                   inWorld:(b2World*)world
 addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
 {
-    
     if (objectType == tBall) {
         BallObject *ball = [[BallObject alloc] initWithWorld:world
                                                   atLocation:spawnLocation

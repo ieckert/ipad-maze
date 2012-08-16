@@ -56,7 +56,7 @@
 //            [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tWall]];
             [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
         }
-        NSLog(@"mazeMaker - mazeSize: %i", [realMaze count] );
+//        NSLog(@"mazeMaker - mazeSize: %i", [realMaze count] );
         
         fullBreakdownOptionsList = [[NSMutableDictionary alloc] init];
         int currentNum=0;
@@ -378,7 +378,7 @@ how to:
 
 -(Boolean) createMaze
 {
-    NSLog(@"wallList size:  %i", [wallList count]);
+//    NSLog(@"wallList size:  %i", [wallList count]);
     NSInteger num1, num2;
 
     if (rows == 0 || cols == 0) {
@@ -389,7 +389,7 @@ how to:
     int hallwayRange = 2;
     while ([self sameSet] != rows*cols) {
         [self shuffleIndicies];
-        NSLog(@"allowed hallway range: %i", hallwayRange);
+//        NSLog(@"allowed hallway range: %i", hallwayRange);
         for (id object in fullKeysList) {
             if ([self sameSet] == rows*cols)
                 break;
@@ -415,11 +415,11 @@ how to:
    
 //creates circles
     hallwayRange = 2;
-    NSLog(@"numCircles:%i", [requirements circles]);
+//    NSLog(@"numCircles:%i", [requirements circles]);
     for (int i=0; i < [requirements circles];) {
         [self shuffleIndicies];
-        NSLog(@"allowed hallway range: %i", hallwayRange);
-        NSLog(@"size of keys list: %i", [fullKeysList count]);
+//        NSLog(@"allowed hallway range: %i", hallwayRange);
+//        NSLog(@"size of keys list: %i", [fullKeysList count]);
         for (id object in fullKeysList) {
             if (i == [requirements circles])
                 break;
@@ -436,7 +436,7 @@ how to:
             
             [[wallList objectForKey:[NSNumber numberWithInt:num1]] addObject:[NSNumber numberWithInt:num2]];
             [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
-            NSLog(@"in circles: chose to breakdown %i, %i",num1,num2);
+//            NSLog(@"in circles: chose to breakdown %i, %i",num1,num2);
 
             [self cutOutOfRealMaze:num1 :num2 :false];
             i++;

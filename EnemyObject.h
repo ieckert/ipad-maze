@@ -7,14 +7,22 @@
 //
 
 #import "GameObject.h"
+#import "MazeMaker.h"
 
 @interface EnemyObject : GameObject
 {
     
     NSMutableDictionary *objectInfo;
-
+    
+    NSMutableArray *visitedLocationList;
+    MazeMaker *handleOnMaze;
+    
+    BOOL canSee;
+    BOOL canHear;
 }
 
-- (id)initWithSpriteFrame:(CCSpriteFrame *)frame AtLocation:(CGPoint)location;
+- (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
+               AtLocation:(CGPoint)location
+      WithKnowledgeOfMaze:(MazeMaker*)maze;
 
 @end
