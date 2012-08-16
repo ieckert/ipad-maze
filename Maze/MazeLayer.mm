@@ -93,6 +93,22 @@
     [userInfo release];
 }
 
+-(void) playerAtDoorHandler:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
+    
+    CGPoint doorPosition;
+    doorPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
+    doorPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
+    NSLog(@"doorPosition x: %f y: %f", doorPosition.x, doorPosition.y);
+    if ([[userInfo objectForKey:[NSString stringWithString:notificationUserInfoObjectType]] intValue] == tFinish ) {
+        onFinishDoor = true;
+    }
+    
+    //[self placeParticleEmitterAtLocation:doorPosition];
+    [userInfo release];
+}
+
 
 +(CCScene *) scene
 {
@@ -186,13 +202,6 @@
         int32 positionIterations = 2;
         world->Step(deltaTime, velocityIterations, positionIterations);
         
-        if ( [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
-                && mazeComplete == FALSE) {
-            //prevents this from being called over and over while update still works
-            mazeComplete = TRUE;
-            [self endingTransition];
-        }
-        
         for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
             if (b->GetUserData() != NULL) {
                 Box2DSprite *sprite = (Box2DSprite *) b->GetUserData();
@@ -218,6 +227,17 @@
                 [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
                  listOfGameObjects]; 
         }
+    
+        if ( [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
+            && mazeComplete == FALSE
+            && onFinishDoor == TRUE) {
+            //prevents this from being called over and over while update still works
+            mazeComplete = TRUE;
+            [self endingTransition];
+        }
+        else {
+            onFinishDoor = false;
+        }
 }
 
 -(void)calculateMazeDimensions:(float) windowHeight: (float) windowWidth
@@ -241,9 +261,14 @@
                                                  selector:@selector(itemCapturedHandler:) 
                                                      name:@"positionOfCapturedCoin" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(playerAtDoorHandler:) 
+                                                     name:@"doorEntered" object:nil];
+        
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
         mazeComplete = FALSE;
+        onFinishDoor = false;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[CCSpriteFrameCache sharedSpriteFrameCache]
@@ -291,53 +316,59 @@
                                                                   :cols
                                                                   :requirements
                                                                   :mazeGrid];
-        
+        [mazeMaker createMaze];           
+
         [objectFactory createObjectOfType:tBall 
                                atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+30, [objectFactory returnObjectDimensions:tWall].num2 * ((rows*kTrueScale)-1)-10) 
                                withZValue:kBallZValue
                                   inWorld:world
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
 
-//for objectFactory returnObjectDimensions - num1 is height - num2 is width
-        for(int y = 0; y < rows*kTrueScale; y++)
+        //for objectFactory returnObjectDimensions - num1 is height - num2 is width
+        int x, y, num, mazeSize;
+        Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
+        mazeSize = [mazeGrid count];
+        for(int i = 0; i < mazeSize; i++)
         {
-            for(int x = 0; x < cols*kTrueScale; x++)
-            {
-                int num = y * (kTrueScale*cols) + x;
-                if ([[mazeGrid objectAtIndex:num] intValue] == tWall) {
-                    [objectFactory createObjectOfType:tWall
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
-                                           withZValue:kWallZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
-                else if ([[mazeGrid objectAtIndex:num] intValue] == tCoin){
-                    //create coin as GameObject:
-                    [objectFactory createObjectOfType:tCoin
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
-                                           withZValue:kCoinZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
-                else if ([[mazeGrid objectAtIndex:num] intValue] == tStart) {
-                    NSLog(@"starting position at: %i", num);
-                    [objectFactory createObjectOfType:tStart
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
-                                           withZValue:kDoorZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
-                else if ([[mazeGrid objectAtIndex:num] intValue] == tFinish) {
-                    NSLog(@"ending position at: %i", num);
-                    [objectFactory createObjectOfType:tFinish
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
-                                           withZValue:kDoorZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
+            tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
+            x = tmpCoords.num1;
+            y = tmpCoords.num2;
+            num = i;
+            
+            int num = y * (kTrueScale*cols) + x;
+            if ([[mazeGrid objectAtIndex:num] intValue] == tWall) {
+                [objectFactory createObjectOfType:tWall
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                       withZValue:kWallZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else if ([[mazeGrid objectAtIndex:num] intValue] == tCoin){
+                //create coin as GameObject:
+                [objectFactory createObjectOfType:tCoin
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                       withZValue:kCoinZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else if ([[mazeGrid objectAtIndex:num] intValue] == tStart) {
+                NSLog(@"starting position at: %i", num);
+                [objectFactory createObjectOfType:tStart
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                       withZValue:kDoorZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else if ([[mazeGrid objectAtIndex:num] intValue] == tFinish) {
+                NSLog(@"ending position at: %i", num);
+                [objectFactory createObjectOfType:tFinish
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25, [objectFactory returnObjectDimensions:tWall].num2*y+25)
+                                       withZValue:kDoorZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
         }
-
+        [tmpCoords release];
         [self pauseGame];
         [self scheduleUpdate];                                    
         [self setTimer];

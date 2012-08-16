@@ -33,7 +33,14 @@ typedef enum {
     sCoinIdle,
     sCoinRemoving,
     sDoorIdle,
-    sDoorInteracting
+    sDoorInteracting,
+    sEnemyPatrol,
+    sEnemyPathFinding,
+    sEnemyAlert,
+    sEnemyAggressive,
+    sEnemySleeping,
+    sEnemyReloading,
+    sEnemyShooting
 } CharacterStates; // 1
 
 @protocol GameplayLayerDelegate

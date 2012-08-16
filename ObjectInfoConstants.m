@@ -10,6 +10,7 @@
 
 @implementation ObjectInfoConstants
 
+NSString * const notificationUserInfoObjectType = @"ObjectType";
 NSString * const notificationUserInfoKeyPositionX = @"position-x";
 NSString * const notificationUserInfoKeyPositionY = @"position-y";
 

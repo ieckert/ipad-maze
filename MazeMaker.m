@@ -13,7 +13,6 @@
 #import "ObjectInfoConstants.h"
 
 @implementation MazeMaker
-static MazeMaker *singleton = nil;
 @synthesize rows, cols;
 @synthesize wallList;
 
@@ -43,7 +42,7 @@ static MazeMaker *singleton = nil;
     if (self = [super init])
     {
         NSLog(@"MazeMaker InitWithSizeAndRequirements");
-
+        translationReturnPair = [[Pair alloc] initWithRequirements:0 :0];
         rows = numRows;
         cols = numCols;
         disjsets = [[Disjsets alloc] initWithSize:rows :cols];
@@ -178,20 +177,8 @@ static MazeMaker *singleton = nil;
             
         }
         
-        
-        [self createMaze];    
     }
     return self;
-}
-
-+ (MazeMaker *) createSingleton
-{
-    @synchronized(singleton) {
-        if ( !singleton || singleton==nil ) {
-            singleton = [[MazeMaker alloc] init];
-        }
-    }
-    return singleton;
 }
 
 -(BOOL) properWallRemoval: (NSInteger) wall1: (NSInteger) wall2: (NSInteger) hallwayLength
@@ -314,8 +301,7 @@ how to:
             default:
                 break;
         }
-
-        rnum = (randY * (cols*kTrueScale)) + randX;
+        rnum = [self translateLargeXYToArrayIndex:randX :randY];
         if ([[realMaze objectAtIndex:rnum] intValue] == tNone) {
 //            NSLog(@"counter: %i rnum: %i randX: %i randY: %i rows: %i cols: %i", counter, rnum, randX, randY, rows, cols);
             [realMaze replaceObjectAtIndex:rnum withObject:[NSNumber numberWithInt:tCoin]];
@@ -345,27 +331,17 @@ how to:
 }
 
 -(void) cutOutOfRealMaze: (NSInteger) x1: (NSInteger) x2: (BOOL) specialNodes {
-    int num1, num2;
-    num1 = x1;
-    num2 = x2;
-    int row1, row2, col1, col2;
+    int num1 = x1;
+    int num2 = x2;
     int newNum1, newNum2;
-    //get a x,y of the cells we are joining        
-    row1 = num1 / cols;
-    col1 = num1 - (row1 * cols);
-    row2 = num2 / cols;
-    col2 = num2 - (row2 * cols);
-    //translate that to the larger - x,y coords
-    row1 = (row1 * kTrueScale) + 1;
-    col1 = (col1 * kTrueScale) + 1;
-    row2 = (row2 * kTrueScale) + 1;
-    col2 = (col2 * kTrueScale) + 1;
-    //translate that to the larger graph - single num coord
-    newNum1 = row1 * (cols * kTrueScale) + col1;
-    newNum2 = row2 * (cols * kTrueScale) + col2;
+
+    newNum1 = [self translateSmallArrayIndexToLarge:num1];
+    newNum2 = [self translateSmallArrayIndexToLarge:num2];
+    
     //cut out walls from actual maze
     //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
     //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
+    
     if (!specialNodes)
     {
         if (num1 == num2 - 1) {
@@ -402,6 +378,7 @@ how to:
 
 -(Boolean) createMaze
 {
+    NSLog(@"wallList size:  %i", [wallList count]);
     NSInteger num1, num2;
 
     if (rows == 0 || cols == 0) {
@@ -472,6 +449,54 @@ how to:
     [self cutOutOfRealMaze:[requirements startingPosition] :[requirements endingPosition] :true];
     [self placeCoins:[requirements numCoins]];
     return true;
+}
+
+-(NSInteger) translateSmallArrayIndexToLarge:(NSInteger) smallArrIndex
+{
+    int num1 = smallArrIndex;
+    int row1, col1;
+    int largeArrIndex;
+    //get a x,y of the cells we are joining        
+    row1 = num1 / cols;
+    col1 = num1 - (row1 * cols);
+    //translate that to the larger - x,y coords
+    row1 = (row1 * kTrueScale) + 1;
+    col1 = (col1 * kTrueScale) + 1;
+    //translate that to the larger graph - single num coord
+    largeArrIndex = row1 * (cols * kTrueScale) + col1;
+    //cut out walls from actual maze
+    //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
+    //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
+    return largeArrIndex;
+}
+
+-(Pair *) translateLargeArrayIndexToXY:(NSInteger) num1
+{
+    int X, Y;
+    Y = num1 / (cols*kTrueScale);
+    X = num1 - (Y * (cols*kTrueScale));
+    translationReturnPair.num1 = X;
+    translationReturnPair.num2 = Y;
+    return translationReturnPair;}
+
+-(Pair *) translateSmallArrayIndexToXY:(NSInteger) num1
+{
+    int X, Y;
+    Y = num1 / (cols);
+    X = num1 - (Y * (cols));
+    translationReturnPair.num1 = X;
+    translationReturnPair.num2 = Y;
+    return translationReturnPair;    
+}
+
+-(NSInteger) translateLargeXYToArrayIndex: (NSInteger) X :(NSInteger) Y
+{
+    return (Y * (cols*kTrueScale)) + X;
+}
+
+-(NSInteger) translateSmallXYToArrayIndex: (NSInteger) X :(NSInteger) Y
+{
+    return (Y * cols) + X;
 }
 
 @end

@@ -10,6 +10,7 @@
 
 @interface ObjectInfoConstants : NSObject
 
+extern NSString * const notificationUserInfoObjectType;
 extern NSString * const notificationUserInfoKeyPositionX;
 extern NSString * const notificationUserInfoKeyPositionY;
 

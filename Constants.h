@@ -55,7 +55,8 @@ typedef enum {
     tBall=2,
     tCoin=3,
     tStart=4,
-    tFinish=5
+    tFinish=5,
+    tEnemy=6
 } GameObjectType;
 
 

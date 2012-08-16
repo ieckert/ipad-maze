@@ -489,7 +489,8 @@
                                                                   :cols
                                                                   :requirements
                                                                   :menuMaze];
-                   
+        [mazeMaker createMaze];           
+        
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
         
@@ -501,34 +502,40 @@
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width
-        for(int y = 0; y < (rows*kTrueScale); y++)
+        int x, y, num, mazeSize;
+        Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
+        mazeSize = [menuMaze count];
+        for(int i = 0; i < mazeSize; i++)
         {
-            for(int x = 0; x < (cols*kTrueScale); x++)
-            {
-                int num = y * (cols*kTrueScale) + x;
-                if ([[menuMaze objectAtIndex:num] intValue] == tWall) {
-                    [objectFactory createObjectOfType:tWall
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
-                                           withZValue:kWallZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
-                else if ([[menuMaze objectAtIndex:num] intValue] == tCoin){
-                    //create coin as GameObject:
-                    [objectFactory createObjectOfType:tCoin
-                                           atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
-                                           withZValue:kCoinZValue
-                                              inWorld:world
-                            addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                }
-                else if ([[menuMaze objectAtIndex:num] intValue] == tStart) {
-                    NSLog(@"starting position at: %i", num);
-                }
-                else if ([[menuMaze objectAtIndex:num] intValue] == tFinish) {
-                    NSLog(@"ending position at: %i", num);
-                }
+            tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
+            x = tmpCoords.num1;
+            y = tmpCoords.num2;
+            num = i;
+            
+            if ([[menuMaze objectAtIndex:num] intValue] == tWall) {
+                [objectFactory createObjectOfType:tWall
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                       withZValue:kWallZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
+            else if ([[menuMaze objectAtIndex:num] intValue] == tCoin){
+                //create coin as GameObject:
+                [objectFactory createObjectOfType:tCoin
+                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                       withZValue:kCoinZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else if ([[menuMaze objectAtIndex:num] intValue] == tStart) {
+                NSLog(@"starting position at: %i", num);
+            }
+            else if ([[menuMaze objectAtIndex:num] intValue] == tFinish) {
+                NSLog(@"ending position at: %i", num);
+            }
+            
         }
+        [tmpCoords release];
         [self scheduleUpdate];                                    
         [self displayMainMenu];
 

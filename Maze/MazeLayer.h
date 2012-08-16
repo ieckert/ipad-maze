@@ -49,6 +49,7 @@
     
     BOOL paused;
     BOOL mazeComplete;
+    BOOL onFinishDoor;
     
     float angDamp;
     int accelNum;

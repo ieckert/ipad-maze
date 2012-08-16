@@ -181,6 +181,7 @@
 		3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B901159F67B600F28168 /* CoreMotion.framework */; };
 		3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */; };
 		3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */; };
+		3CE2FC0415DC9644004C8AAF /* EnemyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE2FC0315DC9644004C8AAF /* EnemyObject.m */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
 		3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.m */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
@@ -544,6 +545,8 @@
 		3C728B59159F867D00C8DC81 /* BackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLayer.h; sourceTree = "<group>"; };
 		3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundLayer.mm; sourceTree = "<group>"; };
 		3C728B5D159F884100C8DC81 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		3CE2FC0215DC9644004C8AAF /* EnemyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyObject.h; sourceTree = "<group>"; };
+		3CE2FC0315DC9644004C8AAF /* EnemyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnemyObject.m; sourceTree = "<group>"; };
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		3CE54D2615AA3EE10067B70B /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		3CE6B7AC15C46E93006C2664 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pair.h; sourceTree = "<group>"; };
@@ -585,6 +588,8 @@
 			children = (
 				3C138FA615C8C31B00C7BBFF /* ObjectFactory.h */,
 				3C138FA715C8C31B00C7BBFF /* ObjectFactory.mm */,
+				3CE2FC0215DC9644004C8AAF /* EnemyObject.h */,
+				3CE2FC0315DC9644004C8AAF /* EnemyObject.m */,
 				3C29B8A81599254A00F28168 /* GameObject.h */,
 				3C29B8A91599254A00F28168 /* GameObject.m */,
 				3C189F2B15A7A72B000F2345 /* Box2DSprite.h */,
@@ -1506,6 +1511,7 @@
 				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
 				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,
 				3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */,
+				3CE2FC0415DC9644004C8AAF /* EnemyObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -102,7 +102,7 @@
         objectInfo = [[NSMutableDictionary alloc] init];
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-        
+        [objectInfo setObject:[NSNumber numberWithInt:doorType] forKey:notificationUserInfoObjectType];
     }
     return self;
 }
