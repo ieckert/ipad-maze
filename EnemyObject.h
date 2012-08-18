@@ -8,6 +8,7 @@
 
 #import "GameObject.h"
 #import "MazeMaker.h"
+#import "Queue.h"
 
 @interface EnemyObject : GameObject
 {
@@ -15,8 +16,15 @@
     NSMutableDictionary *objectInfo;
     
     NSMutableArray *visitedLocationList;
+    
     MazeMaker *handleOnMaze;
     
+    Queue *animationQueue;
+    
+    NSTimer *repeatingTimer;
+    BOOL DFSWasFound;
+
+    BOOL activeTimer;
     BOOL canSee;
     BOOL canHear;
 }

@@ -88,7 +88,7 @@
     CGPoint coinPosition;
     coinPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
     coinPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
-    NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
+//    NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
     [self placeParticleEmitterAtLocation:coinPosition];
     [userInfo release];
 }
@@ -100,7 +100,7 @@
     CGPoint doorPosition;
     doorPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
     doorPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
-    NSLog(@"doorPosition x: %f y: %f", doorPosition.x, doorPosition.y);
+//    NSLog(@"doorPosition x: %f y: %f", doorPosition.x, doorPosition.y);
     if ([[userInfo objectForKey:[NSString stringWithString:notificationUserInfoObjectType]] intValue] == tFinish ) {
         onFinishDoor = true;
     }
@@ -308,7 +308,7 @@
         requirements = [[MazeRequirements alloc] initWithRequirements:25 
                                                                      :0 
                                                                      :FALSE
-                                                                     :5
+                                                                     :3
                                                                      :((rows-1)*cols)
                                                                      :cols-1];
         
@@ -472,6 +472,8 @@
     delete world;
     world = NULL;
     delete debugDraw;
+    
+    [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
 
 	[super dealloc];
 }

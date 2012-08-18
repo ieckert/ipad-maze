@@ -13,6 +13,7 @@
 @synthesize rollingAnim, idleAnim, collisionAnim;
 
 - (void) dealloc{
+    NSLog(@"ball dealloc called");
     [collisionAnim release];
     [idleAnim release];
     [super dealloc];

@@ -13,7 +13,7 @@
     CCAnimation *idleAnim;
 
     b2World *world;
-
+    NSTimer *repeatingTimer;
 }
 @property (nonatomic, retain) CCAnimation *collisionAnim;
 @property (nonatomic, retain) CCAnimation *idleAnim;

@@ -12,7 +12,7 @@
 #import "CoinObject.h"
 #import "WallObject.h"
 #import "DoorObject.h"
-#import "EnemyObject.h"
+#import "MinionObject.h"
 #import "ObjectInfoConstants.h"
 
 @implementation ObjectFactory
@@ -64,7 +64,7 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
      withKnowledgeOfMaze:(MazeMaker*)maze
 {
     if (objectType == tEnemy) {
-        EnemyObject *enemy = [[EnemyObject alloc] initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+        MinionObject *enemy = [[MinionObject alloc] initWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
                                                                        spriteFrameByName:@"wall_2.png"] AtLocation:spawnLocation
                                                                         WithKnowledgeOfMaze:maze];
         [sceneSpriteBatchNode addChild:enemy

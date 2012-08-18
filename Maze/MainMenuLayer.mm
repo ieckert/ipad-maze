@@ -8,6 +8,8 @@
 
 #import "MainMenuLayer.h"
 #import "ObjectInfoConstants.h"
+#import "Queue.h"
+
 
 @interface MainMenuLayer()
 -(void)displayMainMenu;
@@ -188,12 +190,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [requirements release];
     [mazeMaker release];
+    
+    [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
 
-//might need to remove all things in the world first!
+    
+    //might need to remove all things in the world first!
     delete world;
     world = NULL;
     delete debugDraw;
-
+    
 	[super dealloc];
 }
 
@@ -431,7 +436,8 @@
 
 -(id)init {
     self = [super init];
-    if (self != nil) {   
+    if (self != nil) { 
+        
         NSLog(@"MainMenuLayer Init");
         screenSize = [CCDirector sharedDirector].winSize;
         
@@ -508,6 +514,7 @@
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode
                      withKnowledgeOfMaze:mazeMaker];
         
+        
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width
         int x, y, num, mazeSize;
         Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
@@ -542,10 +549,32 @@
             }
             
         }
+        
         [tmpCoords release];
         [self scheduleUpdate];                                    
         [self displayMainMenu];
 
+/*testing the queue out!*/        
+/*
+        Queue *myQueue = [[Queue alloc] init];
+        [myQueue enqueue:0];
+        [myQueue enqueue:1];
+        [myQueue enqueue:2];
+        [myQueue enqueue:3];
+        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
+        [myQueue enqueue:0];
+        [myQueue lifoPush:1];
+        [myQueue lifoPush:2];
+        [myQueue enqueue:3];
+        [myQueue dequeue];
+        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
+        [myQueue lifoPush:1];
+        [myQueue lifoPush:2];
+        [myQueue enqueue:0];
+        [myQueue lifoPush:4];
+
+        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
+*/
         
     }
     return self;

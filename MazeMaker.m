@@ -50,11 +50,14 @@
         requirements = reqs;
         
         wallList = [[NSMutableDictionary alloc] init];
+        for (int i = 0; i < rows*cols; i++)
+        {
+            [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
+        }
+        
         for (int i = 0; i < rows*kTrueScale*cols*kTrueScale; i++)
         {
             [realMaze insertObject:[NSNumber numberWithInt:tWall] atIndex:i];
-//            [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tWall]];
-            [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
         }
 //        NSLog(@"mazeMaker - mazeSize: %i", [realMaze count] );
         
@@ -374,6 +377,8 @@ how to:
         [realMaze replaceObjectAtIndex:newNum2 withObject:[NSNumber numberWithInt:tFinish]];
 
     }
+//    [[wallList objectForKey:[NSNumber numberWithInt:newNum1]] addObject:[NSNumber numberWithInt:newNum2]];
+//    [[wallList objectForKey:[NSNumber numberWithInt:newNum2]] addObject:[NSNumber numberWithInt:newNum1]];
 }
 
 -(Boolean) createMaze
@@ -386,7 +391,7 @@ how to:
         return false;
     }
     
-    int hallwayRange = 2;
+    int hallwayRange = 1;
     while ([self sameSet] != rows*cols) {
         [self shuffleIndicies];
 //        NSLog(@"allowed hallway range: %i", hallwayRange);
@@ -406,7 +411,7 @@ how to:
             [disjsets unionSets:[disjsets find:num1] :[disjsets find:num2]];
             [[wallList objectForKey:[NSNumber numberWithInt:num1]] addObject:[NSNumber numberWithInt:num2]];
             [[wallList objectForKey:[NSNumber numberWithInt:num2]] addObject:[NSNumber numberWithInt:num1]];
-            
+            //NSLog(@"creating path between %i and %i", num1, num2);
             [self cutOutOfRealMaze:num1 :num2 :false];
     //        [fullKeysList removeObject:object];
         }
@@ -414,7 +419,7 @@ how to:
     }
    
 //creates circles
-    hallwayRange = 2;
+    hallwayRange = 1;
 //    NSLog(@"numCircles:%i", [requirements circles]);
     for (int i=0; i < [requirements circles];) {
         [self shuffleIndicies];
