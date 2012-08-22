@@ -31,10 +31,11 @@
                   inWorld:(b2World*)world
 addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode;
 
+
 -(void)createEnemyOfType:(NSInteger const)objectType
-               atLocation:(CGPoint)spawnLocation
-               withZValue:(int)ZValue
-                  inWorld:(b2World*)world
+              atLocation:(CGPoint)spawnLocation
+              withZValue:(int)ZValue
+                 inWorld:(b2World*)world
 addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
      withKnowledgeOfMaze:(MazeMaker*)maze;
 

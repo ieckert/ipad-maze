@@ -21,29 +21,42 @@
     MazeRequirements *requirements;
 
     Disjsets *disjsets;
-
+        
     NSMutableDictionary *wallList;
     
     NSMutableDictionary *fullBreakdownOptionsList;
     NSMutableArray *fullKeysList;
     
-    NSInteger rows;
-    NSInteger cols;
+    Pair *wallDimensions;
+    
+    NSInteger smallMazeRows;
+    NSInteger smallMazeCols;
+    NSInteger smallMazeSize;
+
+    NSInteger largeMazeRows;
+    NSInteger largeMazeCols;
+    NSInteger largeMazeSize;
+    
+    NSInteger startingLocation;
+    NSInteger endingLocation;
     
     Pair *translationReturnPair;
+    Pair *returnMazeDimensions;
 }
 
-@property (readwrite) NSInteger rows;
-@property (readwrite) NSInteger cols;
+@property (readwrite) NSInteger smallMazeRows;
+@property (readwrite) NSInteger smallMazeCols;
+@property (readwrite) NSInteger largeMazeRows;
+@property (readwrite) NSInteger largeMazeCols;
 @property (readwrite, retain) NSMutableDictionary *wallList;
 
--(id) initWithSizeAndRequirements: 
-                (NSInteger) numRows: 
-                (NSInteger) numCols: 
-            (MazeRequirements*) reqs:   
-                (NSMutableArray*) maze;
+-(id) initWithHeight: (NSInteger) windowHeight
+               Width: (NSInteger) windowWidth
+      WallDimensions: (Pair *) wallSpriteDimensions
+        Requirements: (MazeRequirements*) reqs
+                Maze: (NSMutableArray*) maze;
 
--(Boolean) createMaze;
+-(Pair *) createMaze;
 
 -(NSInteger) translateSmallArrayIndexToLarge:(NSInteger) smallArrIndex;
 -(NSInteger) translateLargeArrayIndexToSmall:(NSInteger) largeArrIndex;
@@ -53,5 +66,9 @@
 
 -(NSInteger) translateLargeXYToArrayIndex:(NSInteger) X:(NSInteger) Y;
 -(NSInteger) translateSmallXYToArrayIndex:(NSInteger) X:(NSInteger) Y;
+
+-(NSInteger) returnLargeMazeStartingLocation;
+
+-(NSInteger) returnLargeMazeEndingLocation;
 
 @end

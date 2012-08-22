@@ -47,7 +47,6 @@
 //                id action = [CCRotateBy actionWithDuration:0.5 angle:45];
 //                [animationQueue enqueue:action];
 //            }
-            activeTimer = true;
             break;
         case sEnemyReloading:
             NSLog(@"Enemy->Starting sEnemyReloading");
@@ -68,7 +67,6 @@
 
 -(void) timerDuties: (ccTime) dt
 {  
-    if (activeTimer == true) {
         NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
         [self stopAllActions];
         id action = nil;  
@@ -77,16 +75,14 @@
             NSLog(@"minion - ran action");
             [self runAction:action];
         }
-        else {
-            [self unschedule:@selector(timerDuties:)];
-            NSInteger currentLocation = [objectFactory returnObjectDimensions:tWall].num2 / [handleOnMaze translateLargeXYToArrayIndex:[self position].y-150 :[objectFactory returnObjectDimensions:tWall].num2/[self position].x-150];
-            NSLog(@"before dfs currentLocation: %f, %f", [self position].x, [self position].y);
-            currentLocation = [handleOnMaze translateLargeArrayIndexToSmall:currentLocation];
-            NSLog(@"for dfs currentLocation: %i", currentLocation);
-            [self depthFirstSearch: currentLocation :11];
-            [self schedule:@selector(timerDuties:)];
-        }
-    }
+//            [self unschedule:@selector(timerDuties:)];
+//            NSInteger currentLocation = [objectFactory returnObjectDimensions:tWall].num2 / [handleOnMaze translateLargeXYToArrayIndex:[self position].y-150 :[objectFactory returnObjectDimensions:tWall].num2/[self position].x-150];
+//            NSLog(@"before dfs currentLocation: %f, %f", [self position].x, [self position].y);
+//            currentLocation = [handleOnMaze translateLargeArrayIndexToSmall:currentLocation];
+//            NSLog(@"for dfs currentLocation: %i", currentLocation);
+//            [self depthFirstSearch: currentLocation :11];
+//            [self schedule:@selector(timerDuties:)];
+    
 }
 
 @end

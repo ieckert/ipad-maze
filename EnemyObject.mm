@@ -22,9 +22,11 @@
         
         gameObjectType = tEnemy;
         DFSWasFound = false;
-        activeTimer = false;
         canSee = true;
         canHear = true;
+        timerInterval = 0.75;
+        actionInterval = 0.5;
+        
         [self changeState:sEnemySleeping]; 
         
         [self setDisplayFrame:frame];
@@ -42,9 +44,9 @@
         for (int i = 0; i < arrSize; i++) {
             [visitedLocationList insertObject:[NSNumber numberWithInt:0] atIndex:i];
         }
-        [self schedule: @selector(timerDuties:) interval:1.5f];
-        currentLocationInMazeArray = 0;
-        [self depthFirstSearch:currentLocationInMazeArray :11];
+        [self schedule: @selector(timerDuties:) interval:timerInterval];
+
+        [self depthFirstSearch:[handleOnMaze returnLargeMazeStartingLocation] :[handleOnMaze returnLargeMazeEndingLocation]];
     }
     return self;
 }
@@ -110,10 +112,10 @@
 
     if (startLocation == endLocation) {
         DFSWasFound = true;
-        animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num1)+150;
-        animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num2)+150;
+        animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:endLocation].num1)+150;
+        animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:endLocation].num2)+150;
         
-        id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
+        id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
         [animationQueue enqueue:action];
         
         NSLog(@"end location found: %i", endLocation); 
@@ -125,10 +127,10 @@
 
             if (!DFSWasFound) {
                 NSLog(@"in while DFS at: %i", newLocation);
-                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num1)+150;
-                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num2)+150;
+                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:newLocation].num1)+150;
+                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:newLocation].num2)+150;
                 
-                id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
+                id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
                 [animationQueue enqueue:action];
             }
             else {
@@ -140,10 +142,10 @@
             
             if (!DFSWasFound) {
                 NSLog(@"in while DFS at: %i", startLocation);
-                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num1)+150;
-                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num2)+150;
+                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:startLocation].num1)+150;
+                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:startLocation].num2)+150;
                 
-                id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
+                id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
                 [animationQueue enqueue:action];
             }
             else {

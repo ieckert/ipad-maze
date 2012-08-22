@@ -171,7 +171,7 @@
 		3C29B87915979E6800F28168 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B87815979E6800F28168 /* AppDelegate.mm */; };
 		3C29B87C15979E6800F28168 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B87B15979E6800F28168 /* RootViewController.m */; };
 		3C29B88915979EDC00F28168 /* Disjsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B88815979EDC00F28168 /* Disjsets.m */; };
-		3C29B8941597A22200F28168 /* MazeMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8931597A22200F28168 /* MazeMaker.m */; };
+		3C29B8941597A22200F28168 /* MazeMaker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8931597A22200F28168 /* MazeMaker.mm */; };
 		3C29B8AA1599254A00F28168 /* GameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8A91599254A00F28168 /* GameObject.m */; };
 		3C29B8B215992B0000F28168 /* WallObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8B115992B0000F28168 /* WallObject.mm */; };
 		3C29B8B51599317B00F28168 /* BallObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8B41599317B00F28168 /* BallObject.mm */; };
@@ -183,10 +183,10 @@
 		3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */; };
 		3CE2FC0415DC9644004C8AAF /* EnemyObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE2FC0315DC9644004C8AAF /* EnemyObject.mm */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
-		3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.m */; };
+		3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.mm */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
 		3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CE972DB15CA4559001307BC /* Model.xcdatamodeld */; };
-		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */; };
+		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */; };
 		3CEA4F6B15DDE0A500F841C9 /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.m */; };
 		3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.m */; };
 		3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */; };
@@ -529,7 +529,7 @@
 		3C29B88715979EDC00F28168 /* Disjsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Disjsets.h; sourceTree = "<group>"; };
 		3C29B88815979EDC00F28168 /* Disjsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Disjsets.m; sourceTree = "<group>"; };
 		3C29B8921597A22200F28168 /* MazeMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeMaker.h; sourceTree = "<group>"; };
-		3C29B8931597A22200F28168 /* MazeMaker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeMaker.m; sourceTree = "<group>"; };
+		3C29B8931597A22200F28168 /* MazeMaker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeMaker.mm; sourceTree = "<group>"; };
 		3C29B8A81599254A00F28168 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
 		3C29B8A91599254A00F28168 /* GameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObject.m; sourceTree = "<group>"; };
 		3C29B8AC159925FB00F28168 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
@@ -553,11 +553,11 @@
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		3CE54D2615AA3EE10067B70B /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		3CE6B7AC15C46E93006C2664 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pair.h; sourceTree = "<group>"; };
-		3CE6B7AD15C46E93006C2664 /* Pair.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pair.m; sourceTree = "<group>"; };
+		3CE6B7AD15C46E93006C2664 /* Pair.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Pair.mm; sourceTree = "<group>"; };
 		3CE972D715CA432D001307BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3CE972DC15CA4559001307BC /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
-		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeRequirements.m; sourceTree = "<group>"; };
+		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeRequirements.mm; sourceTree = "<group>"; };
 		3CEA4F6915DDE0A500F841C9 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
 		3CEA4F6A15DDE0A500F841C9 /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
 		3CEA4F6C15DDE1E800F841C9 /* AnimationContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationContainer.h; sourceTree = "<group>"; };
@@ -1232,11 +1232,11 @@
 			isa = PBXGroup;
 			children = (
 				3C29B8921597A22200F28168 /* MazeMaker.h */,
-				3C29B8931597A22200F28168 /* MazeMaker.m */,
+				3C29B8931597A22200F28168 /* MazeMaker.mm */,
 				3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */,
-				3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.m */,
+				3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */,
 				3CE6B7AC15C46E93006C2664 /* Pair.h */,
-				3CE6B7AD15C46E93006C2664 /* Pair.m */,
+				3CE6B7AD15C46E93006C2664 /* Pair.mm */,
 			);
 			name = MazeMaker;
 			sourceTree = "<group>";
@@ -1477,7 +1477,7 @@
 				3C29B87915979E6800F28168 /* AppDelegate.mm in Sources */,
 				3C29B87C15979E6800F28168 /* RootViewController.m in Sources */,
 				3C29B88915979EDC00F28168 /* Disjsets.m in Sources */,
-				3C29B8941597A22200F28168 /* MazeMaker.m in Sources */,
+				3C29B8941597A22200F28168 /* MazeMaker.mm in Sources */,
 				3C29B8AA1599254A00F28168 /* GameObject.m in Sources */,
 				3C29B8B215992B0000F28168 /* WallObject.mm in Sources */,
 				3C29B8B51599317B00F28168 /* BallObject.mm in Sources */,
@@ -1529,8 +1529,8 @@
 				3C128AE815AA728E00883E52 /* MainMenuScene.mm in Sources */,
 				3C128AEC15AA72B000883E52 /* MainMenuLayer.mm in Sources */,
 				3C128AF015AA73C200883E52 /* GameManager.mm in Sources */,
-				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.m in Sources */,
-				3CE6B7AE15C46E93006C2664 /* Pair.m in Sources */,
+				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */,
+				3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */,
 				3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */,
 				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
 				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,

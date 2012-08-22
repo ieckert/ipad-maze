@@ -24,9 +24,11 @@
     
     BOOL DFSWasFound;
 
-    BOOL activeTimer;
     BOOL canSee;
     BOOL canHear;
+    
+    float timerInterval;
+    float actionInterval;
     
     NSInteger currentLocationInMazeArray;
 }

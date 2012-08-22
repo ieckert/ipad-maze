@@ -426,20 +426,9 @@
     [self addChild:debugMenu z:1 tag:kSceneMenuTagValue];        
 }
 
--(void)calculateMazeDimensions:(float) windowHeight: (float) windowWidth
-{
-    //for objectFactory returnObjectDimensions - num1 is height - num2 is width
-    cols = windowWidth / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
-    colsRemainder = windowWidth - (cols*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
-    rows = windowHeight / [objectFactory returnObjectDimensions:tWall].num2 / kTrueScale;
-    rowsRemainder = windowHeight - (rows*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
-    NSLog(@"cols: %i, colsR: %f, rows: %i, rowsR: %f", cols, colsRemainder, rows, rowsRemainder);
-}
-
 -(id)init {
     self = [super init];
     if (self != nil) { 
-        
         NSLog(@"MainMenuLayer Init");
         screenSize = [CCDirector sharedDirector].winSize;
         
@@ -483,76 +472,81 @@
     
         objectFactory = [ObjectFactory createSingleton];
         
-        [self calculateMazeDimensions:500 :600];
-
         //begin creating the maze
-        requirements = [[MazeRequirements alloc] initWithRequirements:5 
-                                                                     :0 
-                                                                     :NO
-                                                                     :2
-                                                                     :0
-                                                                     :(rows*cols-1)];
+        requirements = [[MazeRequirements alloc] initWithCoins:5
+                                                       Enemies:1
+                                            AllowableStraights:NO
+                                               NumberOfCircles:2];
+
         menuMaze = [[NSMutableArray alloc] init];
-        mazeMaker = [[MazeMaker alloc] initWithSizeAndRequirements:rows 
-                                                                  :cols
-                                                                  :requirements
-                                                                  :menuMaze];
-        [mazeMaker createMaze];           
+        mazeMaker = [[MazeMaker alloc] initWithHeight:500
+                                                Width:600
+                                       WallDimensions:[objectFactory returnObjectDimensions:tWall]
+                                         Requirements:requirements
+                                                 Maze:menuMaze];
+        
+        mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
+        mazeDimensions = [mazeMaker createMaze];
+        rows = mazeDimensions.num1;
+        cols = mazeDimensions.num2;
+        
         
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
         
-         
-        [objectFactory createObjectOfType:tBall 
-                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
-                               withZValue:kBallZValue
-                                  inWorld:world
-                addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-        
-//        [objectFactory createEnemyOfType:tEnemy 
-//                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
-//                               withZValue:kBallZValue
-//                                  inWorld:world
-//                addToSceneSpriteBatchNode:sceneSpriteBatchNode
-//                     withKnowledgeOfMaze:mazeMaker];
-        
-        
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width
         int x, y, num, mazeSize;
         Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
-        mazeSize = [menuMaze count];
+        CGPoint tmpLocation;
+        mazeSize = rows*cols;
         for(int i = 0; i < mazeSize; i++)
         {
+            
             tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
             x = tmpCoords.num1;
             y = tmpCoords.num2;
-            num = i;
+            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+25+125;
+            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+25+125;
             
-            if ([[menuMaze objectAtIndex:num] intValue] == tWall) {
+            if ([[menuMaze objectAtIndex:i] intValue] == tWall) {
                 [objectFactory createObjectOfType:tWall
-                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                       atLocation:tmpLocation
                                        withZValue:kWallZValue
                                           inWorld:world
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
-            else if ([[menuMaze objectAtIndex:num] intValue] == tCoin){
+            else if ([[menuMaze objectAtIndex:i] intValue] == tCoin){
                 //create coin as GameObject:
                 [objectFactory createObjectOfType:tCoin
-                                       atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2*x+25+125, [objectFactory returnObjectDimensions:tWall].num2*y+25+125)
+                                       atLocation:tmpLocation
                                        withZValue:kCoinZValue
                                           inWorld:world
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
-            else if ([[menuMaze objectAtIndex:num] intValue] == tStart) {
-                NSLog(@"starting position at: %i", num);
+            else if ([[menuMaze objectAtIndex:i] intValue] == tEnemy) {
+                [objectFactory createEnemyOfType:tEnemy
+                                      atLocation:tmpLocation
+                                      withZValue:kCoinZValue
+                                         inWorld:world
+                       addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                             withKnowledgeOfMaze:mazeMaker];
             }
-            else if ([[menuMaze objectAtIndex:num] intValue] == tFinish) {
+            else if ([[menuMaze objectAtIndex:i] intValue] == tStart) {
+                NSLog(@"starting position at: %i", num);
+                [objectFactory createObjectOfType:tBall 
+                                       atLocation:tmpLocation 
+                                       withZValue:kBallZValue
+                                          inWorld:world
+                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else if ([[menuMaze objectAtIndex:i] intValue] == tFinish) {
                 NSLog(@"ending position at: %i", num);
             }
             
         }
         
         [tmpCoords release];
+        
         [self scheduleUpdate];                                    
         [self displayMainMenu];
 

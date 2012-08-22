@@ -27,7 +27,7 @@
 #import "WallObject.h"
 #import "BallObject.h"
 #import "CoinObject.h"
-
+#import "Pair.h"
 #import "ObjectFactory.h"
 @interface MazeLayer : CCLayer <UIAccelerometerDelegate>
 {
@@ -46,7 +46,8 @@
     NSTimer *repeatingTimer;
     
     NSMutableArray *mazeGrid;
-    
+    Pair *mazeDimensions;
+
     BOOL paused;
     BOOL mazeComplete;
     BOOL onFinishDoor;

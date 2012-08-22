@@ -14,6 +14,9 @@
 #import "DoorObject.h"
 #import "MinionObject.h"
 #import "ObjectInfoConstants.h"
+#import "MazeMaker.h"
+
+
 
 @implementation ObjectFactory
 static ObjectFactory *singleton = nil;

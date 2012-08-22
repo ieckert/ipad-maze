@@ -21,7 +21,7 @@
 #import "WallObject.h"
 #import "BallObject.h"
 #import "CoinObject.h"
-
+#import "Pair.h"
 #import "ObjectFactory.h"
 
 @interface MainMenuLayer : CCLayer <UIAccelerometerDelegate>
@@ -51,8 +51,7 @@
     
     int rows;
     int cols;
-    float rowsRemainder;
-    float colsRemainder;
+    Pair *mazeDimensions;
     
     CGSize screenSize;
     

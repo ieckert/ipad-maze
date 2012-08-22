@@ -4,7 +4,7 @@
 #define kMazeCols 7
 #define kMazeRows 5
 
-#define kTrueScale 3
+#define kTrueScale 2
 #define kTrueMazeCols kMazeCols*kTrueScale
 #define kTrueMazeRows kMazeRows*kTrueScale
 
