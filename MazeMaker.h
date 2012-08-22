@@ -46,6 +46,7 @@
 -(Boolean) createMaze;
 
 -(NSInteger) translateSmallArrayIndexToLarge:(NSInteger) smallArrIndex;
+-(NSInteger) translateLargeArrayIndexToSmall:(NSInteger) largeArrIndex;
 
 -(Pair *) translateLargeArrayIndexToXY:(NSInteger) num1;
 -(Pair *) translateSmallArrayIndexToXY:(NSInteger) num1;

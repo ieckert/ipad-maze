@@ -9,10 +9,11 @@
 #import "GameObject.h"
 #import "MazeMaker.h"
 #import "Queue.h"
+#import "ObjectFactory.h"
 
 @interface EnemyObject : GameObject
 {
-    
+    ObjectFactory *objectFactory;
     NSMutableDictionary *objectInfo;
     
     NSMutableArray *visitedLocationList;
@@ -21,16 +22,19 @@
     
     Queue *animationQueue;
     
-    NSTimer *repeatingTimer;
     BOOL DFSWasFound;
 
     BOOL activeTimer;
     BOOL canSee;
     BOOL canHear;
+    
+    NSInteger currentLocationInMazeArray;
 }
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location
       WithKnowledgeOfMaze:(MazeMaker*)maze;
+
+-(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation;
 
 @end

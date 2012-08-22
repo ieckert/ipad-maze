@@ -18,6 +18,8 @@
     if ((self = [super init])) {
         animationQueue = [[Queue alloc] init];
         
+        objectFactory = [ObjectFactory createSingleton];
+        
         gameObjectType = tEnemy;
         DFSWasFound = false;
         activeTimer = false;
@@ -40,8 +42,9 @@
         for (int i = 0; i < arrSize; i++) {
             [visitedLocationList insertObject:[NSNumber numberWithInt:0] atIndex:i];
         }
-        [self setTimer];
-        [self depthFirstSearch:0 :11];
+        [self schedule: @selector(timerDuties:) interval:1.5f];
+        currentLocationInMazeArray = 0;
+        [self depthFirstSearch:currentLocationInMazeArray :11];
     }
     return self;
 }
@@ -56,13 +59,11 @@
 
 - (void) dealloc{
 //might have to do the timer earlier
-    NSLog(@"enemy dealloc called");
-    [repeatingTimer invalidate];
-    [animationQueue release];
+//    NSLog(@"enemy dealloc called");
     
+    [animationQueue release];    
     [objectInfo release];
     [visitedLocationList release];
-    [animationQueue release];
     [super dealloc];
 }
 
@@ -92,15 +93,7 @@
     NSLog(@"enemyObject - must override initAnimations!");
 }
 
--(void) setTimer
-{
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.5
-                                                      target:self selector:@selector(timerDuties)
-                                                    userInfo:nil repeats:YES];
-    repeatingTimer = timer;    
-}
-
--(void) timerDuties
+-(void) timerDuties: (ccTime) dt
 {  
     NSLog(@"enemyObject - must override timerDuties!");
 
@@ -113,12 +106,12 @@
     //use visitedLocationList for the DFS 'coloring'
     
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
-    
+    CGPoint animPoint;
+
     if (startLocation == endLocation) {
         DFSWasFound = true;
-        CGPoint animPoint;
-        animPoint.x = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num1)+150;
-        animPoint.y = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num2)+150;
+        animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num1)+150;
+        animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:endLocation]].num2)+150;
         
         id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
         [animationQueue enqueue:action];
@@ -129,12 +122,11 @@
     else {
         int newLocation = [self checkUnvisitedPathsFromLocation:startLocation];
         while (newLocation != -1) {
-            CGPoint animPoint;
 
             if (!DFSWasFound) {
                 NSLog(@"in while DFS at: %i", newLocation);
-                animPoint.x = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num1)+150;
-                animPoint.y = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num2)+150;
+                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num1)+150;
+                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:newLocation]].num2)+150;
                 
                 id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
                 [animationQueue enqueue:action];
@@ -148,8 +140,8 @@
             
             if (!DFSWasFound) {
                 NSLog(@"in while DFS at: %i", startLocation);
-                animPoint.x = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num1)+150;
-                animPoint.y = (48*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num2)+150;
+                animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num1)+150;
+                animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:[handleOnMaze translateSmallArrayIndexToLarge:startLocation]].num2)+150;
                 
                 id action = [CCMoveTo actionWithDuration:1.0f position:animPoint];
                 [animationQueue enqueue:action];

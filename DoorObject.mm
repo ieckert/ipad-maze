@@ -13,7 +13,7 @@
 @synthesize idleAnim, interactAnim;
 
 - (void) dealloc{
-    NSLog(@"door dealloc called");
+//    NSLog(@"door dealloc called");
 
     [idleAnim release];
     [interactAnim release];

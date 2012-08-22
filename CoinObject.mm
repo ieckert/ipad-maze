@@ -13,7 +13,7 @@
 @synthesize spinningAnim, capturedAnim, removingAnim, idleAnim;
 
 - (void) dealloc{
-    NSLog(@"coin dealloc called");
+//    NSLog(@"coin dealloc called");
 
     [spinningAnim release];
     [capturedAnim release];

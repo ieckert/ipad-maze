@@ -143,6 +143,10 @@ and when to execute the Scenes.
 	ccTime accumDtForProfiler_;
 #endif
 }
++(double) getAvailableBytes;
++(double) getAvailableKiloBytes;
++(double) getAvailableMegaBytes;
+
 
 /** returns the cocos2d thread.
  If you want to run any cocos2d task, run it in this thread.

@@ -33,6 +33,7 @@
     [wallList release];
     [fullKeysList release];
     [fullBreakdownOptionsList release];
+    [translationReturnPair release];
     
 	[super dealloc];
 }
@@ -42,7 +43,7 @@
     if (self = [super init])
     {
         NSLog(@"MazeMaker InitWithSizeAndRequirements");
-        translationReturnPair = [[Pair alloc] initWithRequirements:0 :0];
+        translationReturnPair = [[[Pair alloc] initWithRequirements:0 :0] retain];
         rows = numRows;
         cols = numCols;
         disjsets = [[Disjsets alloc] initWithSize:rows :cols];
@@ -475,6 +476,26 @@ how to:
     return largeArrIndex;
 }
 
+-(NSInteger) translateLargeArrayIndexToSmall:(NSInteger) largeArrIndex
+{
+    int num1 = largeArrIndex;
+    int row1, col1;
+    int smallArrIndex;
+    //get a x,y of the cells we are joining        
+    row1 = [self translateLargeArrayIndexToXY:num1 ].num1;
+    col1 = [self translateLargeArrayIndexToXY:num1 ].num2;
+    
+    //translate that to the larger - x,y coords
+    row1 = (row1 / kTrueScale) - 1;
+    col1 = (col1 / kTrueScale) - 1;
+    //translate that to the larger graph - single num coord
+    smallArrIndex = row1 * (cols) + col1;
+    //cut out walls from actual maze
+    //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
+    //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
+    return smallArrIndex;
+}
+
 -(Pair *) translateLargeArrayIndexToXY:(NSInteger) num1
 {
     int X, Y;
@@ -482,7 +503,8 @@ how to:
     X = num1 - (Y * (cols*kTrueScale));
     translationReturnPair.num1 = X;
     translationReturnPair.num2 = Y;
-    return translationReturnPair;}
+    return translationReturnPair;
+}
 
 -(Pair *) translateSmallArrayIndexToXY:(NSInteger) num1
 {

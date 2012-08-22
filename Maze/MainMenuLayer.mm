@@ -188,10 +188,12 @@
 {
     NSLog(@"MainMenuLayer Dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [menuMaze release];
     [requirements release];
     [mazeMaker release];
     
     [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
+    [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
 
     
     //might need to remove all things in the world first!
@@ -507,12 +509,12 @@
                                   inWorld:world
                 addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         
-        [objectFactory createEnemyOfType:tEnemy 
-                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
-                               withZValue:kBallZValue
-                                  inWorld:world
-                addToSceneSpriteBatchNode:sceneSpriteBatchNode
-                     withKnowledgeOfMaze:mazeMaker];
+//        [objectFactory createEnemyOfType:tEnemy 
+//                               atLocation:ccp([objectFactory returnObjectDimensions:tWall].num2+150, ([objectFactory returnObjectDimensions:tWall].num2*((kTrueScale*rows)-1)-30)-150) 
+//                               withZValue:kBallZValue
+//                                  inWorld:world
+//                addToSceneSpriteBatchNode:sceneSpriteBatchNode
+//                     withKnowledgeOfMaze:mazeMaker];
         
         
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width

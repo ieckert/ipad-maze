@@ -13,7 +13,7 @@
 @synthesize collisionAnim, idleAnim;
 
 - (void) dealloc{
-    NSLog(@"wall dealloc called");
+//    NSLog(@"wall dealloc called");
     [collisionAnim release];
     [idleAnim release];
     [super dealloc];

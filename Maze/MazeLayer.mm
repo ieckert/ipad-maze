@@ -468,12 +468,14 @@
     [requirements release];
     [mazeMaker release];
     [mazeGrid release];
+    
     //might need to remove all things in the world first!
     delete world;
     world = NULL;
     delete debugDraw;
     
     [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
+    [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
 
 	[super dealloc];
 }
