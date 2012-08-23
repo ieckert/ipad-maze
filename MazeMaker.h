@@ -13,22 +13,21 @@
 #import "Pair.h"
 
 @interface MazeMaker : NSObject
-{
-    /* local copy of maze - might not need? */
-    NSMutableArray *realMaze;
-    
+{    
     /* set of rules for building the maze */
     MazeRequirements *requirements;
-
-    Disjsets *disjsets;
         
+    /*these structures use the largeMaze cols/rows/size*/
+    /*all other classes outside this one will use these*/
+    /*if you have a smallMaze array index - transform it to large then access these*/
     NSMutableDictionary *wallList;
-    
+    NSMutableArray *realMaze;
+   
+    /*these structures use the smallMaze cols/rows/size*/
+    Disjsets *disjsets;
     NSMutableDictionary *fullBreakdownOptionsList;
     NSMutableArray *fullKeysList;
-    
-    Pair *wallDimensions;
-    
+        
     NSInteger smallMazeRows;
     NSInteger smallMazeCols;
     NSInteger smallMazeSize;
@@ -39,6 +38,9 @@
     
     NSInteger startingLocation;
     NSInteger endingLocation;
+    
+    NSInteger wallHeight;
+    NSInteger wallWidth;
     
     Pair *translationReturnPair;
     Pair *returnMazeDimensions;
@@ -70,5 +72,7 @@
 -(NSInteger) returnLargeMazeStartingLocation;
 
 -(NSInteger) returnLargeMazeEndingLocation;
+
+-(NSInteger) returnEmptySlotInMaze;
 
 @end

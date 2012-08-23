@@ -30,10 +30,12 @@
 - (void) dealloc
 {
     NSLog(@"MazeMaker Dealloc");
-    [disjsets release];
+    
     [wallList release];
-    [fullKeysList release];
     [fullBreakdownOptionsList release];
+   
+    [disjsets release];
+    [fullKeysList release];
     
 	[super dealloc];
 }
@@ -48,9 +50,8 @@
     {
         NSLog(@"MazeMaker InitWithSizeAndRequirements");
         
-        wallDimensions = [[Pair alloc] initWithRequirements:[wallSpriteDimensions num1] :[wallSpriteDimensions num2]];
-        wallDimensions.num1 = [wallSpriteDimensions num1];
-        wallDimensions.num2 = [wallSpriteDimensions num2];
+        wallHeight = [wallSpriteDimensions num1];
+        wallWidth = [wallSpriteDimensions num2];
         [self calculateMazeDimensionsWithHeight:windowHeight AndWidth:windowWidth];
         
         startingLocation = smallMazeSize-smallMazeCols;
@@ -59,7 +60,6 @@
         translationReturnPair = [[Pair alloc] initWithRequirements:0 :0];
         returnMazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         
-//        NSLog(@"SR: %i SC: %i LR: %i LC: %i", smallMazeRows, smallMazeCols, largeMazeRows, largeMazeCols);
         disjsets = [[Disjsets alloc] initWithSize:smallMazeRows :smallMazeCols];
         
         realMaze = maze;
@@ -72,7 +72,6 @@
             [wallList setObject:[[NSMutableSet alloc] init] forKey:[NSNumber numberWithInt:i]];
 
         }
-//        NSLog(@"mazeMaker - mazeSize: %i", [realMaze count] );
 
         fullBreakdownOptionsList = [[NSMutableDictionary alloc] init];
         [self fillFullBreakdownOptionsList];
@@ -86,9 +85,7 @@
 {
     int currentNum=0;
     for (int i=0; currentNum < smallMazeSize; i++)
-    {
-        //            NSLog(@"building the fullBreakdownOptionsList. currentNum: %i", currentNum);
-        
+    {        
         /*
          cases:
          5x5 maze - showing the different cases you will need when joining a random side
@@ -206,11 +203,8 @@
 -(void)calculateMazeDimensionsWithHeight:(int) windowHeight AndWidth: (int) windowWidth
 {
     //for objectFactory returnObjectDimensions - num1 is height - num2 is width
-    smallMazeCols = (windowWidth / wallDimensions.num2 / kTrueScale)-1;
-//    colsRemainder = windowWidth - (cols*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
-    smallMazeRows = (windowHeight / wallDimensions.num1 / kTrueScale)-1;
-//    rowsRemainder = windowHeight - (rows*kTrueScale*[objectFactory returnObjectDimensions:tWall].num2);
-//    NSLog(@"cols: %i, colsR: %f, rows: %i, rowsR: %f", cols, colsRemainder, rows, rowsRemainder);
+    smallMazeCols = (windowWidth / wallWidth / kTrueScale)-1;
+    smallMazeRows = (windowHeight / wallHeight / kTrueScale)-1;
     
     largeMazeRows = (smallMazeRows*kTrueScale)+1;
     largeMazeCols = (smallMazeCols*kTrueScale)+1;
@@ -221,41 +215,58 @@
 
 -(BOOL) properWallRemoval: (NSInteger) wall1: (NSInteger) wall2: (NSInteger) hallwayLength
 {
-    if ([requirements straightShot] == FALSE) {        
-        int t1, count, diff, allowedRange;
+    /*
+     goal - eliminate long hallways created in a maze
+     pass in smallMaze numbers - they will be translated here
+     
+    */
+    if ([requirements straightShot] == FALSE) {
+        int t1, w1, w2, count, diff, allowedRange;
+        w1 = wall1;
+        w2 = wall2;
         t1=0;
         count=0;
-        diff=0;
         allowedRange = hallwayLength;
         
-        diff = wall1-wall2;
-//wall1 should always be larger        
+        diff = w1-w2;
+        w1 = [self translateSmallArrayIndexToLarge:wall1];
+        w2 = [self translateSmallArrayIndexToLarge:wall2];
+        
+        //w1 should always be larger - to make the for loops work
         if (diff < 0) {
-            diff = diff*-1;
-            t1 = wall2;
-            wall2 = wall1;
-            wall1 = t1;
+            diff=diff*-1;
+            t1 = w1;
+            w1 = w2;
+            w2 = t1;
         }
-        t1 = wall1;
-            for (int i = 0; i < hallwayLength; i++) {
+        /*
+         when translating from small to large - there is a block inbetween the two points.
+         so if you get the diff from the largeMaze numbers - it will not be the "closest" block
+         thus - subtract the diff before, and change it if the blocks are on top / below eachother
+         */
+        if (diff != 1) {
+            diff = largeMazeCols;
+        }
+        t1 = w1;
+        /*checking the numbers greater than the larger point*/
+            for (int i = 0; i < allowedRange; i++) {
                 if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
                       containsObject:[NSNumber numberWithInt:(t1+diff)]] ) {
                     count++;
                 }
-//                NSLog(@"t1: %i diff: %i count: %i", t1, diff, count);
                 t1 += diff;
             }
-            if (count == hallwayLength)
+            if (count == allowedRange)
                 return FALSE;
         
         count = 0;
-        t1 = wall2;
-            for (int i = 0; i < hallwayLength; i++) {
+        t1=w2;
+        /*checking the numbers lower than the smaller point*/
+            for (int i = 0; i < allowedRange; i++) {
                 if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
                       containsObject:[NSNumber numberWithInt:(t1-diff)]] ) {
                     count++;
                 }
-//                NSLog(@"t1: %i diff: %i count: %i", t1, diff, count);
                 t1 -= diff;
             }
             if (count == hallwayLength)
@@ -267,12 +278,18 @@
 
 -(NSInteger) sameSet
 {
-	int c=0;	//counter
+    /*
+    used with disjsets. if all of the array slots go back to the same set, then
+    the maze has been created with a single track through the entire thing.
+     
+    disjsets relies on smallMaze array
+    */
+	int c=0;
 	for(int i=0; i<smallMazeSize; i++)
 	{
 		if( [disjsets find:0] == [disjsets find:i] )
 		{
-			c++;	//track how many sets are in the same adt set
+			c++;	//track how many sets are in the same disjset
 		}
 	}
 	return c;
@@ -342,7 +359,6 @@ how to:
         }
         rnum = [self translateLargeXYToArrayIndex:randX :randY];
         if ([[realMaze objectAtIndex:rnum] intValue] == tNone) {
-//            NSLog(@"counter: %i rnum: %i randX: %i randY: %i rows: %i cols: %i", counter, rnum, randX, randY, rows, cols);
             [realMaze replaceObjectAtIndex:rnum withObject:[NSNumber numberWithInt:itemType]];
             counter--;
         }
@@ -367,6 +383,11 @@ how to:
 }
 
 -(void) cutOutOfRealMaze: (NSInteger) x1: (NSInteger) x2: (BOOL) specialNodes {
+    /*
+        input - smallMaze array index
+        output - marks the path from x1 to x2 on the "real maze" or largeMaze
+        also adds to wallList - container of each point on the maze and which paths are open to movement from it.
+    */
     int num1 = x1;
     int num2 = x2;
     int newNum1, newNum2;
@@ -374,15 +395,10 @@ how to:
     newNum1 = [self translateSmallArrayIndexToLarge:num1];
     newNum2 = [self translateSmallArrayIndexToLarge:num2];
     
-    //cut out walls from actual maze
-    //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
-    //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
-    
     if (!specialNodes)
     {
         if (num1 == num2 - 1) {
             for (int i = newNum1; i <= newNum2; i++) {
-                //                NSLog(@"removing  : %i", i);
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum2) {
                     [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
@@ -391,7 +407,6 @@ how to:
             }
         } else if (num1 == num2 + 1) {
             for (int i = newNum2; i <= newNum1; i++) {
-                //                NSLog(@"removing  : %i", i);
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum1) {
                     [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
@@ -400,7 +415,6 @@ how to:
             }
         } else if (num1 == num2 + smallMazeCols) {
             for (int i = newNum2; i <= newNum1; i+= largeMazeCols) {
-                //                NSLog(@"removing  : %i", i);
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum1) {
                     [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
@@ -410,7 +424,6 @@ how to:
             }
         } else if (num1 == num2 - smallMazeCols) {
             for (int i = newNum1; i <= newNum2; i+= largeMazeCols) {
-                //                NSLog(@"removing  : %i", i);
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum2) {
                     [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
@@ -432,7 +445,6 @@ how to:
 
 -(Pair *) createMaze
 {
-//    NSLog(@"wallList size:  %i", [wallList count]);
     NSInteger num1, num2;
 
     if (smallMazeRows == 0 || smallMazeCols == 0) {
@@ -443,18 +455,17 @@ how to:
     int hallwayRange = 1;
     while ([self sameSet] != smallMazeSize) {
         [self shuffleIndicies];
-//        NSLog(@"allowed hallway range: %i", hallwayRange);
+        NSLog(@"hallway range: %i", hallwayRange);
         for (id object in fullKeysList) {
             if ([self sameSet] == smallMazeSize)
                 break;
             num1 = [[fullBreakdownOptionsList objectForKey:object] num1];
             num2 = [[fullBreakdownOptionsList objectForKey:object] num2];
-//            NSLog(@"chose to breakdown %i, %i",num1,num2);
 
             if ([disjsets find:num1] == [disjsets find:num2]) 
                 continue;
             if ([self properWallRemoval:num1:num2:hallwayRange] == FALSE ) {
-//                NSLog(@"skipping wall breakdown for because not proper wall removal");
+                NSLog(@"in create - not proper wall removal");
                 continue;
             }
             [disjsets unionSets:[disjsets find:num1] :[disjsets find:num2]];
@@ -463,34 +474,37 @@ how to:
         hallwayRange++;
     }
    
-//creates circles
+/*
+ creates circles in the maze by looking for points that have not been broken down yet.
+ they still must follow the "properWallRemoval" so that a long hallway won't be created.
+ */
     hallwayRange = 1;
-//    NSLog(@"numCircles:%i", [requirements circles]);
+    /*loop through the possible walls to break down until we have enough circles*/
     for (int i=0; i < [requirements circles];) {
         [self shuffleIndicies];
-//        NSLog(@"allowed hallway range: %i", hallwayRange);
-//        NSLog(@"size of keys list: %i", [fullKeysList count]);
         for (id object in fullKeysList) {
             if (i == [requirements circles])
                 break;
             num1 = [[fullBreakdownOptionsList objectForKey:object] num1];
             num2 = [[fullBreakdownOptionsList objectForKey:object] num2];
 
-            if ([self properWallRemoval:num1:num2:hallwayRange] == FALSE ) {
-//                NSLog(@"skipping wall breakdown for because not proper wall removal");
+            if (![self properWallRemoval: num1: num2: hallwayRange])
                 continue;
-            }
-            if ( [[wallList objectForKey:[NSNumber numberWithInt:[self translateSmallArrayIndexToLarge:num1]]] containsObject:[NSNumber numberWithInt:[self translateSmallArrayIndexToLarge:num2]] ] ) {
+            
+            /*
+             if there is a wall between the two points - break that shit down!
+             prevents us from breaking down a path that is already there
+             */             
+            if (![self wallBetweenPoint1:num1 AndPoint2:num2])
                 continue;
-            }
-
+            
             [self cutOutOfRealMaze:num1 :num2 :false];
             i++;
         }
         hallwayRange++;
     }
 
-    //place start and end markers
+    /*after we create the proper maze path - add extras in the empty spaces*/
     [self cutOutOfRealMaze:startingLocation :endingLocation :true];
     [self placeItem:tCoin NumberOfTimes:[requirements numCoins]];
     [self placeItem:tEnemy NumberOfTimes:[requirements numEnemies]];
@@ -498,6 +512,36 @@ how to:
     returnMazeDimensions.num1 = largeMazeRows;
     returnMazeDimensions.num2 = largeMazeCols;
     return returnMazeDimensions;
+}
+
+-(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2
+{
+    int tmp, p1, p2, diff;
+    p1 = pt1;
+    p2 = pt2;
+    
+    diff = p2 - p1;
+    
+    /*need to have p1 < p2*/
+    if (diff < 0) {
+        diff=diff*-1;
+        tmp = p1;
+        p1 = p2;
+        p2 = tmp;
+    }
+    
+    if (diff != 1) {
+        diff = largeMazeCols;
+    }
+    
+    p1 = [self translateSmallArrayIndexToLarge:p1];
+    p2 = [self translateSmallArrayIndexToLarge:p2];
+    
+    for (int i = p1; i < p2; i+=diff) {
+        if ([[realMaze objectAtIndex:i]intValue] == tWall)
+            return TRUE;
+    }
+    return FALSE;
 }
 
 -(NSInteger) translateSmallArrayIndexToLarge:(NSInteger) smallArrIndex
@@ -513,9 +557,6 @@ how to:
     col1 = (col1 * kTrueScale) + 1;
     //translate that to the larger graph - single num coord
     largeArrIndex = row1 * largeMazeCols + col1;
-    //cut out walls from actual maze
-    //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
-    //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
     return largeArrIndex;
 }
 
@@ -524,18 +565,14 @@ how to:
     int num1 = largeArrIndex;
     int row1, col1;
     int smallArrIndex;
-    //get a x,y of the cells we are joining        
+
     row1 = [self translateLargeArrayIndexToXY:num1 ].num1;
     col1 = [self translateLargeArrayIndexToXY:num1 ].num2;
-    
-    //translate that to the larger - x,y coords
+
     row1 = (row1 / kTrueScale) - 1;
     col1 = (col1 / kTrueScale) - 1;
-    //translate that to the larger graph - single num coord
+
     smallArrIndex = row1 * (smallMazeCols) + col1;
-    //cut out walls from actual maze
-    //        NSLog(@"chosen nodes        : %i, %i", num1, num2);
-    //        NSLog(@"nodes on real maze  : %i, %i", newNum1, newNum2);
     return smallArrIndex;
 }
 
@@ -577,6 +614,16 @@ how to:
 -(NSInteger) returnLargeMazeEndingLocation
 {
     return [self translateSmallArrayIndexToLarge:endingLocation];
+}
+
+-(NSInteger) returnEmptySlotInMaze
+{
+    NSInteger emptySlot;
+    emptySlot = arc4random()%largeMazeSize;
+    while ([[realMaze objectAtIndex:emptySlot] intValue] != tNone) {
+        emptySlot = arc4random()%largeMazeSize;
+    }
+    return emptySlot;    
 }
 
 @end

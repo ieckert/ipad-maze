@@ -23,19 +23,10 @@
             break;
         case sEnemyPathFinding:
             NSLog(@"Enemy->Starting sEnemyPathFinding");
-            int X, Y;
-            int currentPosition, finalDestination;
-            
-            X = [[objectInfo objectForKey:notificationUserInfoKeyPositionX]intValue];
-            Y = [[objectInfo objectForKey:notificationUserInfoKeyPositionY]intValue];
-            currentPosition = [handleOnMaze translateLargeXYToArrayIndex:X :Y];
-            
-            /* mark current location as "visited" - 1 */
-            [visitedLocationList replaceObjectAtIndex:currentPosition withObject:[NSNumber numberWithInt:1]];
-            
-            finalDestination = arc4random()%[visitedLocationList count];
-            
-            
+            /*will add animations to queue*/
+            [self depthFirstSearch:[self locationInMaze] :[handleOnMaze returnEmptySlotInMaze]];
+            //action = [CCCallFuncND actionWithTarget:self selector:@selector(changeState:)];
+            //[animationQueue enqueue:action];
             break;
         case sEnemyAggressive:
             NSLog(@"Enemy->Starting sEnemyAggressive");
@@ -43,10 +34,11 @@
             break; 
         case sEnemySleeping:
             NSLog(@"Enemy->Starting sEnemySleeping");
-//            for (int i =0; i < 100; i++) {
-//                id action = [CCRotateBy actionWithDuration:0.5 angle:45];
-//                [animationQueue enqueue:action];
-//            }
+            for (int i =0; i < 4; i++) {
+                id action = [CCRotateBy actionWithDuration:0.5 angle:45];
+                [animationQueue enqueue:action];
+            }
+            
             break;
         case sEnemyReloading:
             NSLog(@"Enemy->Starting sEnemyReloading");
@@ -60,9 +52,7 @@
             NSLog(@"Unhandled state %d in EnemyObject", newState);
             break;
     }
-    if (action != nil) {
-        [self runAction:action];
-    }
+
 }
 
 -(void) timerDuties: (ccTime) dt

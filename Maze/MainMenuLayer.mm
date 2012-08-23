@@ -190,10 +190,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [menuMaze release];
     [requirements release];
-    [mazeMaker release];
     
     [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
     [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
+    
+    [mazeMaker release];
 
     
     //might need to remove all things in the world first!
@@ -485,17 +486,18 @@
                                          Requirements:requirements
                                                  Maze:menuMaze];
         
-        mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
+        Pair* mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         mazeDimensions = [mazeMaker createMaze];
         rows = mazeDimensions.num1;
         cols = mazeDimensions.num2;
+        [mazeDimensions release];
         
         
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
         
         //for objectFactory returnObjectDimensions - num1 is height - num2 is width
-        int x, y, num, mazeSize;
+        int x, y, mazeSize;
         Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
         CGPoint tmpLocation;
         mazeSize = rows*cols;
@@ -532,7 +534,6 @@
                              withKnowledgeOfMaze:mazeMaker];
             }
             else if ([[menuMaze objectAtIndex:i] intValue] == tStart) {
-                NSLog(@"starting position at: %i", num);
                 [objectFactory createObjectOfType:tBall 
                                        atLocation:tmpLocation 
                                        withZValue:kBallZValue
@@ -540,7 +541,6 @@
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
             else if ([[menuMaze objectAtIndex:i] intValue] == tFinish) {
-                NSLog(@"ending position at: %i", num);
             }
             
         }
@@ -549,29 +549,6 @@
         
         [self scheduleUpdate];                                    
         [self displayMainMenu];
-
-/*testing the queue out!*/        
-/*
-        Queue *myQueue = [[Queue alloc] init];
-        [myQueue enqueue:0];
-        [myQueue enqueue:1];
-        [myQueue enqueue:2];
-        [myQueue enqueue:3];
-        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
-        [myQueue enqueue:0];
-        [myQueue lifoPush:1];
-        [myQueue lifoPush:2];
-        [myQueue enqueue:3];
-        [myQueue dequeue];
-        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
-        [myQueue lifoPush:1];
-        [myQueue lifoPush:2];
-        [myQueue enqueue:0];
-        [myQueue lifoPush:4];
-
-        NSLog(@"dequeue: %i, %i, %i, %i", [myQueue dequeue], [myQueue dequeue], [myQueue dequeue], [myQueue dequeue]);
-*/
-        
     }
     return self;
 }

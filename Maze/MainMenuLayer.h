@@ -51,7 +51,6 @@
     
     int rows;
     int cols;
-    Pair *mazeDimensions;
     
     CGSize screenSize;
     

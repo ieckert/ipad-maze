@@ -26,9 +26,7 @@
         canHear = true;
         timerInterval = 0.75;
         actionInterval = 0.5;
-        
-        [self changeState:sEnemySleeping]; 
-        
+                
         [self setDisplayFrame:frame];
         [self setPosition:location];
         
@@ -45,8 +43,7 @@
             [visitedLocationList insertObject:[NSNumber numberWithInt:0] atIndex:i];
         }
         [self schedule: @selector(timerDuties:) interval:timerInterval];
-
-        [self depthFirstSearch:[handleOnMaze returnLargeMazeStartingLocation] :[handleOnMaze returnLargeMazeEndingLocation]];
+        [self changeState:sEnemyPathFinding];         
     }
     return self;
 }
@@ -101,10 +98,20 @@
 
 }
 
+-(NSInteger) locationInMaze
+{
+    NSInteger location;
+    
+    int tmpX = (([self position].x-150)/[[objectFactory returnObjectDimensions:tWall]num1]);
+    int tmpY = (([self position].y-150)/[[objectFactory returnObjectDimensions:tWall]num1]);
+    
+    location = [handleOnMaze translateLargeXYToArrayIndex:tmpX :tmpY];
+    return location;
+}
+
 -(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation
 {
-//    NSLog(@"inDFS");
-    //use handleOnMaze wallList for the path
+    //use handleOnMaze - wallList for the path
     //use visitedLocationList for the DFS 'coloring'
     
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];

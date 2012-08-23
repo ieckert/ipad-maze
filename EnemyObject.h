@@ -38,5 +38,6 @@
       WithKnowledgeOfMaze:(MazeMaker*)maze;
 
 -(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation;
+-(NSInteger) locationInMaze;
 
 @end
