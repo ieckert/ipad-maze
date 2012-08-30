@@ -79,13 +79,24 @@
 //most likely need to override this for each implementation of an enemy    
     if (isActive == FALSE)
         return;
+
     
     [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
     [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
     
     CGRect myBoundingBox = [self adjustedBoundingBox];
+    CGRect mySoundBoundingBox = [self soundBoundingBox];
+    
     for (GameObject *object in listOfGameObjects) {
         
+        CGRect objectBoundingBox = [object adjustedBoundingBox];
+        if (CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
+            if ([object gameObjectType] == tBall ) {
+                NSLog(@"Minion Heard something!!");
+                
+                
+            }         
+        }    
         
     }
     
@@ -126,7 +137,6 @@
 {
     //use handleOnMaze - wallList for the path
     //use visitedLocationList for the DFS 'coloring'
-    NSLog(@"make sure you ALWAYS run 'prepDFSForUse' before this! the visitedLocationList will not be cleared otherwise");
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
     CGPoint animPoint;
 
@@ -194,6 +204,26 @@
     }
 //    NSLog(@"this path has not been traveled: %i", tmpInt);
     return tmpInt;
+}
+
+-(CGRect)soundBoundingBox {
+    CGRect soundBoundingBox;
+    CGSize soundBoundingSize;
+
+    /*to make it so the enemy can "hear" from a distance relative to its size*/
+    soundBoundingSize.height = [self boundingBox].size.height*kEnemySoundMultiplier;
+    soundBoundingSize.width = [self boundingBox].size.width*kEnemySoundMultiplier;
+
+    soundBoundingBox.size = soundBoundingSize;
+    
+    /*to make the bounding box be centered on the enemy*/
+    /*otherwise, it would start at the 0,0 point of the enemy rect*/
+    /*we want a rect that is fully around the enemy*/
+    soundBoundingBox.origin = [self boundingBox].origin;
+    soundBoundingBox.origin.x -= soundBoundingSize.width/2;
+    soundBoundingBox.origin.y -= soundBoundingSize.height/2;    
+    
+    return soundBoundingBox;
 }
 
 @end

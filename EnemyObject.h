@@ -40,5 +40,6 @@
 -(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation;
 -(NSInteger) locationInMaze;
 -(void) prepDFSForUse;
+-(CGRect)soundBoundingBox;
 
 @end

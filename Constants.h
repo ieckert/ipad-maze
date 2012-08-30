@@ -34,6 +34,7 @@
 #define kAngularDamp 3
 #define kAccelerometerConstant 13
 
+#define kEnemySoundMultiplier 10
 
 typedef enum {
     kNoSceneUninitialized=0,
