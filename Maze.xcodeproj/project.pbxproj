@@ -13,7 +13,6 @@
 		3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C138FA715C8C31B00C7BBFF /* ObjectFactory.mm */; };
 		3C189DA315A4D43D000F2345 /* StatsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DA215A4D43D000F2345 /* StatsLayer.mm */; };
 		3C189DAE15A4D4F2000F2345 /* StatsKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */; };
-		3C189DB115A4DE12000F2345 /* StatsObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DB015A4DE12000F2345 /* StatsObject.m */; };
 		3C189DBC15A51F08000F2345 /* atlas2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C189DBA15A51F08000F2345 /* atlas2.plist */; };
 		3C189DBD15A51F08000F2345 /* atlas2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C189DBB15A51F08000F2345 /* atlas2.png */; };
 		3C189DC015A51F8B000F2345 /* CoinObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DBF15A51F8B000F2345 /* CoinObject.mm */; };
@@ -181,11 +180,13 @@
 		3C29B902159F67B700F28168 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B901159F67B600F28168 /* CoreMotion.framework */; };
 		3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C48348515CF006500EF9C7A /* ObjectInfoConstants.m */; };
 		3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */; };
+		3CDCAB2A15E9D3010012A4FF /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CDCAB2815E9D3010012A4FF /* Model.xcdatamodeld */; };
+		3CDCAB3015E9D3D10012A4FF /* Stats.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CDCAB2F15E9D3D10012A4FF /* Stats.m */; };
+		3CE1F65415E932590006819E /* DataAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE1F65315E932590006819E /* DataAdapter.m */; };
 		3CE2FC0415DC9644004C8AAF /* EnemyObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE2FC0315DC9644004C8AAF /* EnemyObject.mm */; };
 		3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE54D2615AA3EE10067B70B /* GLES-Render.mm */; };
 		3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.mm */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
-		3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3CE972DB15CA4559001307BC /* Model.xcdatamodeld */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */; };
 		3CEA4F6B15DDE0A500F841C9 /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.m */; };
 		3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.m */; };
@@ -201,8 +202,8 @@
 		3C128AE715AA728E00883E52 /* MainMenuScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuScene.mm; sourceTree = "<group>"; };
 		3C128AEA15AA72B000883E52 /* MainMenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuLayer.h; sourceTree = "<group>"; };
 		3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuLayer.mm; sourceTree = "<group>"; };
-		3C128AEE15AA73C200883E52 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
-		3C128AEF15AA73C200883E52 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameManager.mm; sourceTree = "<group>"; };
+		3C128AEE15AA73C200883E52 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameManager.h; path = Maze/GameManager.h; sourceTree = "<group>"; };
+		3C128AEF15AA73C200883E52 /* GameManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameManager.mm; path = Maze/GameManager.mm; sourceTree = "<group>"; };
 		3C138FA615C8C31B00C7BBFF /* ObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectFactory.h; sourceTree = "<group>"; };
 		3C138FA715C8C31B00C7BBFF /* ObjectFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ObjectFactory.mm; sourceTree = "<group>"; };
 		3C189D9B15A4D390000F2345 /* MazeLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeLayer.h; sourceTree = "<group>"; };
@@ -210,8 +211,6 @@
 		3C189DA215A4D43D000F2345 /* StatsLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatsLayer.mm; sourceTree = "<group>"; };
 		3C189DAC15A4D4F2000F2345 /* StatsKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsKeeper.h; sourceTree = "<group>"; };
 		3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsKeeper.m; sourceTree = "<group>"; };
-		3C189DAF15A4DE12000F2345 /* StatsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsObject.h; sourceTree = "<group>"; };
-		3C189DB015A4DE12000F2345 /* StatsObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsObject.m; sourceTree = "<group>"; };
 		3C189DBA15A51F08000F2345 /* atlas2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas2.plist; sourceTree = "<group>"; };
 		3C189DBB15A51F08000F2345 /* atlas2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas2.png; sourceTree = "<group>"; };
 		3C189DBE15A51F8B000F2345 /* CoinObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinObject.h; sourceTree = "<group>"; };
@@ -521,11 +520,11 @@
 		3C29B87215979E6800F28168 /* LICENSE_FontLabel.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE_FontLabel.txt; path = libs/LICENSE_FontLabel.txt; sourceTree = "<group>"; };
 		3C29B87415979E6800F28168 /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		3C29B87515979E6800F28168 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		3C29B87715979E6800F28168 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		3C29B87815979E6800F28168 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		3C29B87A15979E6800F28168 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		3C29B87B15979E6800F28168 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
-		3C29B88015979E6800F28168 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
+		3C29B87715979E6800F28168 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Maze/AppDelegate.h; sourceTree = "<group>"; };
+		3C29B87815979E6800F28168 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = Maze/AppDelegate.mm; sourceTree = "<group>"; };
+		3C29B87A15979E6800F28168 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RootViewController.h; path = Maze/RootViewController.h; sourceTree = "<group>"; };
+		3C29B87B15979E6800F28168 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RootViewController.m; path = Maze/RootViewController.m; sourceTree = "<group>"; };
+		3C29B88015979E6800F28168 /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GameConfig.h; path = Maze/GameConfig.h; sourceTree = "<group>"; };
 		3C29B88715979EDC00F28168 /* Disjsets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Disjsets.h; sourceTree = "<group>"; };
 		3C29B88815979EDC00F28168 /* Disjsets.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Disjsets.m; sourceTree = "<group>"; };
 		3C29B8921597A22200F28168 /* MazeMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeMaker.h; sourceTree = "<group>"; };
@@ -548,6 +547,11 @@
 		3C728B59159F867D00C8DC81 /* BackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLayer.h; sourceTree = "<group>"; };
 		3C728B5A159F867D00C8DC81 /* BackgroundLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BackgroundLayer.mm; sourceTree = "<group>"; };
 		3C728B5D159F884100C8DC81 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		3CDCAB2915E9D3010012A4FF /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		3CDCAB2E15E9D3D10012A4FF /* Stats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stats.h; sourceTree = "<group>"; };
+		3CDCAB2F15E9D3D10012A4FF /* Stats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stats.m; sourceTree = "<group>"; };
+		3CE1F65215E932590006819E /* DataAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataAdapter.h; sourceTree = "<group>"; };
+		3CE1F65315E932590006819E /* DataAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataAdapter.m; sourceTree = "<group>"; };
 		3CE2FC0215DC9644004C8AAF /* EnemyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnemyObject.h; sourceTree = "<group>"; };
 		3CE2FC0315DC9644004C8AAF /* EnemyObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EnemyObject.mm; sourceTree = "<group>"; };
 		3CE54D2515AA3EE10067B70B /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
@@ -555,7 +559,6 @@
 		3CE6B7AC15C46E93006C2664 /* Pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pair.h; sourceTree = "<group>"; };
 		3CE6B7AD15C46E93006C2664 /* Pair.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Pair.mm; sourceTree = "<group>"; };
 		3CE972D715CA432D001307BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		3CE972DC15CA4559001307BC /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeRequirements.mm; sourceTree = "<group>"; };
 		3CEA4F6915DDE0A500F841C9 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
@@ -610,9 +613,9 @@
 		3C128AE315AA717800883E52 /* BasicLevel */ = {
 			isa = PBXGroup;
 			children = (
+				3C189D9E15A4D3A2000F2345 /* Layers */,
 				3C728B5D159F884100C8DC81 /* GameScene.h */,
 				3C189E4015A79BD0000F2345 /* GameScene.mm */,
-				3C189D9E15A4D3A2000F2345 /* Layers */,
 			);
 			name = BasicLevel;
 			sourceTree = "<group>";
@@ -620,10 +623,9 @@
 		3C128AE415AA718200883E52 /* MainMenu */ = {
 			isa = PBXGroup;
 			children = (
+				3CE1F64915E87CDB0006819E /* Layers */,
 				3C128AE615AA728E00883E52 /* MainMenuScene.h */,
 				3C128AE715AA728E00883E52 /* MainMenuScene.mm */,
-				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
-				3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */,
 			);
 			name = MainMenu;
 			sourceTree = "<group>";
@@ -631,6 +633,7 @@
 		3C128AE515AA722E00883E52 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3CE1F64A15E87CFC0006819E /* GameManager */,
 				3CEA4F6715DDE08A00F841C9 /* Queue */,
 				3CE972DA15CA453E001307BC /* DataModel */,
 				3C128AED15AA739500883E52 /* AccelerometerFilter */,
@@ -670,6 +673,7 @@
 				3C128AE315AA717800883E52 /* BasicLevel */,
 			);
 			name = Scenes;
+			path = Maze;
 			sourceTree = "<group>";
 		};
 		3C189DA015A4D3F6000F2345 /* StatsKeeper */ = {
@@ -677,8 +681,6 @@
 			children = (
 				3C189DAC15A4D4F2000F2345 /* StatsKeeper.h */,
 				3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */,
-				3C189DAF15A4DE12000F2345 /* StatsObject.h */,
-				3C189DB015A4DE12000F2345 /* StatsObject.m */,
 			);
 			name = StatsKeeper;
 			sourceTree = "<group>";
@@ -823,9 +825,11 @@
 		3C29B70615979E5A00F28168 = {
 			isa = PBXGroup;
 			children = (
+				3CE1F64715E87C220006819E /* AppFiles */,
 				3C128AE515AA722E00883E52 /* Classes */,
 				3C29B8AB159925DF00F28168 /* Common */,
-				3C29B72515979E5B00F28168 /* Maze */,
+				3C29B8A71599252A00F28168 /* GameObjects */,
+				3C189D9F15A4D3AD000F2345 /* Scenes */,
 				3C29B72615979E5B00F28168 /* Resources */,
 				3C29B73A15979E5B00F28168 /* Libs */,
 				3C29B71415979E5B00F28168 /* Frameworks */,
@@ -856,23 +860,6 @@
 				3C29B72315979E5B00F28168 /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		3C29B72515979E5B00F28168 /* Maze */ = {
-			isa = PBXGroup;
-			children = (
-				3C29B8A71599252A00F28168 /* GameObjects */,
-				3C189D9F15A4D3AD000F2345 /* Scenes */,
-				3C29B87315979E6800F28168 /* Supporting Files */,
-				3C29B87715979E6800F28168 /* AppDelegate.h */,
-				3C29B87815979E6800F28168 /* AppDelegate.mm */,
-				3C29B87A15979E6800F28168 /* RootViewController.h */,
-				3C29B87B15979E6800F28168 /* RootViewController.m */,
-				3C128AEE15AA73C200883E52 /* GameManager.h */,
-				3C128AEF15AA73C200883E52 /* GameManager.mm */,
-				3C29B88015979E6800F28168 /* GameConfig.h */,
-			);
-			path = Maze;
 			sourceTree = "<group>";
 		};
 		3C29B72615979E5B00F28168 /* Resources */ = {
@@ -1206,6 +1193,7 @@
 				3C29B87515979E6800F28168 /* main.m */,
 			);
 			name = "Supporting Files";
+			path = Maze;
 			sourceTree = "<group>";
 		};
 		3C29B88615979E9B00F28168 /* Disjsets */ = {
@@ -1257,7 +1245,6 @@
 				3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */,
 			);
 			name = GameObjects;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		3C29B8AB159925DF00F28168 /* Common */ = {
@@ -1283,10 +1270,45 @@
 			name = "Animation Plists";
 			sourceTree = "<group>";
 		};
+		3CE1F64715E87C220006819E /* AppFiles */ = {
+			isa = PBXGroup;
+			children = (
+				3C29B87315979E6800F28168 /* Supporting Files */,
+				3C29B87715979E6800F28168 /* AppDelegate.h */,
+				3C29B87815979E6800F28168 /* AppDelegate.mm */,
+				3C29B87A15979E6800F28168 /* RootViewController.h */,
+				3C29B87B15979E6800F28168 /* RootViewController.m */,
+				3C29B88015979E6800F28168 /* GameConfig.h */,
+			);
+			name = AppFiles;
+			sourceTree = "<group>";
+		};
+		3CE1F64915E87CDB0006819E /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
+				3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */,
+			);
+			name = Layers;
+			sourceTree = "<group>";
+		};
+		3CE1F64A15E87CFC0006819E /* GameManager */ = {
+			isa = PBXGroup;
+			children = (
+				3C128AEE15AA73C200883E52 /* GameManager.h */,
+				3C128AEF15AA73C200883E52 /* GameManager.mm */,
+			);
+			name = GameManager;
+			sourceTree = "<group>";
+		};
 		3CE972DA15CA453E001307BC /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
-				3CE972DB15CA4559001307BC /* Model.xcdatamodeld */,
+				3CE1F65215E932590006819E /* DataAdapter.h */,
+				3CE1F65315E932590006819E /* DataAdapter.m */,
+				3CDCAB2815E9D3010012A4FF /* Model.xcdatamodeld */,
+				3CDCAB2E15E9D3D10012A4FF /* Stats.h */,
+				3CDCAB2F15E9D3D10012A4FF /* Stats.m */,
 			);
 			name = DataModel;
 			sourceTree = "<group>";
@@ -1485,7 +1507,6 @@
 				3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */,
 				3C189DA315A4D43D000F2345 /* StatsLayer.mm in Sources */,
 				3C189DAE15A4D4F2000F2345 /* StatsKeeper.m in Sources */,
-				3C189DB115A4DE12000F2345 /* StatsObject.m in Sources */,
 				3C189DC015A51F8B000F2345 /* CoinObject.mm in Sources */,
 				3C189E3F15A79BC2000F2345 /* MazeLayer.mm in Sources */,
 				3C189E4115A79BD0000F2345 /* GameScene.mm in Sources */,
@@ -1532,13 +1553,15 @@
 				3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */,
 				3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */,
 				3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */,
-				3CE972DD15CA4559001307BC /* Model.xcdatamodeld in Sources */,
 				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,
 				3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */,
 				3CE2FC0415DC9644004C8AAF /* EnemyObject.mm in Sources */,
 				3CEA4F6B15DDE0A500F841C9 /* Queue.m in Sources */,
 				3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.m in Sources */,
 				3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */,
+				3CE1F65415E932590006819E /* DataAdapter.m in Sources */,
+				3CDCAB2A15E9D3010012A4FF /* Model.xcdatamodeld in Sources */,
+				3CDCAB3015E9D3D10012A4FF /* Stats.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1593,7 +1616,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Maze/libs;
 				INFOPLIST_FILE = Maze/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1612,7 +1635,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = Maze/libs;
 				INFOPLIST_FILE = Maze/Resources/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-lz";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -1645,12 +1668,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		3CE972DB15CA4559001307BC /* Model.xcdatamodeld */ = {
+		3CDCAB2815E9D3010012A4FF /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				3CE972DC15CA4559001307BC /* Model.xcdatamodel */,
+				3CDCAB2915E9D3010012A4FF /* Model.xcdatamodel */,
 			);
-			currentVersion = 3CE972DC15CA4559001307BC /* Model.xcdatamodel */;
+			currentVersion = 3CDCAB2915E9D3010012A4FF /* Model.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

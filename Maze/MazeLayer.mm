@@ -45,6 +45,8 @@
 //transition from previous scene to this one
 -(void) onEnterTransitionDidFinish
 {
+    mazeComplete = FALSE;
+    onFinishDoor = FALSE;
 /*    
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"3"] afterDelay:.5f];
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"2"] afterDelay:2.0f];
@@ -55,8 +57,6 @@
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"READY"] afterDelay:.5f];
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:2.0f];
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
-
-
 }
 
 -(void)placeParticleEmitterAtLocation:(CGPoint)location{
@@ -191,6 +191,30 @@
     world->SetGravity(gravity);
 }
 
+-(void) endingTransition
+{
+    NSLog(@"playing ending transition");
+    [statsKeeper setActive:FALSE];
+    
+    NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
+    
+    [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
+    
+    CCArray *listOfGameObjects =
+    [sceneSpriteBatchNode children];                     
+    for (GameObject *tempObject in listOfGameObjects) {
+        if ([tempObject isActive] == true)
+            [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
+    }
+    
+    for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
+        if (b->GetUserData() != NULL) {
+            b->SetType(b2_dynamicBody);
+            b->ApplyForce(b2Vec2(arc4random()%50, arc4random()%50), b->GetWorldCenter() );
+        }
+    }
+}
+
 #pragma mark -
 #pragma mark Update Method
 -(void) update:(ccTime)deltaTime
@@ -228,15 +252,15 @@
                  listOfGameObjects]; 
         }
     
-        if ( [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
+        if ( /* [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
+            && */ 
+            paused == FALSE
             && mazeComplete == FALSE
             && onFinishDoor == TRUE) {
+            onFinishDoor = FALSE;
             //prevents this from being called over and over while update still works
             mazeComplete = TRUE;
             [self endingTransition];
-        }
-        else {
-            onFinishDoor = false;
         }
 }
 
@@ -256,8 +280,6 @@
         
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
-        mazeComplete = FALSE;
-        onFinishDoor = false;
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[CCSpriteFrameCache sharedSpriteFrameCache]
@@ -376,36 +398,11 @@
         
         [tmpCoords release];
         
-        
-        [self pauseGame];
         [self scheduleUpdate];                                    
         [self setTimer];
+        [self pauseGame];
     }
 	return self;
-}
-
--(void) endingTransition
-{
-    NSLog(@"playing ending transition");
-    [statsKeeper setActive:FALSE];
-
-    NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
-
-    [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
-    
-    CCArray *listOfGameObjects =
-    [sceneSpriteBatchNode children];                     
-    for (GameObject *tempObject in listOfGameObjects) {
-        if ([tempObject isActive] == true)
-            [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
-    }
-    
-    for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
-        if (b->GetUserData() != NULL) {
-            b->SetType(b2_dynamicBody);
-            b->ApplyForce(b2Vec2(arc4random()%50, arc4random()%50), b->GetWorldCenter() );
-        }
-    }
 }
 
 - (void) endingDuties: (NSNumber*)option
@@ -413,12 +410,14 @@
     switch ([option intValue]) {
         case kInGameMenuHome:
             NSLog(@"chose main menu");
-            [statsKeeper setActive:FALSE];
-            [repeatingTimer invalidate];
-            
+
             [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+            
+            [statsKeeper setActive:FALSE];
             [statsKeeper dropStatsFromCurrentLevel];
             
+            [repeatingTimer invalidate];
+                        
             [[GameManager sharedGameManager]
              runSceneWithID:kMainMenuScene];
             break;
@@ -428,44 +427,23 @@
             break;
             
         case kProgressNextLevel:
-            NSLog(@"moving to next level");
-            [statsKeeper nextLevel];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadLevelLabel" 
-                                                                object:self];
-            NSLog(@"going to level: %i", [statsKeeper currentLevel]);
+            [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+            
             [statsKeeper setActive:FALSE];
             
             [repeatingTimer invalidate];
             
-            [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
-/*
- [[Director sharedDirector] replaceScene: 
- [ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
-*/
-/*
-            CCArray *listOfGameObjects =
-            [sceneSpriteBatchNode children];                 
-            for (GameObject *tempObject in listOfGameObjects) {
-                NSLog(@"cleaning up gameObjects");
-                [sceneSpriteBatchNode removeChild:tempObject cleanup:YES];
-            }
-*/            
             [[GameManager sharedGameManager]
-             runSceneWithID:kBasicLevel];
+             runSceneWithID:kNormalLevel];
             break;
             
         default:
-//            NSLog(@"when in ending duties -> found unidentified case: %i", option);
+            NSLog(@"when in ending duties -> found unidentified case: %i", [option intValue] );
             break;
-        
-//        for (CCSprite *monster in _monsters) {
-//            [_batchNode removeChild:monster cleanup:YES];
-//        }    
-        
         
     }
     
-    }
+}
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
@@ -510,7 +488,6 @@
     switch ([option tag]) {
         case kInGameMenuHome:
             NSLog(@"chose main menu");
-            //need to save off game data here!!
             tmp = [NSNumber numberWithInt:kInGameMenuHome];
             [self endingDuties:tmp];
             break;
@@ -570,7 +547,8 @@
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     
-//the if statement prevents the user from tapping multiple times and having the game crash
+//'paused' prevents the user from tapping multiple times and having the game crash
+//'mazeComplete' prevents the user from tapping the screen when the ending transition is active
     if (paused == FALSE && mazeComplete == FALSE) {
         [self pauseGame];
         [self pausedAnimation];

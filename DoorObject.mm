@@ -25,7 +25,7 @@
 -(void)changeState:(CharacterStates)newState {
     [self stopAllActions];
     id action = nil;
-    [self setCharacterState:sNewState];
+    [self setCharacterState:newState];
     
     switch (newState) {
         case sDoorIdle:

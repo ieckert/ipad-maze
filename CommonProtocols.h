@@ -21,26 +21,6 @@ typedef enum {
     dDown
 } BallDirection;
 
-typedef enum {
-    sNewState,
-    sBallRolling,
-    sBallIdle,
-    sBallColliding,
-    sWallColliding,
-    sWallIdle,
-    sCoinSpinning,
-    sCoinCaptured,
-    sCoinIdle,
-    sCoinRemoving,
-    sDoorIdle,
-    sDoorInteracting,
-    sEnemyPatrol,
-    sEnemyPathFinding,
-    sEnemyAggressive,
-    sEnemySleeping,
-    sEnemyReloading,
-    sEnemyShooting
-} CharacterStates;
 
 @protocol GameplayLayerDelegate
 -(void)createObjectOfType:(NSInteger const)objectType

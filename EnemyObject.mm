@@ -8,7 +8,11 @@
 
 #import "EnemyObject.h"
 #import "ObjectInfoConstants.h"
+@interface EnemyObject()
 
+-(NSInteger) checkUnvisitedPathsFromLocation:(NSInteger)location;
+
+@end
 @implementation EnemyObject
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
@@ -24,8 +28,8 @@
         DFSWasFound = false;
         canSee = true;
         canHear = true;
-        timerInterval = 0.75;
-        actionInterval = 0.5;
+        timerInterval = 0.6;
+        actionInterval = 0.45;
                 
         [self setDisplayFrame:frame];
         [self setPosition:location];
@@ -37,7 +41,6 @@
         
         handleOnMaze = maze;
         int arrSize = [[handleOnMaze wallList] count];
-        NSLog(@"slots in maze: %i", arrSize);
         visitedLocationList = [[NSMutableArray alloc] initWithCapacity:arrSize];
         for (int i = 0; i < arrSize; i++) {
             [visitedLocationList insertObject:[NSNumber numberWithInt:0] atIndex:i];
@@ -109,11 +112,21 @@
     return location;
 }
 
+-(void) prepDFSForUse
+{    
+    NSLog(@"make sure you ALWAYS run this BEFORE 'depthFirstSearch'");
+    DFSWasFound = FALSE;
+    int arrSize = [[handleOnMaze wallList] count];
+    for (int i = 0; i < arrSize; i++) {
+        [visitedLocationList replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:0]];
+    }    
+}
+
 -(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation
 {
     //use handleOnMaze - wallList for the path
     //use visitedLocationList for the DFS 'coloring'
-    
+    NSLog(@"make sure you ALWAYS run 'prepDFSForUse' before this! the visitedLocationList will not be cleared otherwise");
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
     CGPoint animPoint;
 
@@ -125,7 +138,7 @@
         id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
         [animationQueue enqueue:action];
         
-        NSLog(@"end location found: %i", endLocation); 
+//        NSLog(@"end location found: %i", endLocation); 
         /*after this - it is the dfs path to the goal*/
     }
     else {
@@ -133,7 +146,7 @@
         while (newLocation != -1) {
 
             if (!DFSWasFound) {
-                NSLog(@"in while DFS at: %i", newLocation);
+//                NSLog(@"in while DFS at: %i", newLocation);
                 animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:newLocation].num1)+150;
                 animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:newLocation].num2)+150;
                 
@@ -148,7 +161,7 @@
             newLocation = [self checkUnvisitedPathsFromLocation:startLocation];
             
             if (!DFSWasFound) {
-                NSLog(@"in while DFS at: %i", startLocation);
+//                NSLog(@"in while DFS at: %i", startLocation);
                 animPoint.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:startLocation].num1)+150;
                 animPoint.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:startLocation].num2)+150;
                 

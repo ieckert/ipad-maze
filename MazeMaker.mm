@@ -57,8 +57,8 @@
         startingLocation = smallMazeSize-smallMazeCols;
         endingLocation = smallMazeCols-1;
         
-        translationReturnPair = [[Pair alloc] initWithRequirements:0 :0];
-        returnMazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
+        translationReturnPair = [[[Pair alloc] initWithRequirements:0 :0]retain];
+        returnMazeDimensions = [[[Pair alloc] initWithRequirements:0 :0]retain];
         
         disjsets = [[Disjsets alloc] initWithSize:smallMazeRows :smallMazeCols];
         
@@ -438,8 +438,6 @@ how to:
         //for now these will be the start / end points!
         [realMaze replaceObjectAtIndex:newNum1 withObject:[NSNumber numberWithInt:tStart]];
         [realMaze replaceObjectAtIndex:newNum2 withObject:[NSNumber numberWithInt:tFinish]];
-        NSLog(@"start: %i finish: %i", newNum1, newNum2);
-
     }
 }
 
@@ -455,7 +453,6 @@ how to:
     int hallwayRange = 1;
     while ([self sameSet] != smallMazeSize) {
         [self shuffleIndicies];
-        NSLog(@"hallway range: %i", hallwayRange);
         for (id object in fullKeysList) {
             if ([self sameSet] == smallMazeSize)
                 break;
@@ -465,7 +462,6 @@ how to:
             if ([disjsets find:num1] == [disjsets find:num2]) 
                 continue;
             if ([self properWallRemoval:num1:num2:hallwayRange] == FALSE ) {
-                NSLog(@"in create - not proper wall removal");
                 continue;
             }
             [disjsets unionSets:[disjsets find:num1] :[disjsets find:num2]];

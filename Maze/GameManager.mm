@@ -49,10 +49,20 @@ return nil;
         isSoundEffectsON = YES;
         hasPlayerDied = NO;
         currentScene = kNoSceneUninitialized;
+        
         statsKeeper = [StatsKeeper createSingleton];
         objectFactory = [ObjectFactory createSingleton];
+        dataAdapter = [DataAdapter createSingleton];
     }
     return self;
+}
+
+-(void)dealloc
+{
+    [statsKeeper release];
+    [objectFactory release];
+    [dataAdapter release];
+    [super dealloc];
 }
            
 -(void)runSceneWithID:(SceneTypes)sceneID {
@@ -67,7 +77,13 @@ return nil;
         case kOptionsScene:
 
             break;
-        case kBasicLevel:
+        case kNormalLevel:
+            if (oldScene == kBonusLevel || oldScene == kNormalLevel) {
+                NSLog(@"game manager - moving to next level");
+                [statsKeeper nextLevel];
+                /*for debugging*/
+                [dataAdapter printAllLevelStats];
+            }
             sceneToRun = [GameScene node];
             break;
         default:
@@ -101,19 +117,13 @@ return nil;
         }
     }
     
-/*
-[[Director sharedDirector] replaceScene: 
-[ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
-*/
-//    CCTransitionShrinkGrow* transition = [CCTransitionShrinkGrow transitionWithDuration:1.0f scene:sceneToRun];
     if ([[CCDirector sharedDirector] runningScene] == nil) {
         [[CCDirector sharedDirector] runWithScene:sceneToRun];
         
     } else {
         [[CCDirector sharedDirector] replaceScene:[CCTransitionFlipAngular transitionWithDuration:3 
                                                                                            scene:sceneToRun]];
-//        [[CCDirector sharedDirector] replaceScene:sceneToRun];
-        //        [[CCDirector sharedDirector] replaceScene:transition];
+
     }
 }
 

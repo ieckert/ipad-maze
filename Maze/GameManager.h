@@ -10,21 +10,25 @@
 #import "Constants.h"
 #import "StatsKeeper.h"
 #import "ObjectFactory.h"
+#import "DataAdapter.h"
 
 @interface GameManager : NSObject {
     BOOL isMusicON;
     BOOL isSoundEffectsON;
     BOOL hasPlayerDied;
+    
     SceneTypes currentScene;
     
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;
-    
+    DataAdapter *dataAdapter;
 }
+
 @property (readwrite) BOOL isMusicON;
 @property (readwrite) BOOL isSoundEffectsON;
 @property (readwrite) BOOL hasPlayerDied;
 
-+(GameManager*)sharedGameManager;                                  // 1
--(void)runSceneWithID:(SceneTypes)sceneID;                         // 2
++(GameManager*)sharedGameManager;
+-(void)runSceneWithID:(SceneTypes)sceneID;
+
 @end

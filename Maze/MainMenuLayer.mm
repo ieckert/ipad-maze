@@ -19,23 +19,6 @@
 @implementation MainMenuLayer
 @synthesize accel;
 
-//change this later - from kMainMenuScene
--(void)playScene:(CCMenuItemFont*)itemPassedIn {
-    [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
-
-    if ([itemPassedIn tag] == 1) {
-        CCLOG(@"Tag 1 found, Scene 1");
-/*
-[[Director sharedDirector] replaceScene: 
-[ZoomFlipXTransition transitionWithDuration:1.2f scene:nextScene]];
-*/        
-        [[GameManager sharedGameManager] runSceneWithID:kBasicLevel];
-    } else {
-        CCLOG(@"Tag was: %d", [itemPassedIn tag]);
-        CCLOG(@"Placeholder for next chapters");
-    }
-}
-
 -(void)displayMainMenu {
     if (sceneSelectMenu != nil) {
         [sceneSelectMenu removeFromParentAndCleanup:YES];
@@ -75,6 +58,19 @@
     id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
     [mainMenu runAction:moveEffect];
     [self addChild:mainMenu z:0 tag:kMainMenuTagValue];
+}
+
+-(void)playScene:(CCMenuItemFont*)itemPassedIn {
+    [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
+    
+    if ([itemPassedIn tag] == 1) {
+        CCLOG(@"Tag 1 found, Scene 1");
+        
+        [[GameManager sharedGameManager] runSceneWithID:kNormalLevel];
+    } else {
+        CCLOG(@"Tag was: %d", [itemPassedIn tag]);
+        CCLOG(@"Placeholder for next chapters");
+    }
 }
 
 -(void)startFromCurrentLevel {

@@ -7,16 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "StatsObject.h"
 #import "CommonProtocols.h"
+#import "DataAdapter.h"
 
 @interface StatsKeeper : NSObject {
     
-    NSMutableArray *statsArr;
-    StatsObject *currentStats;
+    DataAdapter *dataAdapter;
+    
+    NSInteger coins;
+    NSInteger time;
     int currentLevel;
     BOOL active;
-
 }
 
 @property (readwrite, assign) int currentLevel;
@@ -25,9 +26,6 @@
 +(StatsKeeper *) createSingleton;
 
 -(NSInteger) nextLevel;
-
--(void) addCoin;
--(void) addTime;
 
 -(NSInteger) returnStatFromLevel: (TrackedStats)stat: (NSInteger) level;
 

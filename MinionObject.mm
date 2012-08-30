@@ -11,10 +11,38 @@
 
 @implementation MinionObject
 
+/*the logic of if the enemy is in a certain state and it ends - need to go to the next logical one*/
+-(void)stateMap
+{
+    switch ([self characterState]) {
+        case sEnemyPatrol:
+            
+            break;
+        case sEnemyPathFinding:
+            [self changeState:sEnemySleeping];
+            break;
+        case sEnemyAggressive:
+            
+            break; 
+        case sEnemySleeping:
+            [self changeState:sEnemyPathFinding];
+            break;
+        case sEnemyReloading:
+            
+            break;
+        case sEnemyShooting:
+            
+            break;
+        default:
+            NSLog(@"Unhandled state in EnemyObject - stateMap - %d", [self characterState]);
+            break;
+    }
+}
+
 -(void)changeState:(CharacterStates)newState {
     [self stopAllActions];
     id action = nil;
-    [self setCharacterState:sNewState];
+    [self setCharacterState:newState];
     
     switch (newState) {
         case sEnemyPatrol:
@@ -24,9 +52,10 @@
         case sEnemyPathFinding:
             NSLog(@"Enemy->Starting sEnemyPathFinding");
             /*will add animations to queue*/
+            [self prepDFSForUse];
             [self depthFirstSearch:[self locationInMaze] :[handleOnMaze returnEmptySlotInMaze]];
-            //action = [CCCallFuncND actionWithTarget:self selector:@selector(changeState:)];
-            //[animationQueue enqueue:action];
+            action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
+            [animationQueue enqueue:action];
             break;
         case sEnemyAggressive:
             NSLog(@"Enemy->Starting sEnemyAggressive");
@@ -34,10 +63,12 @@
             break; 
         case sEnemySleeping:
             NSLog(@"Enemy->Starting sEnemySleeping");
-            for (int i =0; i < 4; i++) {
-                id action = [CCRotateBy actionWithDuration:0.5 angle:45];
+            for (int i=0; i < 4; i++) {
+                id action = [CCRotateBy actionWithDuration:actionInterval angle:45];
                 [animationQueue enqueue:action];
             }
+            action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
+            [animationQueue enqueue:action];
             
             break;
         case sEnemyReloading:
@@ -57,22 +88,14 @@
 
 -(void) timerDuties: (ccTime) dt
 {  
-        NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
+//        NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
         [self stopAllActions];
         id action = nil;  
         action = [animationQueue dequeue];
         if (action != nil) {
-            NSLog(@"minion - ran action");
+//            NSLog(@"minion - ran action");
             [self runAction:action];
         }
-//            [self unschedule:@selector(timerDuties:)];
-//            NSInteger currentLocation = [objectFactory returnObjectDimensions:tWall].num2 / [handleOnMaze translateLargeXYToArrayIndex:[self position].y-150 :[objectFactory returnObjectDimensions:tWall].num2/[self position].x-150];
-//            NSLog(@"before dfs currentLocation: %f, %f", [self position].x, [self position].y);
-//            currentLocation = [handleOnMaze translateLargeArrayIndexToSmall:currentLocation];
-//            NSLog(@"for dfs currentLocation: %i", currentLocation);
-//            [self depthFirstSearch: currentLocation :11];
-//            [self schedule:@selector(timerDuties:)];
-    
 }
 
 @end

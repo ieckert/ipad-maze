@@ -12,13 +12,15 @@
 #import "GameConfig.h"
 #import "GameManager.h"
 
-//#import "MazeLayer.h"
-//#import "GameScene.h"
 #import "RootViewController.h"
 
 @implementation AppDelegate
-
-@synthesize window, managedObjectModel, managedObjectContext, persistentStoreCoordinator;
+/*
+@synthesize managedObjectContext=__managedObjectContext;
+@synthesize managedObjectModel=__managedObjectModel;
+@synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
+*/ 
+@synthesize window;
 
 - (void) removeStartupFlicker
 {
@@ -144,19 +146,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    NSError *error = nil;
-    
-    if (managedObjectContext != nil) {
-        
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            
-            abort();
-            
-        }
-        
-    }
 
 	CCDirector *director = [CCDirector sharedDirector];
 	
@@ -173,85 +162,63 @@
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
-- (NSManagedObjectContext *) managedObjectContext {
-    
-    if (managedObjectContext != nil) {
-        
-        return managedObjectContext;
-        
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    
-    if (coordinator != nil) {
-        
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
-        
-    }
-    
-    return managedObjectContext;
-    
-}
+/*
 
-- (NSManagedObjectModel *)managedObjectModel
-
-{
-    
-    if (managedObjectModel != nil) {
-        
-        return managedObjectModel;
-        
+- (NSManagedObjectModel *)managedObjectModel {
+    if (__managedObjectModel != nil) {
+        return __managedObjectModel;
     }
-    
-    else
-        
-    {
-        
-        managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-        
-        return managedObjectModel;
-        
-    }
-    
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
+    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    return __managedObjectModel;
 }
 
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    
-    if (persistentStoreCoordinator != nil) {
-        
-        return persistentStoreCoordinator;
-        
+    if (__persistentStoreCoordinator != nil) {
+        return __persistentStoreCoordinator;
     }
     
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory] stringByAppendingPathComponent: @"Model.sqlite"]];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Maze.sqlite"];
     
     NSError *error = nil;
-    
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:nil error:&error]) {
-        
+    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        
         abort();
-        
+    }
+    return __persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext *)managedObjectContext {
+    if (__managedObjectContext != nil) {
+        return __managedObjectContext;
     }
     
-    return persistentStoreCoordinator;
-    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        __managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [__managedObjectContext setPersistentStoreCoordinator:coordinator];
+    }
+    return __managedObjectContext;
 }
 
-- (NSString *)applicationDocumentsDirectory
-
-{
-    
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    
+- (NSURL *)applicationDocumentsDirectory {
+    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
+- (void)saveContext {
+    NSError *error = nil;
+    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
+    if (managedObjectContext != nil) {
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        } 
+    }
+}
 
+*/
+ 
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
 	[window release];

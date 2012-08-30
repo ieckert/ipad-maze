@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreData/CoreData.h>
+//#import <CoreData/CoreData.h>
 
 @class RootViewController;
 
@@ -15,15 +15,15 @@
 	UIWindow			*window;
 	RootViewController	*viewController;
 }
-
-@property (nonatomic, retain) UIWindow *window;
-
-@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
-
+/*
 @property (nonatomic, retain, readonly) NSManagedObjectContext *managedObjectContext;
-
+@property (nonatomic, retain, readonly) NSManagedObjectModel *managedObjectModel;
 @property (nonatomic, retain, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+*/
+ @property (nonatomic, retain) UIWindow *window;
 
-- (NSString *)applicationDocumentsDirectory;
-
+/*
+- (void)saveContext;
+- (NSURL *)applicationDocumentsDirectory;
+*/
 @end

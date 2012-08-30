@@ -39,7 +39,8 @@ typedef enum {
     kNoSceneUninitialized=0,
     kMainMenuScene=1,
     kOptionsScene=2,
-    kBasicLevel=101
+    kNormalLevel=3,
+    kBonusLevel=4
 } SceneTypes;
 
 typedef enum {
@@ -58,5 +59,26 @@ typedef enum {
     tFinish=5,
     tEnemy=6
 } GameObjectType;
+
+typedef enum {
+    sNewState=0,
+    sBallRolling=1,
+    sBallIdle=2,
+    sBallColliding=3,
+    sWallColliding=4,
+    sWallIdle=5,
+    sCoinSpinning=6,
+    sCoinCaptured=7,
+    sCoinIdle=8,
+    sCoinRemoving=9,
+    sDoorIdle=10,
+    sDoorInteracting=11,
+    sEnemyPatrol=12,
+    sEnemyPathFinding=13,
+    sEnemyAggressive=14,
+    sEnemySleeping=15,
+    sEnemyReloading=16,
+    sEnemyShooting=17
+} CharacterStates;
 
 
