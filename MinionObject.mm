@@ -53,7 +53,7 @@
             NSLog(@"Enemy->Starting sEnemyPathFinding");
             /*will add animations to queue*/
             [self prepDFSForUse];
-            [self depthFirstSearch:[self locationInMaze] :[handleOnMaze returnEmptySlotInMaze]];
+            [self depthFirstSearch:[self locationInMaze:[self position]] :[handleOnMaze returnEmptySlotInMaze]];
             action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
             [animationQueue enqueue:action];
             break;

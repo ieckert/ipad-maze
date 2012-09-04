@@ -12,7 +12,7 @@
 		3C128AF015AA73C200883E52 /* GameManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C128AEF15AA73C200883E52 /* GameManager.mm */; };
 		3C138FA815C8C31B00C7BBFF /* ObjectFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C138FA715C8C31B00C7BBFF /* ObjectFactory.mm */; };
 		3C189DA315A4D43D000F2345 /* StatsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DA215A4D43D000F2345 /* StatsLayer.mm */; };
-		3C189DAE15A4D4F2000F2345 /* StatsKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */; };
+		3C189DAE15A4D4F2000F2345 /* StatsKeeper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DAD15A4D4F2000F2345 /* StatsKeeper.mm */; };
 		3C189DBC15A51F08000F2345 /* atlas2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C189DBA15A51F08000F2345 /* atlas2.plist */; };
 		3C189DBD15A51F08000F2345 /* atlas2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C189DBB15A51F08000F2345 /* atlas2.png */; };
 		3C189DC015A51F8B000F2345 /* CoinObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189DBF15A51F8B000F2345 /* CoinObject.mm */; };
@@ -54,7 +54,6 @@
 		3C189F2615A7A165000F2345 /* b2PulleyJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C189F0015A7A165000F2345 /* b2PulleyJoint.cpp */; };
 		3C189F2715A7A165000F2345 /* b2RevoluteJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C189F0215A7A165000F2345 /* b2RevoluteJoint.cpp */; };
 		3C189F2815A7A165000F2345 /* b2WeldJoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3C189F0415A7A165000F2345 /* b2WeldJoint.cpp */; };
-		3C189F2D15A7A72C000F2345 /* Box2DSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C189F2C15A7A72B000F2345 /* Box2DSprite.mm */; };
 		3C29B71615979E5B00F28168 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B71515979E5B00F28168 /* QuartzCore.framework */; };
 		3C29B71815979E5B00F28168 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B71715979E5B00F28168 /* OpenGLES.framework */; };
 		3C29B71A15979E5B00F28168 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C29B71915979E5B00F28168 /* OpenAL.framework */; };
@@ -171,7 +170,7 @@
 		3C29B87C15979E6800F28168 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B87B15979E6800F28168 /* RootViewController.m */; };
 		3C29B88915979EDC00F28168 /* Disjsets.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B88815979EDC00F28168 /* Disjsets.m */; };
 		3C29B8941597A22200F28168 /* MazeMaker.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8931597A22200F28168 /* MazeMaker.mm */; };
-		3C29B8AA1599254A00F28168 /* GameObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8A91599254A00F28168 /* GameObject.m */; };
+		3C29B8AA1599254A00F28168 /* GameObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8A91599254A00F28168 /* GameObject.mm */; };
 		3C29B8B215992B0000F28168 /* WallObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8B115992B0000F28168 /* WallObject.mm */; };
 		3C29B8B51599317B00F28168 /* BallObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3C29B8B41599317B00F28168 /* BallObject.mm */; };
 		3C29B8D2159E4A6200F28168 /* WallObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3C29B8D1159E4A6200F28168 /* WallObject.plist */; };
@@ -188,8 +187,8 @@
 		3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.mm */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */; };
-		3CEA4F6B15DDE0A500F841C9 /* Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.m */; };
-		3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.m */; };
+		3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.mm */; };
+		3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */; };
 		3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */; };
 		3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD115D8B312006D6846 /* DoorObject.mm */; };
 		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
@@ -210,7 +209,7 @@
 		3C189DA115A4D43D000F2345 /* StatsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsLayer.h; sourceTree = "<group>"; };
 		3C189DA215A4D43D000F2345 /* StatsLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatsLayer.mm; sourceTree = "<group>"; };
 		3C189DAC15A4D4F2000F2345 /* StatsKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsKeeper.h; sourceTree = "<group>"; };
-		3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsKeeper.m; sourceTree = "<group>"; };
+		3C189DAD15A4D4F2000F2345 /* StatsKeeper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StatsKeeper.mm; sourceTree = "<group>"; };
 		3C189DBA15A51F08000F2345 /* atlas2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas2.plist; sourceTree = "<group>"; };
 		3C189DBB15A51F08000F2345 /* atlas2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas2.png; sourceTree = "<group>"; };
 		3C189DBE15A51F8B000F2345 /* CoinObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoinObject.h; sourceTree = "<group>"; };
@@ -290,8 +289,6 @@
 		3C189F0315A7A165000F2345 /* b2RevoluteJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2RevoluteJoint.h; sourceTree = "<group>"; };
 		3C189F0415A7A165000F2345 /* b2WeldJoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = b2WeldJoint.cpp; sourceTree = "<group>"; };
 		3C189F0515A7A165000F2345 /* b2WeldJoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = b2WeldJoint.h; sourceTree = "<group>"; };
-		3C189F2B15A7A72B000F2345 /* Box2DSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Box2DSprite.h; sourceTree = "<group>"; };
-		3C189F2C15A7A72B000F2345 /* Box2DSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Box2DSprite.mm; sourceTree = "<group>"; };
 		3C29B71115979E5B00F28168 /* Maze.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Maze.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C29B71515979E5B00F28168 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		3C29B71715979E5B00F28168 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -530,7 +527,7 @@
 		3C29B8921597A22200F28168 /* MazeMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeMaker.h; sourceTree = "<group>"; };
 		3C29B8931597A22200F28168 /* MazeMaker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeMaker.mm; sourceTree = "<group>"; };
 		3C29B8A81599254A00F28168 /* GameObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameObject.h; sourceTree = "<group>"; };
-		3C29B8A91599254A00F28168 /* GameObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameObject.m; sourceTree = "<group>"; };
+		3C29B8A91599254A00F28168 /* GameObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameObject.mm; sourceTree = "<group>"; };
 		3C29B8AC159925FB00F28168 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		3C29B8AF1599264B00F28168 /* CommonProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonProtocols.h; sourceTree = "<group>"; };
 		3C29B8B015992B0000F28168 /* WallObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallObject.h; sourceTree = "<group>"; };
@@ -562,9 +559,9 @@
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeRequirements.mm; sourceTree = "<group>"; };
 		3CEA4F6915DDE0A500F841C9 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
-		3CEA4F6A15DDE0A500F841C9 /* Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Queue.m; sourceTree = "<group>"; };
+		3CEA4F6A15DDE0A500F841C9 /* Queue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Queue.mm; sourceTree = "<group>"; };
 		3CEA4F6C15DDE1E800F841C9 /* AnimationContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationContainer.h; sourceTree = "<group>"; };
-		3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimationContainer.m; sourceTree = "<group>"; };
+		3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AnimationContainer.mm; sourceTree = "<group>"; };
 		3CEA4F6F15DEE65900F841C9 /* MinionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinionObject.h; sourceTree = "<group>"; };
 		3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MinionObject.mm; sourceTree = "<group>"; };
 		3CF2BBD015D8B312006D6846 /* DoorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorObject.h; sourceTree = "<group>"; };
@@ -603,9 +600,7 @@
 				3CE2FC0215DC9644004C8AAF /* EnemyObject.h */,
 				3CE2FC0315DC9644004C8AAF /* EnemyObject.mm */,
 				3C29B8A81599254A00F28168 /* GameObject.h */,
-				3C29B8A91599254A00F28168 /* GameObject.m */,
-				3C189F2B15A7A72B000F2345 /* Box2DSprite.h */,
-				3C189F2C15A7A72B000F2345 /* Box2DSprite.mm */,
+				3C29B8A91599254A00F28168 /* GameObject.mm */,
 			);
 			name = "Template Objects";
 			sourceTree = "<group>";
@@ -680,7 +675,7 @@
 			isa = PBXGroup;
 			children = (
 				3C189DAC15A4D4F2000F2345 /* StatsKeeper.h */,
-				3C189DAD15A4D4F2000F2345 /* StatsKeeper.m */,
+				3C189DAD15A4D4F2000F2345 /* StatsKeeper.mm */,
 			);
 			name = StatsKeeper;
 			sourceTree = "<group>";
@@ -1317,9 +1312,9 @@
 			isa = PBXGroup;
 			children = (
 				3CEA4F6915DDE0A500F841C9 /* Queue.h */,
-				3CEA4F6A15DDE0A500F841C9 /* Queue.m */,
+				3CEA4F6A15DDE0A500F841C9 /* Queue.mm */,
 				3CEA4F6C15DDE1E800F841C9 /* AnimationContainer.h */,
-				3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.m */,
+				3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */,
 			);
 			name = Queue;
 			sourceTree = "<group>";
@@ -1500,13 +1495,13 @@
 				3C29B87C15979E6800F28168 /* RootViewController.m in Sources */,
 				3C29B88915979EDC00F28168 /* Disjsets.m in Sources */,
 				3C29B8941597A22200F28168 /* MazeMaker.mm in Sources */,
-				3C29B8AA1599254A00F28168 /* GameObject.m in Sources */,
+				3C29B8AA1599254A00F28168 /* GameObject.mm in Sources */,
 				3C29B8B215992B0000F28168 /* WallObject.mm in Sources */,
 				3C29B8B51599317B00F28168 /* BallObject.mm in Sources */,
 				3C29B900159EF80500F28168 /* AccelerometerFilter.m in Sources */,
 				3C728B5B159F867D00C8DC81 /* BackgroundLayer.mm in Sources */,
 				3C189DA315A4D43D000F2345 /* StatsLayer.mm in Sources */,
-				3C189DAE15A4D4F2000F2345 /* StatsKeeper.m in Sources */,
+				3C189DAE15A4D4F2000F2345 /* StatsKeeper.mm in Sources */,
 				3C189DC015A51F8B000F2345 /* CoinObject.mm in Sources */,
 				3C189E3F15A79BC2000F2345 /* MazeLayer.mm in Sources */,
 				3C189E4115A79BD0000F2345 /* GameScene.mm in Sources */,
@@ -1545,7 +1540,6 @@
 				3C189F2615A7A165000F2345 /* b2PulleyJoint.cpp in Sources */,
 				3C189F2715A7A165000F2345 /* b2RevoluteJoint.cpp in Sources */,
 				3C189F2815A7A165000F2345 /* b2WeldJoint.cpp in Sources */,
-				3C189F2D15A7A72C000F2345 /* Box2DSprite.mm in Sources */,
 				3CE54D2715AA3EE10067B70B /* GLES-Render.mm in Sources */,
 				3C128AE815AA728E00883E52 /* MainMenuScene.mm in Sources */,
 				3C128AEC15AA72B000883E52 /* MainMenuLayer.mm in Sources */,
@@ -1556,8 +1550,8 @@
 				3C48348615CF006500EF9C7A /* ObjectInfoConstants.m in Sources */,
 				3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */,
 				3CE2FC0415DC9644004C8AAF /* EnemyObject.mm in Sources */,
-				3CEA4F6B15DDE0A500F841C9 /* Queue.m in Sources */,
-				3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.m in Sources */,
+				3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */,
+				3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.mm in Sources */,
 				3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */,
 				3CE1F65415E932590006819E /* DataAdapter.m in Sources */,
 				3CDCAB2A15E9D3010012A4FF /* Model.xcdatamodeld in Sources */,

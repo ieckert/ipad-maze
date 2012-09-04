@@ -5,9 +5,9 @@
 //  Created by ian on 6/25/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "Box2DSprite.h"
+#import "GameObject.h"
 
-@interface BallObject : Box2DSprite
+@interface BallObject : GameObject
 {
     CCAnimation *collisionAnim;
     CCAnimation *rollingAnim;
@@ -24,5 +24,4 @@
 - (id)initWithWorld:(b2World *)theWorld 
          atLocation:(CGPoint)location 
     withSpriteFrame:(CCSpriteFrame *)frame;
-
 @end

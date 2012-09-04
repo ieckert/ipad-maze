@@ -44,19 +44,23 @@
     
     Pair *translationReturnPair;
     Pair *returnMazeDimensions;
+    
+    SceneTypes mazeForScene;
 }
 
 @property (readwrite) NSInteger smallMazeRows;
 @property (readwrite) NSInteger smallMazeCols;
 @property (readwrite) NSInteger largeMazeRows;
 @property (readwrite) NSInteger largeMazeCols;
+@property (readwrite) SceneTypes mazeForScene;
 @property (readwrite, retain) NSMutableDictionary *wallList;
 
 -(id) initWithHeight: (NSInteger) windowHeight
                Width: (NSInteger) windowWidth
       WallDimensions: (Pair *) wallSpriteDimensions
         Requirements: (MazeRequirements*) reqs
-                Maze: (NSMutableArray*) maze;
+                Maze: (NSMutableArray*) maze
+            ForScene:(SceneTypes)scene;
 
 -(Pair *) createMaze;
 
@@ -74,5 +78,7 @@
 -(NSInteger) returnLargeMazeEndingLocation;
 
 -(NSInteger) returnEmptySlotInMaze;
+-(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2 pointsInSmallMazeFormat:(BOOL)isItASmallMaze;
+
 
 @end

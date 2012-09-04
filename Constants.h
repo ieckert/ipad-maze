@@ -3,6 +3,7 @@
 
 #define kMazeCols 7
 #define kMazeRows 5
+#define kMazeScreenOffset 25
 
 #define kTrueScale 2
 #define kTrueMazeCols kMazeCols*kTrueScale
@@ -10,6 +11,7 @@
 
 #define kMenuMazeCols 4
 #define kMenuMazeRows 3
+#define kMenuMazeScreenOffset 150
 
 #define kTrueMenuMazeCols kMenuMazeCols*kTrueScale
 #define kTrueMenuMazeRows kMenuMazeRows*kTrueScale
@@ -34,7 +36,15 @@
 #define kAngularDamp 3
 #define kAccelerometerConstant 13
 
-#define kEnemySoundMultiplier 10
+#define kEnemyHearingMultiplier 10
+#define kEnemyVisionMultiplier 20
+#define kEnemyPeripheralVisionMultiplier 3
+
+typedef enum {
+    kEnemySense=0,
+    kEnemyHearing=1,
+    kEnemySight=2
+} EnemySense;
 
 typedef enum {
     kNoSceneUninitialized=0,

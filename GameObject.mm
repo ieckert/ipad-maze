@@ -13,7 +13,7 @@
 @synthesize reactsToScreenBoundaries;
 @synthesize screenSize;
 @synthesize isActive;
-@synthesize gameObjectType, characterState;
+@synthesize gameObjectType, characterState, body;
 
 -(id) init {
     if((self=[super init])){
@@ -107,4 +107,27 @@
     
     return animationToReturn;
 }
+
+-(BOOL)isObjectAudible
+{
+    BOOL tmpBool=FALSE;
+    
+    if (self.body == NULL) {
+        tmpBool = FALSE;
+    }
+    else {
+        float linearVelocity = self.body->GetLinearVelocity().Normalize();
+        if (linearVelocity < 1.5) {
+            tmpBool = FALSE;
+        }
+        else if (linearVelocity >= 1.5 && linearVelocity <= 3.0) {
+            tmpBool = TRUE;
+        }
+        else {
+            tmpBool = TRUE;
+        }
+    }
+    return tmpBool;
+}
+
 @end

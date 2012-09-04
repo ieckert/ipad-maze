@@ -15,7 +15,6 @@
     CCAnimation *capturedAnim;
     CCAnimation *removingAnim;
     CCAnimation *idleAnim;
-    
 }
 @property (nonatomic, retain) CCAnimation *spinningAnim;
 @property (nonatomic, retain) CCAnimation *capturedAnim;

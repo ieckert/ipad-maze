@@ -11,8 +11,13 @@
 #import "Constants.h"
 #import "ObjectInfoConstants.h"
 
+@interface MazeMaker()
+
+-(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2 pointsInSmallMazeFormat:(BOOL)isItASmallMaze;
+
+@end
 @implementation MazeMaker
-@synthesize smallMazeCols, smallMazeRows, largeMazeCols, largeMazeRows;
+@synthesize smallMazeCols, smallMazeRows, largeMazeCols, largeMazeRows, mazeForScene;
 @synthesize wallList;
 
 -(id)init
@@ -44,12 +49,13 @@
                Width: (NSInteger) windowWidth
       WallDimensions: (Pair *) wallSpriteDimensions
         Requirements: (MazeRequirements*) reqs
-                Maze: (NSMutableArray*) maze;
+                Maze: (NSMutableArray*) maze
+            ForScene:(SceneTypes)scene
 {
     if (self = [super init])
     {
         NSLog(@"MazeMaker InitWithSizeAndRequirements");
-        
+        mazeForScene = scene;
         wallHeight = [wallSpriteDimensions num1];
         wallWidth = [wallSpriteDimensions num2];
         [self calculateMazeDimensionsWithHeight:windowHeight AndWidth:windowWidth];
@@ -447,7 +453,7 @@ how to:
 
     if (smallMazeRows == 0 || smallMazeCols == 0) {
         NSLog(@"can't have rows / cols be 0");
-        return false;
+        return NULL;
     }
     
     int hallwayRange = 1;
@@ -491,7 +497,7 @@ how to:
              if there is a wall between the two points - break that shit down!
              prevents us from breaking down a path that is already there
              */             
-            if (![self wallBetweenPoint1:num1 AndPoint2:num2])
+            if (![self  wallBetweenPoint1:num1 AndPoint2:num2 pointsInSmallMazeFormat:TRUE])
                 continue;
             
             [self cutOutOfRealMaze:num1 :num2 :false];
@@ -510,7 +516,7 @@ how to:
     return returnMazeDimensions;
 }
 
--(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2
+-(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2 pointsInSmallMazeFormat:(BOOL)isItASmallMaze
 {
     int tmp, p1, p2, diff;
     p1 = pt1;
@@ -530,8 +536,12 @@ how to:
         diff = largeMazeCols;
     }
     
-    p1 = [self translateSmallArrayIndexToLarge:p1];
-    p2 = [self translateSmallArrayIndexToLarge:p2];
+    /*if the points come in as 'smallMaze points' bring them up*/
+    /*otherwise, keep the points in their large format*/
+    if (isItASmallMaze) {
+        p1 = [self translateSmallArrayIndexToLarge:p1];
+        p2 = [self translateSmallArrayIndexToLarge:p2];
+    }
     
     for (int i = p1; i < p2; i+=diff) {
         if ([[realMaze objectAtIndex:i]intValue] == tWall)

@@ -226,30 +226,26 @@
         int32 positionIterations = 2;
         world->Step(deltaTime, velocityIterations, positionIterations);
         
-        for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
-            if (b->GetUserData() != NULL) {
-                Box2DSprite *sprite = (Box2DSprite *) b->GetUserData();
-//the if statement below prevents the ball from moving while the 3..2..1..GO! is visible                
-                if (sprite.gameObjectType == tBall && paused) {
-                    b->SetAwake(FALSE);
-                }
-                else if (sprite.gameObjectType == tBall && !paused) {
-                    b->SetAwake(TRUE);
-                }
-                
-                sprite.position = ccp(b->GetPosition().x * PTM_RATIO,
-                                          b->GetPosition().y * PTM_RATIO);
-                sprite.rotation =
-                    CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
-                
-            }
-        }
-        
         CCArray *listOfGameObjects =
         [sceneSpriteBatchNode children];                     
         for (GameObject *tempObject in listOfGameObjects) { 
-                [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
-                 listOfGameObjects]; 
+            [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
+                 listOfGameObjects];
+            b2Body *b = [tempObject body];
+            if (b!=NULL) {
+                //the if statement below prevents the ball from moving while the 3..2..1..GO! is visible                
+                if (tempObject.gameObjectType == tBall && paused) {
+                    b->SetAwake(FALSE);
+                }
+                else if (tempObject.gameObjectType == tBall && !paused) {
+                    b->SetAwake(TRUE);
+                }
+                
+                tempObject.position = ccp(b->GetPosition().x * PTM_RATIO,
+                                      b->GetPosition().y * PTM_RATIO);
+                tempObject.rotation =
+                CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+            }
         }
     
         if ( /* [statsKeeper returnCurrentCoinCount] == [requirements numCoins] 
@@ -317,7 +313,7 @@
         mazeGrid = [[NSMutableArray alloc] init];
         
         requirements = [[MazeRequirements alloc] initWithCoins:25
-                                                       Enemies:0
+                                                       Enemies:1
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
         
@@ -327,7 +323,8 @@
                                                 Width:screenSize.width
                                        WallDimensions:[objectFactory returnObjectDimensions:tWall]
                                          Requirements:requirements
-                                                 Maze:mazeGrid];
+                                                 Maze:mazeGrid
+                                             ForScene:kNormalLevel];
         
         mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         mazeDimensions = [mazeMaker createMaze];
@@ -345,8 +342,8 @@
             tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
             x = tmpCoords.num1;
             y = tmpCoords.num2;
-            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+25;
-            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+25;
+            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMazeScreenOffset;
+            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMazeScreenOffset;
             
             if ([[mazeGrid objectAtIndex:i] intValue] == tWall) {
                 [objectFactory createObjectOfType:tWall

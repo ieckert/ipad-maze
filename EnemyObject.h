@@ -31,6 +31,8 @@
     float actionInterval;
     
     NSInteger currentLocationInMazeArray;
+    NSInteger screenOffset;
+
 }
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
@@ -38,8 +40,8 @@
       WithKnowledgeOfMaze:(MazeMaker*)maze;
 
 -(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation;
--(NSInteger) locationInMaze;
+-(NSInteger) locationInMaze:(CGPoint)currentLocation; 
 -(void) prepDFSForUse;
--(CGRect)soundBoundingBox;
+-(CGRect)returnSenseBoundingBoxFor:(EnemySense)sense;
 
 @end

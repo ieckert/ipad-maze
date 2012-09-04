@@ -115,6 +115,7 @@
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame AtLocation:(CGPoint)location  {
     if ((self = [super init])) {
+        body = NULL;
         gameObjectType = tCoin;                    // 3
 
         [self initAnimations];                                   // 1// 2

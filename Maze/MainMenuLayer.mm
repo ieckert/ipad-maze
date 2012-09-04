@@ -161,21 +161,20 @@
     int32 positionIterations = 2;
     world->Step(deltaTime, velocityIterations, positionIterations);
     
-    for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
-        if (b->GetUserData() != NULL) {
-            Box2DSprite *sprite = (Box2DSprite *) b->GetUserData();
-            sprite.position = ccp(b->GetPosition().x * PTM_RATIO,
-                                  b->GetPosition().y * PTM_RATIO);
-            sprite.rotation =
-            CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
-        }
-    }
-    
     CCArray *listOfGameObjects =
     [sceneSpriteBatchNode children];                     
     for (GameObject *tempObject in listOfGameObjects) {         
-        [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
-         listOfGameObjects];                         
+        b2Body *b = [tempObject body];
+        if (b != NULL) {
+            tempObject.position = ccp(b->GetPosition().x * PTM_RATIO,
+                                      b->GetPosition().y * PTM_RATIO);
+            tempObject.rotation =
+            CC_RADIANS_TO_DEGREES(b->GetAngle() * -1);
+        }    
+            [tempObject updateStateWithDeltaTime:deltaTime andListOfGameObjects:
+             listOfGameObjects];
+        
+        
     }
     
 }
@@ -480,7 +479,8 @@
                                                 Width:600
                                        WallDimensions:[objectFactory returnObjectDimensions:tWall]
                                          Requirements:requirements
-                                                 Maze:menuMaze];
+                                                 Maze:menuMaze
+                                             ForScene:kMainMenuScene];
         
         Pair* mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         mazeDimensions = [mazeMaker createMaze];
@@ -503,8 +503,8 @@
             tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
             x = tmpCoords.num1;
             y = tmpCoords.num2;
-            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+25+125;
-            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+25+125;
+            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMenuMazeScreenOffset;
+            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMenuMazeScreenOffset;
             
             if ([[menuMaze objectAtIndex:i] intValue] == tWall) {
                 [objectFactory createObjectOfType:tWall

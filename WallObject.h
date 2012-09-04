@@ -5,9 +5,9 @@
 //  Created by ian on 6/25/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
-#import "Box2DSprite.h"
+#import "GameObject.h"
 
-@interface WallObject : Box2DSprite
+@interface WallObject : GameObject
 {
     CCAnimation *collisionAnim;
     CCAnimation *idleAnim;
