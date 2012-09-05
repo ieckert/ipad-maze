@@ -11,6 +11,12 @@
 
 @implementation MinionObject
 
+-(void)onEnter
+{
+    CCLOG(@"### Minion on enter");
+    canSee = true;
+    canHear = true;
+}
 /*the logic of if the enemy is in a certain state and it ends - need to go to the next logical one*/
 -(void)stateMap
 {

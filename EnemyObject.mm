@@ -14,6 +14,7 @@
 -(BOOL)isObjectVisible:(GameObject*)object 
          WithinThisBox:(CGRect)box
      OutOfTheseObjects:(CCArray*)listOfGameObjects;
+-(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation;
 
 @end
 @implementation EnemyObject
@@ -23,6 +24,8 @@
       WithKnowledgeOfMaze:(MazeMaker*)maze
 {
     if ((self = [super init])) {
+        CCLOG(@"### Enemy initialized with parameters");
+
         body = NULL;
         animationQueue = [[Queue alloc] init];
         
@@ -30,8 +33,8 @@
         
         gameObjectType = tEnemy;
         DFSWasFound = false;
-        canSee = true;
-        canHear = true;
+        canSee = FALSE;
+        canHear = FALSE;
         timerInterval = 0.6;
         actionInterval = 0.45;
                 
@@ -70,7 +73,7 @@
 
 -(id) init {
     if( (self=[super init]) ) {
-        //        CCLOG(@"### Enemy initialized");
+        CCLOG(@"### Enemy initialized");
         
     }
     return self;
@@ -107,20 +110,28 @@
     for (GameObject *object in listOfGameObjects) {
         
         CGRect objectBoundingBox = [object adjustedBoundingBox];
-        if (CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
-            if ([object gameObjectType] == tBall && [object isObjectAudible]){
-//                NSLog(@"Minion Heard something!!");
+        
+        if (canHear) {
+            if (CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
+                if ([object gameObjectType] == tBall && [object isObjectAudible]){
+                    NSLog(@"Minion Heard something!!");
+                    NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
+                    NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);
+                    NSLog(@"Wall width: %i height: %i",[objectFactory returnObjectDimensions:tWall].num1, [objectFactory returnObjectDimensions:tWall].num2);
+                    [self calculateDifferenceFromCurrentLocation:[self position] ToTargetsLocation:[object position]];
+                }
 
-                
             }
-
         }
-        if (CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
-            if ([object gameObjectType] == tBall && [self isObjectVisible:object 
-                                                            WithinThisBox:myVisionBoundingBox 
-                                                        OutOfTheseObjects:listOfGameObjects] ) {
-                NSLog(@"Minion Saw something!!");
+        
+        if (canSee) {
+            if (CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
+                if ([object gameObjectType] == tBall && [self isObjectVisible:object 
+                                                                WithinThisBox:myVisionBoundingBox 
+                                                            OutOfTheseObjects:listOfGameObjects] ) {
+                    NSLog(@"Minion Saw something!!");
 
+                }
             }
         }
         
@@ -136,6 +147,52 @@
 {  
     NSLog(@"enemyObject - must override timerDuties!");
 
+}
+
+-(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation
+{
+    /*the enemy always moves on a track - so it is easy to translate the screen position to the position in the mazeArray*/
+    /*the player does not have to move on this track - so can't just translate the screen position to the mazeArray one*/
+    /*this function will take the "unfiltered" player location and return a location that the enemy can search to*/
+    NSInteger returnMazeArrayLocation, returnFloorMazeArrayLocation, returnCeilMazeArrayLocation;
+    NSInteger testFloorReturnX, testFloorReturnY, testCeilReturnX,testCeilReturnY;
+    float clX, clY, tlX, tlY, floorTmpX, floorTmpY, ceilTmpX, ceilTmpY;
+    
+    clX = currentLocation.x;
+    clY = currentLocation.y;
+    tlX = floor(targetLocation.x);
+    tlY = floor(targetLocation.y);
+    
+    /*get the difference (in walls) between the x/y of the two points*/
+    floorTmpX = (clX-tlX)/[objectFactory returnObjectDimensions:tWall].num1;
+    floorTmpY = (clY-tlY)/[objectFactory returnObjectDimensions:tWall].num2;
+    
+    /*get the tmp floor / ceil values of the difference*/
+    ceilTmpX = ceil(floorTmpX);
+    ceilTmpY = ceil(floorTmpY);
+    floorTmpX = floor(floorTmpX);
+    floorTmpY = floor(floorTmpY);
+    
+    NSLog(@"floor Difference x: %f y: %f", floorTmpX, floorTmpY);
+    NSLog(@"ceil Difference x: %f y: %f", ceilTmpX, ceilTmpY);
+    
+    /*reuse variables to have a container for the x/y from the current location of the enemy*/
+    returnMazeArrayLocation = [self locationInMaze:currentLocation];
+    clX = [handleOnMaze translateLargeArrayIndexToXY:returnMazeArrayLocation].num1;
+    clY = [handleOnMaze translateLargeArrayIndexToXY:returnMazeArrayLocation].num2;
+    
+    /*adjust the current enemy location to be equal to the x/y of the target location*/
+    testFloorReturnX = clX-floorTmpX;
+    testFloorReturnY = clY-floorTmpY;
+    
+    testCeilReturnX = clX-ceilTmpX;
+    testCeilReturnY = clY-ceilTmpY;
+    
+    returnFloorMazeArrayLocation = [handleOnMaze translateLargeXYToArrayIndex:testFloorReturnX :testFloorReturnY];
+    returnCeilMazeArrayLocation = [handleOnMaze translateLargeXYToArrayIndex:testCeilReturnX :testCeilReturnY];
+    
+    
+    return returnMazeArrayLocation;
 }
 
 -(NSInteger) locationInMaze:(CGPoint)currentLocation 
