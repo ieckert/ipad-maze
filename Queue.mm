@@ -30,16 +30,16 @@
 -(void) enqueue:(id) animation
 //-(void) enqueue:(int) animation
 {
-    AnimationContainer *tmp = [[AnimationContainer alloc] init];
-    [tmp setNext:nil];
-    [tmp setAnimation:animation];
+    QueueObject *tmp = [[QueueObject alloc] init];
+    [tmp setM_next:nil];
+    [tmp setObject:animation];
     
     if (head == nil) {
         head = tmp;
         tail = tmp;
     }
     else {
-        [tail setNext:tmp];
+        [tail setM_next:tmp];
         tail = tmp;
     }
     counter++;
@@ -47,51 +47,67 @@
 }
 
 -(id) dequeue
-//-(int) dequeue
 {
-    id animTmp = nil;
-//    int animTmp;
-    AnimationContainer *tmpContainer = nil;
+    id tmpObject = nil;
+    QueueObject *tmpContainer = nil;
     if (head == nil) {
         NSLog(@"the queue is empty");
     }
-    else if ([head next] == nil)
+    else if ([head m_next] == nil)
     {
-        animTmp = [head animation];
+        tmpObject = [head object];
         tmpContainer = head;
         head = nil;
         [tmpContainer release];
         counter--;
     }
-    else if ([head next] != nil) {
-        animTmp = [head animation];
+    else if ([head m_next] != nil) {
+        tmpObject = [head object];
         tmpContainer = head;
-        head = [head next];
+        head = [head m_next];
         [tmpContainer release];
         counter--;
     }
     else {
         NSLog(@"something else happend with dequeuein' the queue");
     }
-    return animTmp;
+    return tmpObject;
 }
 
--(void) lifoPush:(id) animation
-//-(void) lifoPush:(int)animation
+-(void) lifoPush:(id) object
 {
-    AnimationContainer *tmp = [[AnimationContainer alloc] init];
-    [tmp setAnimation:animation];
+    QueueObject *tmp = [[QueueObject alloc] init];
+    [tmp setObject:object];
 
     if (head == nil) {
         head = tmp;
         tail = tmp;
     }
     else {
-        [tmp setNext:head];
+        [tmp setM_next:head];
         head = tmp;
     }
     counter++;
     
+}
+
+-(BOOL) isQueueEmpty
+{
+    BOOL tmpBool;
+    if (counter == 0)
+        tmpBool = TRUE;
+    else 
+        tmpBool = FALSE;
+    
+    return tmpBool;
+}
+
+-(void) removeAllObjects
+{
+    while (counter != 0) {
+        [self dequeue];
+    }
+    return;
 }
 
 

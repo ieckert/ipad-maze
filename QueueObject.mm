@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "AnimationContainer.h"
+#import "QueueObject.h"
 
-@implementation AnimationContainer
-@synthesize animation, next;
+@implementation QueueObject
+@synthesize object, m_next;
 
 @end

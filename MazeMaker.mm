@@ -256,7 +256,7 @@
         t1 = w1;
         /*checking the numbers greater than the larger point*/
             for (int i = 0; i < allowedRange; i++) {
-                if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
+                if ( [[[self wallList] objectForKey:[NSNumber numberWithInt:t1]] 
                       containsObject:[NSNumber numberWithInt:(t1+diff)]] ) {
                     count++;
                 }
@@ -269,7 +269,7 @@
         t1=w2;
         /*checking the numbers lower than the smaller point*/
             for (int i = 0; i < allowedRange; i++) {
-                if ( [[wallList objectForKey:[NSNumber numberWithInt:t1]] 
+                if ( [[[self wallList] objectForKey:[NSNumber numberWithInt:t1]] 
                       containsObject:[NSNumber numberWithInt:(t1-diff)]] ) {
                     count++;
                 }
@@ -407,24 +407,24 @@ how to:
             for (int i = newNum1; i <= newNum2; i++) {
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum2) {
-                    [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
-                    [[wallList objectForKey:[NSNumber numberWithInt:i+1]] addObject:[NSNumber numberWithInt:i]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i+1]] addObject:[NSNumber numberWithInt:i]];
                 }
             }
         } else if (num1 == num2 + 1) {
             for (int i = newNum2; i <= newNum1; i++) {
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum1) {
-                    [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
-                    [[wallList objectForKey:[NSNumber numberWithInt:i+1]] addObject:[NSNumber numberWithInt:i]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+1]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i+1]] addObject:[NSNumber numberWithInt:i]];
                 }
             }
         } else if (num1 == num2 + smallMazeCols) {
             for (int i = newNum2; i <= newNum1; i+= largeMazeCols) {
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum1) {
-                    [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
-                    [[wallList objectForKey:[NSNumber numberWithInt:i+largeMazeCols
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i+largeMazeCols
                                              ]] addObject:[NSNumber numberWithInt:i]];
                 }
             }
@@ -432,8 +432,8 @@ how to:
             for (int i = newNum1; i <= newNum2; i+= largeMazeCols) {
                 [realMaze replaceObjectAtIndex:i withObject:[NSNumber numberWithInt:tNone]];
                 if (i != newNum2) {
-                    [[wallList objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
-                    [[wallList objectForKey:[NSNumber numberWithInt:i+largeMazeCols]] addObject:[NSNumber numberWithInt:i]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i]] addObject:[NSNumber numberWithInt:i+largeMazeCols]];
+                    [[[self wallList] objectForKey:[NSNumber numberWithInt:i+largeMazeCols]] addObject:[NSNumber numberWithInt:i]];
                 }
             }
         } else {
@@ -630,6 +630,11 @@ how to:
         emptySlot = arc4random()%largeMazeSize;
     }
     return emptySlot;    
+}
+
+-(NSInteger) returnContentsOfMazePosition:(NSInteger)position
+{
+    return [[realMaze objectAtIndex:position] intValue];
 }
 
 @end

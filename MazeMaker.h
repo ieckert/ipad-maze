@@ -78,6 +78,7 @@
 -(NSInteger) returnLargeMazeEndingLocation;
 
 -(NSInteger) returnEmptySlotInMaze;
+-(NSInteger) returnContentsOfMazePosition:(NSInteger)position;
 -(BOOL) wallBetweenPoint1:(NSInteger)pt1 AndPoint2:(NSInteger)pt2 pointsInSmallMazeFormat:(BOOL)isItASmallMaze;
 
 

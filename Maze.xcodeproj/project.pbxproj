@@ -188,7 +188,7 @@
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */; };
 		3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.mm */; };
-		3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */; };
+		3CEA4F6E15DDE1E800F841C9 /* QueueObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */; };
 		3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */; };
 		3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD115D8B312006D6846 /* DoorObject.mm */; };
 		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
@@ -560,8 +560,8 @@
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeRequirements.mm; sourceTree = "<group>"; };
 		3CEA4F6915DDE0A500F841C9 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
 		3CEA4F6A15DDE0A500F841C9 /* Queue.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Queue.mm; sourceTree = "<group>"; };
-		3CEA4F6C15DDE1E800F841C9 /* AnimationContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimationContainer.h; sourceTree = "<group>"; };
-		3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AnimationContainer.mm; sourceTree = "<group>"; };
+		3CEA4F6C15DDE1E800F841C9 /* QueueObject.h */ = {isa = PBXFileReference; fileEncoding = 4; path = QueueObject.h; sourceTree = "<group>"; };
+		3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QueueObject.mm; sourceTree = "<group>"; };
 		3CEA4F6F15DEE65900F841C9 /* MinionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinionObject.h; sourceTree = "<group>"; };
 		3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MinionObject.mm; sourceTree = "<group>"; };
 		3CF2BBD015D8B312006D6846 /* DoorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorObject.h; sourceTree = "<group>"; };
@@ -1313,8 +1313,8 @@
 			children = (
 				3CEA4F6915DDE0A500F841C9 /* Queue.h */,
 				3CEA4F6A15DDE0A500F841C9 /* Queue.mm */,
-				3CEA4F6C15DDE1E800F841C9 /* AnimationContainer.h */,
-				3CEA4F6D15DDE1E800F841C9 /* AnimationContainer.mm */,
+				3CEA4F6C15DDE1E800F841C9 /* QueueObject.h */,
+				3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */,
 			);
 			name = Queue;
 			sourceTree = "<group>";
@@ -1551,7 +1551,7 @@
 				3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */,
 				3CE2FC0415DC9644004C8AAF /* EnemyObject.mm in Sources */,
 				3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */,
-				3CEA4F6E15DDE1E800F841C9 /* AnimationContainer.mm in Sources */,
+				3CEA4F6E15DDE1E800F841C9 /* QueueObject.mm in Sources */,
 				3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */,
 				3CE1F65415E932590006819E /* DataAdapter.m in Sources */,
 				3CDCAB2A15E9D3010012A4FF /* Model.xcdatamodeld in Sources */,

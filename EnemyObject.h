@@ -10,20 +10,18 @@
 #import "MazeMaker.h"
 #import "Queue.h"
 #import "ObjectFactory.h"
+#import "Constants.h"
+
 
 @interface EnemyObject : GameObject
 {
     ObjectFactory *objectFactory;
     NSMutableDictionary *objectInfo;
-    
-    NSMutableArray *visitedLocationList;
-    
+        
     MazeMaker *handleOnMaze;
     
     Queue *animationQueue;
     
-    BOOL DFSWasFound;
-
     BOOL canSee;
     BOOL canHear;
     
@@ -34,14 +32,23 @@
     NSInteger screenOffset;
 
 }
+@property (readwrite) BOOL canSee;
+@property (readwrite) BOOL canHear;
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location
       WithKnowledgeOfMaze:(MazeMaker*)maze;
 
--(void) depthFirstSearch:(NSInteger)startLocation :(NSInteger)endLocation;
+-(void) runDFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation;
+-(void) runBFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation;
+
 -(NSInteger) locationInMaze:(CGPoint)currentLocation; 
--(void) prepDFSForUse;
 -(CGRect)returnSenseBoundingBoxFor:(EnemySense)sense;
+-(void)scheduleAnimationTimer;
+-(void)changeState:(CharacterStates)newState; 
+-(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation;
+-(BOOL)isObjectVisible:(GameObject*)object 
+         WithinThisBox:(CGRect)box
+     OutOfTheseObjects:(CCArray*)listOfGameObjects;
 
 @end

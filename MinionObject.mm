@@ -11,12 +11,14 @@
 
 @implementation MinionObject
 
--(void)onEnter
+/*this will be called after the superclass - EnemyObject - init is called*/
+
+-(void)onEnterTransitionDidFinish
 {
-    CCLOG(@"### Minion on enter");
-    canSee = true;
-    canHear = true;
+    NSLog(@"### Minion on enter");
+
 }
+
 /*the logic of if the enemy is in a certain state and it ends - need to go to the next logical one*/
 -(void)stateMap
 {
@@ -28,7 +30,7 @@
             [self changeState:sEnemySleeping];
             break;
         case sEnemyAggressive:
-            
+            [self changeState:sEnemySleeping];
             break; 
         case sEnemySleeping:
             [self changeState:sEnemyPathFinding];
@@ -46,7 +48,9 @@
 }
 
 -(void)changeState:(CharacterStates)newState {
+    
     [self stopAllActions];
+        
     id action = nil;
     [self setCharacterState:newState];
     
@@ -58,17 +62,21 @@
         case sEnemyPathFinding:
             NSLog(@"Enemy->Starting sEnemyPathFinding");
             /*will add animations to queue*/
-            [self prepDFSForUse];
-            [self depthFirstSearch:[self locationInMaze:[self position]] :[handleOnMaze returnEmptySlotInMaze]];
+            [self setCanSee:TRUE];
+            [self setCanHear:TRUE];
+            [self runDFSFrom:[self locationInMaze:[self position]] To:[handleOnMaze returnEmptySlotInMaze]];
             action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
             [animationQueue enqueue:action];
             break;
         case sEnemyAggressive:
             NSLog(@"Enemy->Starting sEnemyAggressive");
-            
+            action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
+            [animationQueue enqueue:action];
             break; 
         case sEnemySleeping:
             NSLog(@"Enemy->Starting sEnemySleeping");
+            [self setCanHear:TRUE];
+            [self setCanSee:TRUE];
             for (int i=0; i < 4; i++) {
                 id action = [CCRotateBy actionWithDuration:actionInterval angle:45];
                 [animationQueue enqueue:action];
@@ -92,16 +100,61 @@
 
 }
 
--(void) timerDuties: (ccTime) dt
-{  
-//        NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
-        [self stopAllActions];
-        id action = nil;  
-        action = [animationQueue dequeue];
-        if (action != nil) {
-//            NSLog(@"minion - ran action");
-            [self runAction:action];
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime
+           andListOfGameObjects:(CCArray*)listOfGameObjects {        
+    //most likely need to override this for each implementation of an enemy    
+    if (isActive == FALSE)
+        return;
+    
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+    
+    CGRect myBoundingBox = [self adjustedBoundingBox];
+    CGRect mySoundBoundingBox = [self returnSenseBoundingBoxFor:kEnemyHearing];
+    CGRect myVisionBoundingBox = [self returnSenseBoundingBoxFor:kEnemySight];
+    
+    for (GameObject *object in listOfGameObjects) {
+        CGRect objectBoundingBox = [object adjustedBoundingBox];
+        
+        if (canHear && CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
+            if ([object gameObjectType] == tBall && [object isObjectAudible]){
+                NSLog(@"Minion Heard something!!");
+                NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
+                NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);
+                NSLog(@"Wall width: %i height: %i",[objectFactory returnObjectDimensions:tWall].num1, [objectFactory returnObjectDimensions:tWall].num2);
+                NSInteger targetLocation = [self calculateDifferenceFromCurrentLocation:[self position] ToTargetsLocation:[object position]];
+                NSLog(@"self position: %f %f" , [self position].x, [self position].y);
+                
+                if (targetLocation == -1) {
+                    NSLog(@"Minion Hearing - Could not find solid location of player T.T");
+                }
+                else {
+                    /*load up all of the animations to get to the character's position*/
+                    [animationQueue removeAllObjects];
+
+                    [self setCanSee:FALSE];
+                    [self setCanHear:FALSE];
+                    NSLog(@"self position: %f %f" , [self position].x, [self position].y);
+
+                    [self runBFSFrom:[self locationInMaze:[self position]] To:targetLocation];
+                    /*load the animation that will call the next state - once the enemy gets to the players's location*/
+                    [self changeState:sEnemyAggressive];
+                }
+            }
+            
         }
+        
+        if (canSee && CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
+            if ([object gameObjectType] == tBall && [self isObjectVisible:object 
+                                                            WithinThisBox:myVisionBoundingBox 
+                                                        OutOfTheseObjects:listOfGameObjects] ) {
+                NSLog(@"Minion Saw something!!");
+                
+            }
+        }
+        
+    }
+    
 }
 
 @end

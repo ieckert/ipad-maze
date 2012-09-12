@@ -7,30 +7,30 @@
 //
 
 #import "GameObject.h"
-#import "AnimationContainer.h"
+#import "QueueObject.h"
 #import "cocos2d.h"
 
-@interface Queue : GameObject
+@interface Queue : NSObject
 {
-    AnimationContainer *tail;
-    AnimationContainer *head;
+    QueueObject *tail;
+    QueueObject *head;
     int counter;    
 }
-@property (readwrite, retain) AnimationContainer *tail;
-@property (readwrite, retain) AnimationContainer *head;
+@property (readonly, retain) QueueObject *tail;
+@property (readonly, retain) QueueObject *head;
 @property (readonly) int counter;
 
 /*Normal push to have animations come out in FIFO order*/
--(void) enqueue:(id) animation;
-//-(void) enqueue:(int) animation;
+-(void) enqueue:(id) object;
 
 /*Have access to animations in normal FIFO order*/
 -(id) dequeue;
-//-(int) dequeue;
 
 /*To interrupt current animation with a new one - push onto the front! no waiting in lines!*/
--(void) lifoPush:(id) animation;
-//-(void) lifoPush:(int) animation;
+-(void) lifoPush:(id) object;
 
+-(BOOL) isQueueEmpty;
+
+-(void) removeAllObjects;
 
 @end

@@ -36,7 +36,7 @@
 #define kAngularDamp 3
 #define kAccelerometerConstant 13
 
-#define kEnemyHearingMultiplier 10
+#define kEnemyHearingMultiplier 20
 #define kEnemyVisionMultiplier 20
 #define kEnemyPeripheralVisionMultiplier 3
 
