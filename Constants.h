@@ -36,9 +36,15 @@
 #define kAngularDamp 3
 #define kAccelerometerConstant 13
 
-#define kEnemyHearingMultiplier 20
+#define kEnemyHearingMultiplier 10
 #define kEnemyVisionMultiplier 20
 #define kEnemyPeripheralVisionMultiplier 3
+
+typedef enum {
+    kEnemyWanderInMaze=0,
+    kEnemyGoToPlayer=1,
+    kEnemyShootPlayer=2
+} EnemyLogic;
 
 typedef enum {
     kEnemySense=0,

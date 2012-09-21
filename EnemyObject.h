@@ -11,13 +11,18 @@
 #import "Queue.h"
 #import "ObjectFactory.h"
 #import "Constants.h"
+#import "ObjectInfoConstants.h"
 
 
 @interface EnemyObject : GameObject
-{
+{    
     ObjectFactory *objectFactory;
+    
+    /*used when making the enemy logic threaded*/
+    NSOperationQueue *logicQueue;
     NSMutableDictionary *objectInfo;
-        
+    NSString *tmpSelector;
+    
     MazeMaker *handleOnMaze;
     
     Queue *animationQueue;
@@ -34,13 +39,13 @@
 }
 @property (readwrite) BOOL canSee;
 @property (readwrite) BOOL canHear;
+-(void) runDFSWith:(NSMutableDictionary*)directions;
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location
       WithKnowledgeOfMaze:(MazeMaker*)maze;
 
--(void) runDFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation;
--(void) runBFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation;
+-(NSInvocationOperation*)enemyLogic:(EnemyLogic)enemyLogic From:(NSInteger)startLocation To:(NSInteger)endLocation;
 
 -(NSInteger) locationInMaze:(CGPoint)currentLocation; 
 -(CGRect)returnSenseBoundingBoxFor:(EnemySense)sense;

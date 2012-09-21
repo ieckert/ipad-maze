@@ -20,11 +20,15 @@
 @property (readonly, retain) QueueObject *head;
 @property (readonly) int counter;
 
+-(void) enqueueObjects:(NSArray*) objects;
+
 /*Normal push to have animations come out in FIFO order*/
 -(void) enqueue:(id) object;
 
 /*Have access to animations in normal FIFO order*/
 -(id) dequeue;
+
+-(void) lifoPushObjects:(NSArray*) objects;
 
 /*To interrupt current animation with a new one - push onto the front! no waiting in lines!*/
 -(void) lifoPush:(id) object;

@@ -13,13 +13,21 @@
 
 -(NSInteger) checkUnvisitedPathsFromLocation:(NSInteger)location UsingWallList:(NSMutableArray*)visitedLocationList;
 
+-(void) runBFSWith:(NSMutableDictionary*)directions;
+-(void) addAnimationsToQueue:(NSArray *)animations;
+-(void) addAnimationToQueue:(id)animation;
+
 -(BOOL)isObjectVisible:(GameObject*)object 
          WithinThisBox:(CGRect)box
      OutOfTheseObjects:(CCArray*)listOfGameObjects;
 
 -(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation;
 
--(void) depthFirstSearchFrom:(NSInteger)startLocation To:(NSInteger)endLocation WithVisitedList:(NSMutableArray*)visitedLocationList WithEndingFlag:(BOOL*)DFSWasFound;
+-(void) depthFirstSearchFrom:(NSInteger)startLocation 
+                          To:(NSInteger)endLocation 
+             WithVisitedList:(NSMutableArray*)visitedLocationList 
+              WithEndingFlag:(BOOL*)DFSWasFound 
+               WithContainer:(NSMutableArray*)animationContainer;
 
 -(CGPoint) locationOnScreen:(NSInteger)currentIndex;
 
@@ -31,7 +39,9 @@
 - (void) dealloc{
     //might have to do the timer earlier
     //    NSLog(@"enemy dealloc called");
-    
+
+    [tmpSelector release];
+    [logicQueue release];
     [animationQueue release];    
     [objectInfo release];
     [super dealloc];
@@ -58,11 +68,6 @@
         [self setDisplayFrame:frame];
         [self setPosition:location];
         
-        objectInfo = [[NSMutableDictionary alloc] init];
-        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
-        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-        [objectInfo setObject:[NSNumber numberWithInt:tEnemy] forKey:notificationUserInfoObjectType];
-        
         handleOnMaze = maze;
         
         /*find the offset used for displaying things to the screen*/
@@ -76,6 +81,12 @@
         else {
             screenOffset = 0;
         }
+
+        logicQueue = [[NSOperationQueue alloc] init];
+        [logicQueue setName:@"enemyLogicQueue"];
+        [logicQueue setSuspended:FALSE];
+        objectInfo = [[NSMutableDictionary alloc] init];
+        tmpSelector = [[NSString alloc] init];
         [self scheduleAnimationTimer];
         
     }
@@ -121,13 +132,35 @@
     }
 }
 
+-(NSInvocationOperation*)enemyLogic:(EnemyLogic)enemyLogic From:(NSInteger)startLocation To:(NSInteger)endLocation
+{
+    switch (enemyLogic) {
+        case kEnemyGoToPlayer:
+            tmpSelector = @"runBFSWith:";
+            break;        
+        case kEnemyWanderInMaze:
+            tmpSelector = @"runDFSWith:";
+            break;
+            
+        default:
+            break;
+    }
+    
+    [objectInfo setObject:[NSNumber numberWithInt:startLocation] forKey:enemyStartLocation];
+    [objectInfo setObject:[NSNumber numberWithInt:endLocation] forKey:enemyEndLocation];
+        
+    NSInvocationOperation* theOp = [[NSInvocationOperation alloc] initWithTarget:self
+                                                                        selector:NSSelectorFromString(tmpSelector) object:objectInfo];
+    return theOp;
+}
+
 -(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation
 {
     /*the enemy always moves on a track - so it is easy to translate the screen position to the position in the mazeArray*/
     /*the player does not have to move on this track - so can't just translate the screen position to the mazeArray one*/
     /*this function will take the "unfiltered" player location and return a location that the enemy can search to*/
     /* -1 means that it could not find a location! */
-    NSLog(@"in calculateDifferenceFromCurrentLocation");
+//    NSLog(@"in calculateDifferenceFromCurrentLocation");
 
     
     NSInteger returnMazeArrayLocation, returnFloorMazeArrayLocation, returnCeilMazeArrayLocation;
@@ -149,8 +182,8 @@
     floorTmpX = floor(floorTmpX);
     floorTmpY = floor(floorTmpY);
     
-    NSLog(@"floor Difference x: %f y: %f", floorTmpX, floorTmpY);
-    NSLog(@"ceil Difference x: %f y: %f", ceilTmpX, ceilTmpY);
+//    NSLog(@"floor Difference x: %f y: %f", floorTmpX, floorTmpY);
+//    NSLog(@"ceil Difference x: %f y: %f", ceilTmpX, ceilTmpY);
     
     /*reuse variables to have a container for the x/y from the current location of the enemy*/
     returnMazeArrayLocation = [self locationInMaze:currentLocation];
@@ -182,7 +215,7 @@
 
 -(CGPoint) locationOnScreen:(NSInteger)currentIndex
 {
-    NSLog(@"in locationOnScreen");
+//    NSLog(@"in locationOnScreen");
 
     /*takes an index in the mazeArray and places it on the screen*/
     CGPoint screenLocation;
@@ -208,8 +241,11 @@
     return location;
 }
 
--(void) runBFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation
+-(void) runBFSWith:(NSMutableDictionary*)directions
 {
+    NSInteger startLocation, endLocation;
+    startLocation = [[directions objectForKey:enemyStartLocation] intValue];
+    endLocation = [[directions objectForKey:enemyEndLocation] intValue];
     
 //    NSLog(@"in runBFSFrom startLocation: %i endLocation: %i", startLocation, endLocation);
     NSInteger tmpSize = [[handleOnMaze wallList] count];
@@ -217,30 +253,26 @@
     /*use visitedList for the DFS 'coloring'*/
     NSMutableArray* visitedList = [[NSMutableArray alloc] initWithCapacity:tmpSize];
     NSMutableArray* pred = [[NSMutableArray alloc] initWithCapacity:tmpSize];
-    NSMutableArray* dist = [[NSMutableArray alloc] initWithCapacity:tmpSize];
-
+    NSMutableArray* animations = [[NSMutableArray alloc] initWithCapacity:tmpSize];
+    
     for (int i = 0; i < tmpSize; i++) {
         [visitedList insertObject:[NSNumber numberWithInt:0] atIndex:i];
         [pred insertObject:[NSNumber numberWithInt:-1] atIndex:i];
-        [dist insertObject:[NSNumber numberWithInt:0] atIndex:i];
     }
     
-    int current, nextLocation, currentDist;
+    int current, nextLocation;
     
     Queue *queue = [[Queue alloc] init];
     [queue enqueue:[NSNumber numberWithInt:startLocation]];
-    [dist replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:0]];
 
     while (![queue isQueueEmpty]) {
          
         current = [[queue dequeue] intValue];
         
-        currentDist = [[dist objectAtIndex:current]intValue] + 1;
         nextLocation = [self checkUnvisitedPathsFromLocation:current UsingWallList:visitedList];
         [visitedList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
         
         while (nextLocation != -1) {
-            [dist replaceObjectAtIndex:nextLocation withObject:[NSNumber numberWithInt:currentDist]];
             [pred replaceObjectAtIndex:nextLocation withObject:[NSNumber numberWithInt:current]];
             [visitedList replaceObjectAtIndex:nextLocation withObject:[NSNumber numberWithInt:1]];
             if (nextLocation != -1)
@@ -259,26 +291,36 @@
 //    for (NSNumber *tmp in pred) {
 //        NSLog(@"pred: %i", [tmp intValue]);
 //    }
-    
+    id action;
+    int count = 0;
     while (startLocation != tmpPosition) {
         animPoint = [self locationOnScreen:tmpPosition];
-        id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-        [animationQueue lifoPush:action];
+        action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
+        [animations insertObject:action atIndex:count];
 //        NSLog(@"moving to: %i", tmpPosition);
 //        NSLog(@"animation queue counter: %i", [animationQueue counter]);
         tmpPosition = [[pred objectAtIndex:tmpPosition] intValue];
+        count++;
     }
     
+    //add the action that will change the minion into a different state at the end of this animation string
+    [animations insertObject:[CCCallFunc actionWithTarget:self selector:@selector(stateMap)] atIndex:count];
+    [animationQueue lifoPushObjects:animations];
+    
+    [animations release];
     [queue release];
     [visitedList release];
     [pred release];
-    [dist release];
     return;
 }
 
--(void) runDFSFrom:(NSInteger)startLocation To:(NSInteger)endLocation
+-(void) runDFSWith:(NSMutableDictionary*)directions
 {
-    NSLog(@"in runDFSFrom");
+    NSInteger startLocation, endLocation;
+    startLocation = [[directions objectForKey:enemyStartLocation] intValue];
+    endLocation = [[directions objectForKey:enemyEndLocation] intValue];
+    
+//    NSLog(@"in runDFSFrom");
     /*when the ending is found - it will not store movements after that location*/
     BOOL DFSWasFound = FALSE;
     
@@ -290,14 +332,28 @@
         [visitedList insertObject:[NSNumber numberWithInt:0] atIndex:i];
     }
     
-    //start recurisve function
-    [self depthFirstSearchFrom:startLocation To:endLocation WithVisitedList:visitedList WithEndingFlag:&DFSWasFound];
+    NSMutableArray *animationContainer = [[NSMutableArray alloc] init];
     
+    //start recurisve function
+    [self depthFirstSearchFrom:startLocation 
+                            To:endLocation 
+               WithVisitedList:visitedList 
+                WithEndingFlag:&DFSWasFound 
+                 WithContainer:animationContainer];
+   
+    [animationContainer insertObject:[CCCallFunc actionWithTarget:self selector:@selector(stateMap)] atIndex:[animationContainer count]];
+    [animationQueue enqueueObjects:animationContainer];
+        
     [visitedList release];
+    [animationContainer release];
     return;
 }
 
--(void) depthFirstSearchFrom:(NSInteger)startLocation To:(NSInteger)endLocation WithVisitedList:(NSMutableArray*)visitedLocationList WithEndingFlag:(BOOL*)DFSWasFound
+-(void) depthFirstSearchFrom:(NSInteger)startLocation 
+                          To:(NSInteger)endLocation 
+             WithVisitedList:(NSMutableArray*)visitedLocationList 
+              WithEndingFlag:(BOOL*)DFSWasFound 
+               WithContainer:(NSMutableArray*)animationContainer
 {
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
     CGPoint animPoint;
@@ -307,9 +363,9 @@
         animPoint = [self locationOnScreen:endLocation];
         
         id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-        [animationQueue enqueue:action];
+        [animationContainer insertObject:action atIndex:[animationContainer count]];
         
-        NSLog(@"end location found: %i", endLocation); 
+//        NSLog(@"end location found: %i", endLocation); 
         /*after this - it is the dfs path to the goal*/
     }
     else {
@@ -317,25 +373,30 @@
         while (newLocation != -1) {
             
             if (!*DFSWasFound) {
-                NSLog(@"in while DFS at: %i", newLocation);
+//                NSLog(@"in while DFS at: %i", newLocation);
                 animPoint = [self locationOnScreen:newLocation];
 
                 id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-                [animationQueue enqueue:action];
+                [animationContainer insertObject:action atIndex:[animationContainer count]];
             }
             else {
                 
             }
             
-            [self depthFirstSearchFrom:newLocation To:endLocation WithVisitedList:visitedLocationList WithEndingFlag:DFSWasFound];
+            [self depthFirstSearchFrom:newLocation 
+                                    To:endLocation 
+                       WithVisitedList:visitedLocationList 
+                        WithEndingFlag:DFSWasFound 
+                         WithContainer:animationContainer];
+            
             newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
             
             if (!*DFSWasFound) {
-                NSLog(@"in while DFS at: %i", startLocation);
+//                NSLog(@"in while DFS at: %i", startLocation);
                 animPoint = [self locationOnScreen:startLocation];
 
                 id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-                [animationQueue enqueue:action];
+                [animationContainer insertObject:action atIndex:[animationContainer count]];
             }
             else {
                 
@@ -350,8 +411,8 @@
 {
     /*-1 signifies that all paths from this location have been traveled*/
 //    NSLog(@"maze size: %i", [[handleOnMaze wallList] count]);
-    NSLog(@"contents: %i,", [handleOnMaze returnContentsOfMazePosition:location]);
-    NSLog(@"number of possible paths at: %i - %i", location, [[[handleOnMaze wallList] objectForKey:[NSNumber numberWithInt:location]] count]);
+//    NSLog(@"contents: %i,", [handleOnMaze returnContentsOfMazePosition:location]);
+//    NSLog(@"number of possible paths at: %i - %i", location, [[[handleOnMaze wallList] objectForKey:[NSNumber numberWithInt:location]] count]);
 //    NSLog(@"checking for paths not traveled: %i", location);
     NSInteger tmpInt = -1;
     
@@ -425,7 +486,5 @@
     }
     return tmpBool;
 }
-
-
 
 @end

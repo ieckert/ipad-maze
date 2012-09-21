@@ -13,5 +13,7 @@
 extern NSString * const notificationUserInfoObjectType;
 extern NSString * const notificationUserInfoKeyPositionX;
 extern NSString * const notificationUserInfoKeyPositionY;
+extern NSString * const enemyStartLocation;
+extern NSString * const enemyEndLocation;
 
 @end

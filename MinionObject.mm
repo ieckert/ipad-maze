@@ -61,17 +61,14 @@
             break;
         case sEnemyPathFinding:
             NSLog(@"Enemy->Starting sEnemyPathFinding");
-            /*will add animations to queue*/
             [self setCanSee:TRUE];
             [self setCanHear:TRUE];
-            [self runDFSFrom:[self locationInMaze:[self position]] To:[handleOnMaze returnEmptySlotInMaze]];
-            action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
-            [animationQueue enqueue:action];
+            [logicQueue addOperation:[self enemyLogic:kEnemyWanderInMaze From:[self locationInMaze:[self position]] To:[handleOnMaze returnEmptySlotInMaze]]];
+            
             break;
         case sEnemyAggressive:
             NSLog(@"Enemy->Starting sEnemyAggressive");
-            action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
-            [animationQueue enqueue:action];
+            
             break; 
         case sEnemySleeping:
             NSLog(@"Enemy->Starting sEnemySleeping");
@@ -113,33 +110,15 @@
     CGRect mySoundBoundingBox = [self returnSenseBoundingBoxFor:kEnemyHearing];
     CGRect myVisionBoundingBox = [self returnSenseBoundingBoxFor:kEnemySight];
     
+    BOOL detectedPlayer = false;
+    
     for (GameObject *object in listOfGameObjects) {
         CGRect objectBoundingBox = [object adjustedBoundingBox];
-        
         if (canHear && CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
             if ([object gameObjectType] == tBall && [object isObjectAudible]){
                 NSLog(@"Minion Heard something!!");
-                NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
-                NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);
-                NSLog(@"Wall width: %i height: %i",[objectFactory returnObjectDimensions:tWall].num1, [objectFactory returnObjectDimensions:tWall].num2);
-                NSInteger targetLocation = [self calculateDifferenceFromCurrentLocation:[self position] ToTargetsLocation:[object position]];
-                NSLog(@"self position: %f %f" , [self position].x, [self position].y);
-                
-                if (targetLocation == -1) {
-                    NSLog(@"Minion Hearing - Could not find solid location of player T.T");
-                }
-                else {
-                    /*load up all of the animations to get to the character's position*/
-                    [animationQueue removeAllObjects];
+                detectedPlayer = true;
 
-                    [self setCanSee:FALSE];
-                    [self setCanHear:FALSE];
-                    NSLog(@"self position: %f %f" , [self position].x, [self position].y);
-
-                    [self runBFSFrom:[self locationInMaze:[self position]] To:targetLocation];
-                    /*load the animation that will call the next state - once the enemy gets to the players's location*/
-                    [self changeState:sEnemyAggressive];
-                }
             }
             
         }
@@ -149,10 +128,37 @@
                                                             WithinThisBox:myVisionBoundingBox 
                                                         OutOfTheseObjects:listOfGameObjects] ) {
                 NSLog(@"Minion Saw something!!");
+                detectedPlayer = true;
                 
             }
         }
-        
+     
+        if (detectedPlayer) {
+//                NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
+//                NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);
+//                NSLog(@"Wall width: %i height: %i",[objectFactory returnObjectDimensions:tWall].num1, [objectFactory returnObjectDimensions:tWall].num2);
+            NSInteger targetLocation = [self calculateDifferenceFromCurrentLocation:[self position] ToTargetsLocation:[object position]];
+//                NSLog(@"self position: %f %f" , [self position].x, [self position].y);
+            
+            if (targetLocation == -1) {
+                NSLog(@"Minion Sense - Could not find solid location of player T.T");
+            }
+            else {
+                /*load up all of the animations to get to the character's position*/
+                [animationQueue removeAllObjects];
+                
+                [self setCanSee:FALSE];
+                [self setCanHear:FALSE];
+//                NSLog(@"self position: %f %f" , [self position].x, [self position].y);
+                
+                [self changeState:sEnemyAggressive];
+                
+                [logicQueue addOperation:[self enemyLogic:kEnemyGoToPlayer From:[self locationInMaze:[self position]] To:targetLocation]];
+//                NSLog(@"num in logicQueue: %i", [logicQueue operationCount]);
+                /*load the animation that will call the next state - once the enemy gets to the players's location*/
+            }    
+            break;
+        }
     }
     
 }

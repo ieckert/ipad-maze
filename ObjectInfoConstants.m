@@ -13,5 +13,7 @@
 NSString * const notificationUserInfoObjectType = @"ObjectType";
 NSString * const notificationUserInfoKeyPositionX = @"position-x";
 NSString * const notificationUserInfoKeyPositionY = @"position-y";
+NSString * const enemyStartLocation = @"startLocation";
+NSString * const enemyEndLocation = @"endLocation";
 
 @end

@@ -26,6 +26,13 @@
     [super dealloc];
 }
 
+-(void) enqueueObjects:(NSArray *)objects
+{
+    for (id tmp in objects) {
+        [self enqueue:tmp];
+    }
+    
+}
 
 -(void) enqueue:(id) animation
 //-(void) enqueue:(int) animation
@@ -72,6 +79,14 @@
         NSLog(@"something else happend with dequeuein' the queue");
     }
     return tmpObject;
+}
+
+-(void) lifoPushObjects:(NSArray *)objects
+{
+    for (id tmp in objects) {
+        [self lifoPush:tmp];
+    }
+    
 }
 
 -(void) lifoPush:(id) object
