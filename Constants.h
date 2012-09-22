@@ -43,7 +43,8 @@
 typedef enum {
     kEnemyWanderInMaze=0,
     kEnemyGoToPlayer=1,
-    kEnemyShootPlayer=2
+    kEnemyShootPlayer=2,
+    kEnemyChargePlayer=3
 } EnemyLogic;
 
 typedef enum {

@@ -102,10 +102,7 @@
     //most likely need to override this for each implementation of an enemy    
     if (isActive == FALSE)
         return;
-    
-    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
-    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-    
+
     CGRect myBoundingBox = [self adjustedBoundingBox];
     CGRect mySoundBoundingBox = [self returnSenseBoundingBoxFor:kEnemyHearing];
     CGRect myVisionBoundingBox = [self returnSenseBoundingBoxFor:kEnemySight];
@@ -114,6 +111,7 @@
     
     for (GameObject *object in listOfGameObjects) {
         CGRect objectBoundingBox = [object adjustedBoundingBox];
+/*
         if (canHear && CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
             if ([object gameObjectType] == tBall && [object isObjectAudible]){
                 NSLog(@"Minion Heard something!!");
@@ -122,7 +120,7 @@
             }
             
         }
-        
+*/        
         if (canSee && CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
             if ([object gameObjectType] == tBall && [self isObjectVisible:object 
                                                             WithinThisBox:myVisionBoundingBox 
@@ -130,9 +128,25 @@
                 NSLog(@"Minion Saw something!!");
                 detectedPlayer = true;
                 
+                objectInfo = [[NSMutableDictionary alloc] init];
+                [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+                [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+                [objectInfo setObject:[NSNumber numberWithInt:tEnemy] forKey:notificationUserInfoObjectType];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"positionOfItemToPlace" 
+                                                                    object:self
+                                                                  userInfo:objectInfo];
+                
+                [animationQueue removeAllObjects];
+                [self setCanSee:FALSE];
+                [self setCanHear:FALSE];
+                
+                [self changeState:sEnemyAggressive];
+                
+                [self chargeForwardFrom:[self position] To:[object position]]; 
             }
         }
-     
+     /*
         if (detectedPlayer) {
 //                NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
 //                NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);
@@ -144,7 +158,7 @@
                 NSLog(@"Minion Sense - Could not find solid location of player T.T");
             }
             else {
-                /*load up all of the animations to get to the character's position*/
+                //load up all of the animations to get to the character's position
                 [animationQueue removeAllObjects];
                 
                 [self setCanSee:FALSE];
@@ -155,10 +169,11 @@
                 
                 [logicQueue addOperation:[self enemyLogic:kEnemyGoToPlayer From:[self locationInMaze:[self position]] To:targetLocation]];
 //                NSLog(@"num in logicQueue: %i", [logicQueue operationCount]);
-                /*load the animation that will call the next state - once the enemy gets to the players's location*/
+                //load the animation that will call the next state - once the enemy gets to the players's location
             }    
             break;
         }
+        */
     }
     
 }

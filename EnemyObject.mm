@@ -62,8 +62,8 @@
         gameObjectType = tEnemy;
         canSee = TRUE;
         canHear = TRUE;
-        timerInterval = 0.6;
-        actionInterval = 0.45;
+        timerInterval = 0.4;
+        actionInterval = 0.4;
                 
         [self setDisplayFrame:frame];
         [self setPosition:location];
@@ -152,6 +152,27 @@
     NSInvocationOperation* theOp = [[NSInvocationOperation alloc] initWithTarget:self
                                                                         selector:NSSelectorFromString(tmpSelector) object:objectInfo];
     return theOp;
+}
+
+-(void) chargeForwardFrom:(CGPoint)location To:(CGPoint)target
+{
+    int X, Y, currentMazeLocation, diff;
+    id action;
+    X = location.x - target.x;
+    Y = location.y - target.y;
+    
+    diff = (abs(X) > abs(Y)) ? ( ((X<0) ? 1:-1)*[handleOnMaze largeMazeRows] ):( ((Y<0) ? 1:-1)*[handleOnMaze largeMazeCols] );
+    
+    currentMazeLocation = [self locationInMaze:location];
+    
+    while ([handleOnMaze returnContentsOfMazePosition:currentMazeLocation] != tWall) {
+        action = [CCMoveTo actionWithDuration:actionInterval position:[self locationOnScreen:currentMazeLocation]];
+        [animationQueue enqueue:action];
+        currentMazeLocation += diff;
+    }
+    action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
+    [animationQueue enqueue:action];
+
 }
 
 -(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation

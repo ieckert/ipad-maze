@@ -259,20 +259,38 @@
 */
 }
 
+-(void) placeAlertAtLocation:(CGPoint)location
+{
+    CCLabelTTF *l1 = [CCLabelTTF labelWithString:@"!" 
+                                        fontName:@"AmericanTypewriter-CondensedBold"
+                                        fontSize:25];                                                
+    [self addChild:l1];
+    [l1 setPosition:location];    
+    id la1 = [CCSequence actions:[CCScaleTo actionWithDuration:1.0 scale:3.0], 
+              [CCFadeOut actionWithDuration:1.0], 
+              nil];
+    [l1 runAction:la1];      
+    
+}
+
 //hacked work around to have a selector call the above function
 //couldn't do it because the selector can only pass objects, not enums
 -(void) itemCapturedHandler:(NSNotification *)notification
 {
     NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
+    CGPoint itemLocation;
+    itemLocation.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
+    itemLocation.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
     
-    CGPoint coinPosition;
-    coinPosition.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
-    coinPosition.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
-    NSLog(@"coinPosition x: %f y: %f", coinPosition.x, coinPosition.y);
-    [self placeParticleEmitterAtLocation:coinPosition];
+    if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tCoin) {
+        [self placeParticleEmitterAtLocation:itemLocation];
+        [self randomlyPlaceItem:tCoin];
+    }
+    else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tEnemy) {
+        [self placeAlertAtLocation:itemLocation];
+    }
     [userInfo release];
 
-    [self randomlyPlaceItem:tCoin];
 }
 
 - (void) debugManager: (CCMenuItemFont*)option
@@ -431,7 +449,7 @@
         //will respawn a coin right when one is grabbed        
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(itemCapturedHandler:) 
-                                                     name:@"positionOfCapturedCoin" object:nil];
+                                                     name:@"positionOfItemToPlace" object:nil];
 
 //start debug        
         gravityScale = 0;

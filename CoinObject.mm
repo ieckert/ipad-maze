@@ -81,7 +81,7 @@
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddCoin" 
                                                                             object:self];
                         
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"positionOfCapturedCoin" 
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"positionOfItemToPlace" 
                                                                             object:self
                                                                           userInfo:objectInfo];
                         

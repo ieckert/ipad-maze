@@ -40,6 +40,7 @@
 @property (readwrite) BOOL canSee;
 @property (readwrite) BOOL canHear;
 -(void) runDFSWith:(NSMutableDictionary*)directions;
+-(void) chargeForwardFrom:(CGPoint)location To:(CGPoint)target;
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location
