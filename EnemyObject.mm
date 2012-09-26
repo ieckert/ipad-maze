@@ -26,7 +26,7 @@
 -(void) depthFirstSearchFrom:(NSInteger)startLocation 
                           To:(NSInteger)endLocation 
              WithVisitedList:(NSMutableArray*)visitedLocationList 
-              WithEndingFlag:(BOOL*)DFSWasFound 
+              WithWhiteNodes:(NSInteger&)whiteNodes
                WithContainer:(NSMutableArray*)animationContainer;
 
 -(CGPoint) locationOnScreen:(NSInteger)currentIndex;
@@ -341,9 +341,6 @@
     startLocation = [[directions objectForKey:enemyStartLocation] intValue];
     endLocation = [[directions objectForKey:enemyEndLocation] intValue];
     
-//    NSLog(@"in runDFSFrom");
-    /*when the ending is found - it will not store movements after that location*/
-    BOOL DFSWasFound = FALSE;
     
     NSInteger tmpSize = [[handleOnMaze wallList] count];
     
@@ -359,7 +356,7 @@
     [self depthFirstSearchFrom:startLocation 
                             To:endLocation 
                WithVisitedList:visitedList 
-                WithEndingFlag:&DFSWasFound 
+                WithWhiteNodes:(NSInteger&)tmpSize
                  WithContainer:animationContainer];
    
     [animationContainer insertObject:[CCCallFunc actionWithTarget:self selector:@selector(stateMap)] atIndex:[animationContainer count]];
@@ -373,56 +370,38 @@
 -(void) depthFirstSearchFrom:(NSInteger)startLocation 
                           To:(NSInteger)endLocation 
              WithVisitedList:(NSMutableArray*)visitedLocationList 
-              WithEndingFlag:(BOOL*)DFSWasFound 
+              WithWhiteNodes:(NSInteger&)whiteNodes
                WithContainer:(NSMutableArray*)animationContainer
 {
+    
     [visitedLocationList replaceObjectAtIndex:startLocation withObject:[NSNumber numberWithInt:1]];
+    whiteNodes--;
+    
+    if (whiteNodes < 0)
+        return;
+    
     CGPoint animPoint;
     
-    if (startLocation == endLocation) {
-        *DFSWasFound = TRUE;
-        animPoint = [self locationOnScreen:endLocation];
+    int newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
+    while (newLocation != -1) {
         
-        id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
+        animPoint = [self locationOnScreen:newLocation];
+        id action;
+        action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
         [animationContainer insertObject:action atIndex:[animationContainer count]];
+    
+        [self depthFirstSearchFrom:newLocation
+                                To:endLocation 
+                   WithVisitedList:visitedLocationList 
+                    WithWhiteNodes:whiteNodes
+                     WithContainer:animationContainer];
         
-//        NSLog(@"end location found: %i", endLocation); 
-        /*after this - it is the dfs path to the goal*/
-    }
-    else {
-        int newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
-        while (newLocation != -1) {
-            
-            if (!*DFSWasFound) {
-//                NSLog(@"in while DFS at: %i", newLocation);
-                animPoint = [self locationOnScreen:newLocation];
+        newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
+        
+        animPoint = [self locationOnScreen:startLocation];
 
-                id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-                [animationContainer insertObject:action atIndex:[animationContainer count]];
-            }
-            else {
-                
-            }
-            
-            [self depthFirstSearchFrom:newLocation 
-                                    To:endLocation 
-                       WithVisitedList:visitedLocationList 
-                        WithEndingFlag:DFSWasFound 
-                         WithContainer:animationContainer];
-            
-            newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
-            
-            if (!*DFSWasFound) {
-//                NSLog(@"in while DFS at: %i", startLocation);
-                animPoint = [self locationOnScreen:startLocation];
-
-                id action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
-                [animationContainer insertObject:action atIndex:[animationContainer count]];
-            }
-            else {
-                
-            }
-        }
+        action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
+        [animationContainer insertObject:action atIndex:[animationContainer count]];
     }
     return;
 }
