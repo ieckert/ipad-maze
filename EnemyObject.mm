@@ -156,23 +156,44 @@
 
 -(void) chargeForwardFrom:(CGPoint)location To:(CGPoint)target
 {
-    int X, Y, currentMazeLocation, diff;
+    CGPoint currentLocation = location;
+    float X1, Y1, X2, Y2, diffX, diffY, dirX, dirY, dist;
     id action;
-    X = location.x - target.x;
-    Y = location.y - target.y;
-    
-    diff = (abs(X) > abs(Y)) ? ( ((X<0) ? 1:-1)*[handleOnMaze largeMazeRows] ):( ((Y<0) ? 1:-1)*[handleOnMaze largeMazeCols] );
-    
-    currentMazeLocation = [self locationInMaze:location];
-    
-    while ([handleOnMaze returnContentsOfMazePosition:currentMazeLocation] != tWall) {
-        action = [CCMoveTo actionWithDuration:actionInterval position:[self locationOnScreen:currentMazeLocation]];
-        [animationQueue enqueue:action];
-        currentMazeLocation += diff;
-    }
-    action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
-    [animationQueue enqueue:action];
 
+    X1 = location.x;
+    Y1 = location.y;
+    X2 = target.x;
+    Y2 = target.y;
+    
+//figure out which way the enemy needs to move
+    if (X2 > X1) 
+        dirX = 1;
+    else
+        dirX = -1;
+    
+    if (Y2 > Y1) 
+        dirY = 1;
+    else
+        dirY = -1;
+    
+    diffX = abs(X1 - X2);
+    diffY = abs(Y1 - Y2);
+    
+    //distance to point / the wall size - so each unit of time the enemy moves a certain amount
+    dist = sqrt( pow(diffX, 2) + pow(diffY, 2) )/[objectFactory returnObjectDimensions:tWall].num2;
+
+    diffX = (diffX / dist)*dirX;
+    diffY = (diffY / dist)*dirY;
+    
+    for (int i=0; i<dist-1; i++) {
+        currentLocation.x += diffX;
+        currentLocation.y += diffY;
+        action = [CCMoveTo actionWithDuration:actionInterval position:currentLocation];
+        [animationQueue enqueue:action];
+    }
+    
+    action = [CCMoveTo actionWithDuration:actionInterval position:target];
+    [animationQueue enqueue:action];
 }
 
 -(NSInteger) calculateDifferenceFromCurrentLocation:(CGPoint)currentLocation ToTargetsLocation:(CGPoint)targetLocation
@@ -252,11 +273,11 @@
     NSInteger location;
     NSInteger wallHeight = [[objectFactory returnObjectDimensions:tWall]num2];
     NSInteger wallWidth = [[objectFactory returnObjectDimensions:tWall]num2];
-//    NSLog(@"in locationInMaze currentLocation: %f %f screenOffset:%i wallSize:%i", currentLocation.x, currentLocation.y, screenOffset, wallWidth);
+    NSLog(@"in locationInMaze currentLocation: %f %f screenOffset:%i wallSize:%i", currentLocation.x, currentLocation.y, screenOffset, wallWidth);
 
     
-    int tmpX = ((currentLocation.x-screenOffset)/wallHeight);
-    int tmpY = ((currentLocation.y-screenOffset)/wallWidth);
+    int tmpX = ceil(((currentLocation.x-screenOffset)/wallHeight));
+    int tmpY = ceil(((currentLocation.y-screenOffset)/wallWidth));
     
     location = [handleOnMaze translateLargeXYToArrayIndex:tmpX :tmpY];
     return location;
