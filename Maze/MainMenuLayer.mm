@@ -190,7 +190,6 @@
     [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
     
     [mazeMaker release];
-
     
     //might need to remove all things in the world first!
     delete world;
@@ -506,6 +505,8 @@
         cols = mazeDimensions.num2;
         [mazeDimensions release];
         
+        mazeInterface = [MazeInterface createSingleton];
+        [mazeInterface removeAllOpenPoints];
         
         [[UIAccelerometer sharedAccelerometer] setDelegate:self];
         [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
@@ -516,13 +517,14 @@
         CGPoint tmpLocation;
         mazeSize = rows*cols;
         for(int i = 0; i < mazeSize; i++)
-        {
-            
+        {            
             tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
             x = tmpCoords.num1;
             y = tmpCoords.num2;
             tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMenuMazeScreenOffset;
             tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMenuMazeScreenOffset;
+            
+            NSLog(@"obj x:%f y:%f", tmpLocation.x, tmpLocation.y);
             
             if ([[menuMaze objectAtIndex:i] intValue] == tWall) {
                 [objectFactory createObjectOfType:tWall
@@ -533,6 +535,7 @@
             }
             else if ([[menuMaze objectAtIndex:i] intValue] == tCoin){
                 //create coin as GameObject:
+                [mazeInterface addPoint:tmpLocation];
                 [objectFactory createObjectOfType:tCoin
                                        atLocation:tmpLocation
                                        withZValue:kCoinZValue
@@ -540,6 +543,7 @@
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
             else if ([[menuMaze objectAtIndex:i] intValue] == tEnemy) {
+                [mazeInterface addPoint:tmpLocation];
                 [objectFactory createEnemyOfType:tEnemy
                                       atLocation:tmpLocation
                                       withZValue:kCoinZValue
@@ -555,6 +559,11 @@
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
             }
             else if ([[menuMaze objectAtIndex:i] intValue] == tFinish) {
+            
+            }
+            else {
+                //empty location
+                [mazeInterface addPoint:tmpLocation];
             }
             
         }

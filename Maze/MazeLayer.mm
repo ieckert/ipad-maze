@@ -314,6 +314,8 @@
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
         
         objectFactory = [ObjectFactory createSingleton];
+        mazeInterface = [MazeInterface createSingleton];
+        [mazeInterface removeAllOpenPoints];
 //calculate depends on objectFactory width/height for walls - so call after objectFactory's init
 
         [self setupWorld];
@@ -410,6 +412,10 @@
                                        withZValue:kDoorZValue
                                           inWorld:world
                         addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            }
+            else {
+                //empty location
+                [mazeInterface addPoint:tmpLocation];
             }
             
         }

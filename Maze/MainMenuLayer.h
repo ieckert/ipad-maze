@@ -23,7 +23,7 @@
 #import "CoinObject.h"
 #import "Pair.h"
 #import "ObjectFactory.h"
-
+#import "MazeInterface.h"
 @interface MainMenuLayer : CCLayer <UIAccelerometerDelegate>
 {
     CCMenu *mainMenu;
@@ -36,6 +36,7 @@
     
     NSMutableArray *menuMaze;
     MazeMaker *mazeMaker;
+    MazeInterface *mazeInterface;
     MazeRequirements *requirements;
     ObjectFactory *objectFactory;    
     

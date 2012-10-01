@@ -63,21 +63,24 @@
             NSLog(@"Enemy->Starting sEnemyPathFinding");
             [self setCanSee:TRUE];
             [self setCanHear:TRUE];
-            [logicQueue addOperation:[self enemyLogic:kEnemyWanderInMaze From:[self locationInMaze:[self position]] To:[handleOnMaze returnEmptySlotInMaze]]];
+            [logicQueue addOperation:[self enemyLogic:kEnemyWanderInMaze From:[self locationInMaze:[self backOnTrack:[self position]]] To:[handleOnMaze returnEmptySlotInMaze]]];
             
             break;
         case sEnemyAggressive:
             NSLog(@"Enemy->Starting sEnemyAggressive");
-            
-            break; 
+
+            break;
         case sEnemySleeping:
             NSLog(@"Enemy->Starting sEnemySleeping");
             [self setCanHear:TRUE];
             [self setCanSee:TRUE];
+            [animationQueue removeAllObjects];
             for (int i=0; i < 4; i++) {
-                id action = [CCRotateBy actionWithDuration:actionInterval angle:45];
+                id action = [CCFadeIn actionWithDuration:actionInterval];
                 [animationQueue enqueue:action];
             }
+//            action = [CCMoveTo actionWithDuration:actionInterval position:[self backOnTrack:[self position]]];
+//            [animationQueue enqueue:action];
             action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
             [animationQueue enqueue:action];
             
@@ -140,10 +143,11 @@
                 [animationQueue removeAllObjects];
                 [self setCanSee:FALSE];
                 [self setCanHear:FALSE];
-                
                 [self changeState:sEnemyAggressive];
-                
-                [self chargeForwardFrom:[self position] To:[object position]]; 
+
+                [self chargeForwardFrom:[self position] To:[object position]];
+                id action = [CCCallFunc actionWithTarget:self selector:@selector(stateMap)];
+                [animationQueue enqueue:action];
             }
         }
      /*

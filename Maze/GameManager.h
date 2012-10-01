@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Constants.h"
 #import "StatsKeeper.h"
+#import "MazeInterface.h"
 #import "ObjectFactory.h"
 #import "DataAdapter.h"
 
@@ -19,6 +20,7 @@
     
     SceneTypes currentScene;
     
+    MazeInterface *mazeInterface;
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;
     DataAdapter *dataAdapter;

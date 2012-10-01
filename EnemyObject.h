@@ -12,7 +12,7 @@
 #import "ObjectFactory.h"
 #import "Constants.h"
 #import "ObjectInfoConstants.h"
-
+#import "MazeInterface.h"
 
 @interface EnemyObject : GameObject
 {    
@@ -24,6 +24,7 @@
     NSString *tmpSelector;
     
     MazeMaker *handleOnMaze;
+    MazeInterface *mazeInterface;
     
     Queue *animationQueue;
     
@@ -41,6 +42,7 @@
 @property (readwrite) BOOL canHear;
 -(void) runDFSWith:(NSMutableDictionary*)directions;
 -(void) chargeForwardFrom:(CGPoint)location To:(CGPoint)target;
+-(CGPoint) backOnTrack:(CGPoint)location;
 
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location

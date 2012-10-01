@@ -8,38 +8,51 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "EnemyObject.mm"
-         timestampString = "370035878.980364"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "265"
-         endingLineNumber = "265"
-         landmarkName = "-runBFSWith:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "EnemyObject.mm"
-         timestampString = "370035878.980364"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "281"
-         endingLineNumber = "281"
-         landmarkName = "-runBFSWith:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "EnemyObject.mm"
-         timestampString = "370035878.980364"
+         timestampString = "370753874.387706"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "283"
          endingLineNumber = "283"
-         landmarkName = "-runBFSWith:"
+         landmarkName = "-locationOnScreen:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "EnemyObject.mm"
+         timestampString = "370753874.387706"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "303"
+         endingLineNumber = "303"
+         landmarkName = "-locationInMaze:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "EnemyObject.mm"
+         timestampString = "370753874.387706"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "305"
+         endingLineNumber = "305"
+         landmarkName = "-locationInMaze:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "MazeInterface.m"
+         timestampString = "370755341.782537"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "83"
+         endingLineNumber = "83"
+         landmarkName = "-searchInArray:ForNumber:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

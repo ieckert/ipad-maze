@@ -16,6 +16,7 @@
 #import "cocos2d.h"
 
 #import "MazeMaker.h"
+#import "MazeInterface.h"
 #import "MazeRequirements.h"
 #import "StatsLayer.h"
 #import "StatsKeeper.h"
@@ -29,9 +30,11 @@
 #import "CoinObject.h"
 #import "Pair.h"
 #import "ObjectFactory.h"
+
 @interface MazeLayer : CCLayer <UIAccelerometerDelegate>
 {
     MazeMaker *mazeMaker;
+    MazeInterface *mazeInterface;
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;
     MazeRequirements *requirements;

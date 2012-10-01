@@ -53,6 +53,7 @@ return nil;
         statsKeeper = [StatsKeeper createSingleton];
         objectFactory = [ObjectFactory createSingleton];
         dataAdapter = [DataAdapter createSingleton];
+        mazeInterface = [MazeInterface createSingleton];
     }
     return self;
 }
@@ -62,6 +63,7 @@ return nil;
     [statsKeeper release];
     [objectFactory release];
     [dataAdapter release];
+    [mazeInterface release];
     [super dealloc];
 }
            
