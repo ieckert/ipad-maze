@@ -33,12 +33,18 @@
 -(void) pauseGame
 {
     paused = TRUE;
+//pause update on time/coins/level labels
     [statsKeeper setActive:FALSE];
+//send notification for all enemies to pause movement
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"pauseGameObjects" 
+                                                        object:self];
 }
 
 -(void) unpauseGame
 {
     paused = FALSE;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"unPauseGameObjects" 
+                                                        object:self];
     [statsKeeper setActive:TRUE];
 }
 
@@ -281,6 +287,114 @@
         }
 }
 
+- (void) drawMaze
+{
+    int x, y, mazeSize;
+    Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
+    CGPoint tmpLocation;
+    mazeSize = rows*cols;
+    for(int i = 0; i < mazeSize; i++)
+    {
+        tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
+        x = tmpCoords.num1;
+        y = tmpCoords.num2;
+
+//for objectFactory returnObjectDimensions - num1 is height - num2 is width
+        tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMazeScreenOffset;
+        tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMazeScreenOffset;
+        
+        if ([[mazeGrid objectAtIndex:i] intValue] == tWall) {
+            [objectFactory createObjectOfType:tWall
+                                   atLocation:tmpLocation
+                                   withZValue:kWallZValue
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+        }
+        else if ([[mazeGrid objectAtIndex:i] intValue] == tCoin){
+            //create coin as GameObject:
+            [objectFactory createObjectOfType:tCoin
+                                   atLocation:tmpLocation
+                                   withZValue:kCoinZValue
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+        }
+        else if ([[mazeGrid objectAtIndex:i] intValue] == tEnemy) {
+            [objectFactory createEnemyOfType:tEnemy
+                                  atLocation:tmpLocation
+                                  withZValue:kCoinZValue
+                                     inWorld:world
+                   addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                         withKnowledgeOfMaze:mazeMaker];
+        }
+        else if ([[mazeGrid objectAtIndex:i] intValue] == tStart) {
+            NSLog(@"starting position at: %i", i);
+            [objectFactory createObjectOfType:tStart
+                                   atLocation:tmpLocation
+                                   withZValue:kDoorZValue
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+            
+            [objectFactory createObjectOfType:tBall 
+                                   atLocation:tmpLocation 
+                                   withZValue:kBallZValue
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+        }
+        else if ([[mazeGrid objectAtIndex:i] intValue] == tFinish) {
+            NSLog(@"ending position at: %i", i);
+            [objectFactory createObjectOfType:tFinish
+                                   atLocation:tmpLocation
+                                   withZValue:kDoorZValue
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode];
+        }
+        else {
+            //empty location
+            [mazeInterface addPoint:tmpLocation];
+        }
+        
+    }
+    
+    [tmpCoords release];    
+}
+
+- (void) resetLevel
+{
+//pause game
+    [self unschedule:@selector(update:)];
+    [self pauseGame];
+
+//remove all objects
+    [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
+//rebuilt map - thus rebuilding objects in the correct spot
+    [self loadBatchNode];
+    [self drawMaze];
+//reset labels
+    [statsKeeper dropStatsFromCurrentLevel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCoinLabel" object:self];
+
+//unpause game
+    [self schedule:@selector(update:)];
+    [self unpauseGame];
+}
+
+-(void) loadBatchNode
+{
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        [[CCSpriteFrameCache sharedSpriteFrameCache]
+         addSpriteFramesWithFile:@"atlas1.plist"];           // 1
+        sceneSpriteBatchNode =
+        [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
+    } else {
+        [[CCSpriteFrameCache sharedSpriteFrameCache]
+         addSpriteFramesWithFile:@"atlas1.plist"];     // 1
+        sceneSpriteBatchNode =
+        [CCSpriteBatchNode
+         batchNodeWithFile:@"atlas1.png"];             // 2
+    }
+}
+
 -(id) init
 {
 	if( (self=[super init])) {   
@@ -298,18 +412,7 @@
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
         
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas1.plist"];           // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
-        } else {
-            [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas1.plist"];     // 1
-            sceneSpriteBatchNode =
-            [CCSpriteBatchNode
-             batchNodeWithFile:@"atlas1.png"];             // 2
-        }
+        [self loadBatchNode];
         
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
         
@@ -355,72 +458,7 @@
         cols = mazeDimensions.num2;
         [mazeDimensions release];
 
-        //for objectFactory returnObjectDimensions - num1 is height - num2 is width
-        int x, y, mazeSize;
-        Pair *tmpCoords = [[Pair alloc] initWithRequirements:0 :0];
-        CGPoint tmpLocation;
-        mazeSize = rows*cols;
-        for(int i = 0; i < mazeSize; i++)
-        {
-            tmpCoords = [mazeMaker translateLargeArrayIndexToXY:i];
-            x = tmpCoords.num1;
-            y = tmpCoords.num2;
-            tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMazeScreenOffset;
-            tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMazeScreenOffset;
-            
-            if ([[mazeGrid objectAtIndex:i] intValue] == tWall) {
-                [objectFactory createObjectOfType:tWall
-                                       atLocation:tmpLocation
-                                       withZValue:kWallZValue
-                                          inWorld:world
-                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-            }
-            else if ([[mazeGrid objectAtIndex:i] intValue] == tCoin){
-                //create coin as GameObject:
-                [objectFactory createObjectOfType:tCoin
-                                       atLocation:tmpLocation
-                                       withZValue:kCoinZValue
-                                          inWorld:world
-                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-            }
-            else if ([[mazeGrid objectAtIndex:i] intValue] == tEnemy) {
-                [objectFactory createEnemyOfType:tEnemy
-                                      atLocation:tmpLocation
-                                      withZValue:kCoinZValue
-                                         inWorld:world
-                       addToSceneSpriteBatchNode:sceneSpriteBatchNode
-                             withKnowledgeOfMaze:mazeMaker];
-            }
-            else if ([[mazeGrid objectAtIndex:i] intValue] == tStart) {
-                NSLog(@"starting position at: %i", i);
-                [objectFactory createObjectOfType:tStart
-                                       atLocation:tmpLocation
-                                       withZValue:kDoorZValue
-                                          inWorld:world
-                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-                
-                [objectFactory createObjectOfType:tBall 
-                                       atLocation:tmpLocation 
-                                       withZValue:kBallZValue
-                                          inWorld:world
-                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-            }
-            else if ([[mazeGrid objectAtIndex:i] intValue] == tFinish) {
-                NSLog(@"ending position at: %i", i);
-                [objectFactory createObjectOfType:tFinish
-                                       atLocation:tmpLocation
-                                       withZValue:kDoorZValue
-                                          inWorld:world
-                        addToSceneSpriteBatchNode:sceneSpriteBatchNode];
-            }
-            else {
-                //empty location
-                [mazeInterface addPoint:tmpLocation];
-            }
-            
-        }
-        
-        [tmpCoords release];
+        [self drawMaze];
         
         [self scheduleUpdate];                                    
         [self setTimer];
@@ -518,6 +556,10 @@
         
         case kInGameMenuReloadLevel:
             NSLog(@"chose reload");
+            if (pausedMenu != nil) {
+                [self resetLevel];
+                [pausedMenu removeFromParentAndCleanup:YES];
+            }
             break;
         
         case kInGameMenuCancel:

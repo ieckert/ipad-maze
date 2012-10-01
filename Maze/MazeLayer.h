@@ -35,9 +35,10 @@
 {
     MazeMaker *mazeMaker;
     MazeInterface *mazeInterface;
+    MazeRequirements *requirements;
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;
-    MazeRequirements *requirements;
+    
     CCMenu *pausedMenu;
 
     b2World *world;
@@ -75,5 +76,8 @@
 
 - (void) setTimer;
 - (void) timerDuties;
+- (void) drawMaze;
+- (void) resetLevel;
+- (void) loadBatchNode;
 
 @end

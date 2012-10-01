@@ -39,7 +39,7 @@
 - (void) dealloc{
     //might have to do the timer earlier
     //    NSLog(@"enemy dealloc called");
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [tmpSelector release];
     [logicQueue release];
     [animationQueue release];    
@@ -91,8 +91,25 @@
         tmpSelector = [[NSString alloc] init];
         [self scheduleAnimationTimer];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(respondToPauseCall) 
+                                                     name:@"pauseGameObjects" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(respondToUnPauseCall) 
+                                                     name:@"unPauseGameObjects" object:nil];
     }
     return self;
+}
+
+-(void)respondToPauseCall
+{
+    isActive = false; 
+}
+
+-(void)respondToUnPauseCall
+{
+    isActive = true;
 }
 
 -(void)scheduleAnimationTimer
@@ -123,14 +140,16 @@
 }
 
 -(void) timerDuties: (ccTime) dt
-{  
-    //        NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
-    [self stopAllActions];
-    id action = nil;  
-    action = [animationQueue dequeue];
-    if (action != nil) {
-        //            NSLog(@"minion - ran action");
-        [self runAction:action];
+{
+    if (isActive) {
+        //        NSLog(@"minion timer running - animationQueue size: %i", [animationQueue counter]);
+        [self stopAllActions];
+        id action = nil;  
+        action = [animationQueue dequeue];
+        if (action != nil) {
+            //            NSLog(@"minion - ran action");
+            [self runAction:action];
+        }
     }
 }
 
