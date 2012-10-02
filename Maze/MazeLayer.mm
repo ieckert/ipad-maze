@@ -363,11 +363,22 @@
 //pause game
     [self unschedule:@selector(update:)];
     [self pauseGame];
+    
+    delete world;
+    world = NULL;
+    delete debugDraw;
 
 //remove all objects
     [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
+    [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
+
 //rebuilt map - thus rebuilding objects in the correct spot
     [self loadBatchNode];
+    [self addChild:sceneSpriteBatchNode z:0];                  // 3
+
+    [self setupWorld];
+    [self setupDebugDraw];
+    [self createGround];
     [self drawMaze];
 //reset labels
     [statsKeeper dropStatsFromCurrentLevel];
