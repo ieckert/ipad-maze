@@ -214,8 +214,8 @@
         didAccelerate:(UIAcceleration *)acceleration
 {
 //    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
-    b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
-    world->SetGravity(gravity);
+        b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
+        world->SetGravity(gravity);
 }
 
 -(void) endingTransition
@@ -248,6 +248,7 @@
 {
     if (world == nil) {
         NSLog(@"got no world to go back to :(");
+        return;
     }
         int32 velocityIterations = 3;
         int32 positionIterations = 2;
@@ -355,30 +356,26 @@
         
     }
     
-    [tmpCoords release];    
+//    [tmpCoords release];
 }
 
 - (void) resetLevel
 {
 //pause game
-    [self unschedule:@selector(update:)];
     [self pauseGame];
-    
-    delete world;
-    world = NULL;
-    delete debugDraw;
+    [self unschedule:@selector(update:)];
 
+    CCArray *listOfGameObjects =
+    [sceneSpriteBatchNode children];
+    for (GameObject *tempObject in listOfGameObjects) {
+        b2Body *b = [tempObject body];
+        if (b!=NULL) {
+            world->DestroyBody(b);
+        }
+    }
 //remove all objects
     [sceneSpriteBatchNode removeAllChildrenWithCleanup:YES];
-    [sceneSpriteBatchNode removeFromParentAndCleanup:YES];
 
-//rebuilt map - thus rebuilding objects in the correct spot
-    [self loadBatchNode];
-    [self addChild:sceneSpriteBatchNode z:0];                  // 3
-
-    [self setupWorld];
-    [self setupDebugDraw];
-    [self createGround];
     [self drawMaze];
 //reset labels
     [statsKeeper dropStatsFromCurrentLevel];
@@ -404,6 +401,12 @@
         [CCSpriteBatchNode
          batchNodeWithFile:@"atlas1.png"];             // 2
     }
+}
+
+-(void) setupAccelerometer
+{
+    [[UIAccelerometer sharedAccelerometer] setDelegate:self];
+    [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
 }
 
 -(id) init
@@ -440,8 +443,7 @@
         [statsKeeper setActive:TRUE];
 
         //setup accelerometer     
-        [[UIAccelerometer sharedAccelerometer] setDelegate:self];
-        [[UIAccelerometer sharedAccelerometer] setUpdateInterval:1.0f/60.0f];
+        [self setupAccelerometer];
         
         //setup basic window-size and touch
         self.isTouchEnabled = YES;
