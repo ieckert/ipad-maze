@@ -66,7 +66,7 @@ static MazeInterface *singleton = nil;
 
 -(float) searchInArray:(NSMutableArray*)arr ForNumber:(float)findNum
 {
-    NSLog(@"in searchInArray");
+//    NSLog(@"in searchInArray");
     
     float tmp1, tmp2;
     NSInteger arrSize = [arr count];
@@ -74,12 +74,12 @@ static MazeInterface *singleton = nil;
 
     for (int i=0; i < arrSize; i++) {
         if (findNum < [[arr objectAtIndex:i] floatValue] ) {
-            NSLog(@"in searchArrayFor: i: %i arrSize: %i", i, arrSize);
+//            NSLog(@"in searchArrayFor: i: %i arrSize: %i", i, arrSize);
             keepIndex = i;
             break;
         }
     }
-    NSLog(@"keepIndex: %i", keepIndex);
+//    NSLog(@"keepIndex: %i", keepIndex);
 //prevents bounds errors
     if (keepIndex-1 >= 0)
         tmp1 = [[arr objectAtIndex:(keepIndex-1)] floatValue];
@@ -87,7 +87,7 @@ static MazeInterface *singleton = nil;
         tmp1 = [[arr objectAtIndex:keepIndex] floatValue];
 
     tmp2 = [[arr objectAtIndex:keepIndex] floatValue];
-    NSLog(@"exiting searchInArray");
+//    NSLog(@"exiting searchInArray");
 
     if ( (findNum - tmp1) < (tmp2 - findNum) )
         return tmp1;
@@ -97,7 +97,7 @@ static MazeInterface *singleton = nil;
 
 -(CGPoint) findClosestArrayMatchToPoint:(CGPoint)point
 {
-    NSLog(@"in findClosestArrayMatchToPoint");
+//    NSLog(@"in findClosestArrayMatchToPoint");
 
     CGPoint tmpPoint;
         
@@ -106,7 +106,7 @@ static MazeInterface *singleton = nil;
     
     tmpPoint.x = [self searchInArray:openXPoints ForNumber:point.x];
     tmpPoint.y = [self searchInArray:openYPoints ForNumber:point.y];
-    NSLog(@"exiting findClosestArrayMatchToPoint");
+//    NSLog(@"exiting findClosestArrayMatchToPoint");
 
     return tmpPoint;
 }

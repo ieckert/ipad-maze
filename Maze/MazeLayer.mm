@@ -48,6 +48,14 @@
     [statsKeeper setActive:TRUE];
 }
 
+-(void) restartLevelSceneTransition
+{
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"RESTARTING"] afterDelay:.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"READY"] afterDelay:2.0f];
+    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:3.5f];
+    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:3.7f];
+}
+
 //transition from previous scene to this one
 -(void) onEnterTransitionDidFinish
 {
@@ -65,21 +73,37 @@
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
 }
 
--(void)placeParticleEmitterAtLocation:(CGPoint)location{
+-(void)placeParticleEmitterAtLocation:(CGPoint)location ForObjectType:(GameObjectType)type{
     //coin collection: sun
     //end of level: fireworks
-    CCSprite *coinSprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"coin_1.png"]];
-    ccColor4F emitterColor = {255, 255, 0, 255};
+    CCParticleSystemQuad *partEmitter;
 
-    CCParticleSystemQuad *partEmitter = [[CCParticleSun alloc] initWithTotalParticles:20];
-    [partEmitter setTexture:coinSprite.texture withRect:coinSprite.textureRect];
-    
-    [partEmitter setEmitterMode:kCCParticleModeGravity];
-    [partEmitter setStartSize:5.0f];
-    [partEmitter setEndSize:30.0f];
-    [partEmitter setDuration:1.5f];
-    [partEmitter setSpeed:100.0f];
-    [partEmitter setStartColor:emitterColor];
+    if (type == tBall) {
+        CCSprite *ballsprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"ball_2.png"]];
+        partEmitter = [[CCParticleExplosion alloc] initWithTotalParticles:20];
+        ccColor4F emitterColor = {0, 255, 0, 255};
+        [partEmitter setStartColor:emitterColor];
+        [partEmitter setTexture:ballsprite.texture withRect:ballsprite.textureRect];
+        [partEmitter setEmitterMode:kCCParticleModeGravity];
+        [partEmitter setStartSize:2.0f];
+        [partEmitter setEndSize:15.0f];
+        [partEmitter setDuration:.75f];
+        [partEmitter setSpeed:100.0f];
+    }
+    else if (type == tCoin)
+    {
+        CCSprite *coinSprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"coin_1.png"]];
+        partEmitter = [[CCParticleSun alloc] initWithTotalParticles:20];
+        ccColor4F emitterColor = {255, 255, 0, 255};
+        [partEmitter setStartColor:emitterColor];
+        [partEmitter setTexture:coinSprite.texture withRect:coinSprite.textureRect];
+        [partEmitter setEmitterMode:kCCParticleModeGravity];
+        [partEmitter setStartSize:5.0f];
+        [partEmitter setEndSize:30.0f];
+        [partEmitter setDuration:1.5f];
+        [partEmitter setSpeed:100.0f];
+    }
+
     [partEmitter setPosition:location];
     
     [self addChild:partEmitter];
@@ -110,11 +134,17 @@
     itemLocation.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
     itemLocation.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
     
+//    NSLog(@"in item captured handler X:%f Y:%f Item:%i", itemLocation.x, itemLocation.y, [[userInfo objectForKey:notificationUserInfoObjectType] intValue]);
+    
     if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tCoin) {
-        [self placeParticleEmitterAtLocation:itemLocation];
+        [self placeParticleEmitterAtLocation:itemLocation ForObjectType:tCoin];
     }
     else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tEnemy) {
         [self placeAlertAtLocation:itemLocation];
+    }
+    else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tBall) {
+        NSLog(@"placing emitter for ball");
+        [self placeParticleEmitterAtLocation:itemLocation ForObjectType:tBall];
     }
     [userInfo release];
     
@@ -384,7 +414,7 @@
 
 //unpause game
     [self schedule:@selector(update:)];
-    [self unpauseGame];
+    [self restartLevelSceneTransition];
 }
 
 -(void) loadBatchNode
@@ -423,6 +453,10 @@
                                                  selector:@selector(playerAtDoorHandler:) 
                                                      name:@"doorEntered" object:nil];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(itemCapturedHandler:) 
+                                                     name:@"playerTouchedEnemy" object:nil];
+        
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
         
@@ -436,7 +470,7 @@
 //calculate depends on objectFactory width/height for walls - so call after objectFactory's init
 
         [self setupWorld];
-        [self setupDebugDraw];
+//        [self setupDebugDraw];
         [self createGround];
         
         statsKeeper = [StatsKeeper createSingleton];
@@ -625,7 +659,7 @@
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
+    NSLog(@"world grav: %f, %f ", world->GetGravity().x, world->GetGravity().y);
 //'paused' prevents the user from tapping multiple times and having the game crash
 //'mazeComplete' prevents the user from tapping the screen when the ending transition is active
     if (paused == FALSE && mazeComplete == FALSE) {

@@ -10,7 +10,7 @@
 #import "ObjectInfoConstants.h"
 
 @implementation BallObject
-@synthesize rollingAnim, idleAnim, collisionAnim;
+@synthesize rollingAnim, idleAnim, collisionAnim, health;
 
 - (void) dealloc{
 //    NSLog(@"ball dealloc called");
@@ -19,30 +19,44 @@
     [super dealloc];
 }
 
+-(void)forceRollingState
+{
+    [self changeState:sBallRolling];
+}
+
 -(void)changeState:(CharacterStates)newState {
     [self stopAllActions];
     id action = nil;
     [self setCharacterState:newState];
-    
+
     switch (newState) {
         case sBallIdle:
 //            CCLOG(@"Ball->Starting the Spawning Animation");
-            action = [CCAnimate actionWithAnimation:idleAnim
-                               restoreOriginalFrame:NO];
+//            action = [CCAnimate actionWithAnimation:idleAnim
+//                               restoreOriginalFrame:NO];
             break;
             
         case sBallColliding:
 //            CCLOG(@"Ball->Changing State to Idle");
-            action = [CCAnimate actionWithAnimation:collisionAnim
-                               restoreOriginalFrame:NO];
+//            action = [CCAnimate actionWithAnimation:collisionAnim
+//                               restoreOriginalFrame:NO];
             break;
         
         case sBallRolling:
-//            CCLOG(@"Ball->Changing State to Idle");
-            action = [CCAnimate actionWithAnimation:rollingAnim
-                               restoreOriginalFrame:NO];
+            CCLOG(@"Ball->Changing State to Rolling");
+
             break;
-            
+        case sBallInvulnerable:
+            CCLOG(@"Ball->Changing State to Invulnerable");
+            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
+
+            break;
+        case sBallHurt:
+            CCLOG(@"Ball->Changing State to Hurt");
+
+            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
+            action = [CCBlink actionWithDuration:3.0 blinks:50];
+            break;    
         default:
             CCLOG(@"Unhandled state %d in BallObject", newState);
             break;
@@ -67,7 +81,18 @@
                     NSLog(@"Hit a Coin!");
                     
                     
-                }         
+                }
+                if ( [object gameObjectType] == tEnemy && [self characterState] != sBallInvulnerable && [self characterState] != sBallHurt ) {
+                    NSLog(@"Hit an Enemy!");
+                    
+                    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+                    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"playerTouchedEnemy" 
+                                                                        object:self
+                                                                      userInfo:objectInfo];
+                    [self changeState:sBallHurt];
+                }
             }
         }
     }
@@ -117,7 +142,10 @@
         [self setDisplayFrame:frame];
         gameObjectType = tBall;
         [self createBodyAtLocation:location];
-        
+        objectInfo = [[NSMutableDictionary alloc] init];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+        [objectInfo setObject:[NSNumber numberWithInt:tBall] forKey:notificationUserInfoObjectType];
     }
     return self;
 }
@@ -128,6 +156,7 @@
         [self initAnimations];                                   // 1// 2
         gameObjectType = tBall;                    // 3
         [self changeState:sBallIdle];                       // 4
+        health = 100;
     }
     return self;
 }

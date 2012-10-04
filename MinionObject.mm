@@ -112,6 +112,10 @@
     
     BOOL detectedPlayer = false;
     
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+    [objectInfo setObject:[NSNumber numberWithInt:tEnemy] forKey:notificationUserInfoObjectType];
+    
     for (GameObject *object in listOfGameObjects) {
         CGRect objectBoundingBox = [object adjustedBoundingBox];
 /*
@@ -123,18 +127,19 @@
             }
             
         }
-*/        
+*/      
+        //player touched minion
+        if ([object gameObjectType] == tBall && CGRectIntersectsRect([object boundingBox], myBoundingBox)) {
+//            NSLog(@"Minion Touched something!!");
+
+        }
+        
         if (canSee && CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
             if ([object gameObjectType] == tBall && [self isObjectVisible:object 
                                                             WithinThisBox:myVisionBoundingBox 
                                                         OutOfTheseObjects:listOfGameObjects] ) {
                 NSLog(@"Minion Saw something!!");
                 detectedPlayer = true;
-                
-                objectInfo = [[NSMutableDictionary alloc] init];
-                [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
-                [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-                [objectInfo setObject:[NSNumber numberWithInt:tEnemy] forKey:notificationUserInfoObjectType];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"positionOfItemToPlace" 
                                                                     object:self

@@ -9,17 +9,22 @@
 
 @interface BallObject : GameObject
 {
+    NSMutableDictionary *objectInfo;
+
     CCAnimation *collisionAnim;
     CCAnimation *rollingAnim;
     CCAnimation *idleAnim;
     
     b2World *world;
+    
+    NSInteger health;
 
 }
 
 @property (nonatomic, retain) CCAnimation *collisionAnim;
 @property (nonatomic, retain) CCAnimation *idleAnim;
 @property (nonatomic, retain) CCAnimation *rollingAnim;
+@property (readwrite) NSInteger health;
 
 - (id)initWithWorld:(b2World *)theWorld 
          atLocation:(CGPoint)location 
