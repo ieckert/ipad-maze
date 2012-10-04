@@ -21,7 +21,9 @@
 
 -(void)forceRollingState
 {
-    [self changeState:sBallRolling];
+    if ([self characterState]!=sCharacterDead) {
+        [self changeState:sBallRolling];
+    }
 }
 
 -(void)changeState:(CharacterStates)newState {
@@ -56,11 +58,19 @@
 
             [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
             action = [CCBlink actionWithDuration:3.0 blinks:50];
-            break;    
+            break;
+        case sCharacterDead:
+            CCLOG(@"Ball->Changing State to Dead");
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"playerDied"
+                                                                object:self
+                                                              userInfo:objectInfo];
+            break;
         default:
             CCLOG(@"Unhandled state %d in BallObject", newState);
             break;
     }
+
     if (action != nil) {
         [self runAction:action];
     }
@@ -68,8 +78,12 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
            andListOfGameObjects:(CCArray*)listOfGameObjects {
-    // Check for collisions
-    // Change this to keep the object count from querying it each time
+
+    if (health <= 0 && [self characterState] != sCharacterDead) {
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+        [self changeState:sCharacterDead];
+    }
     CGRect myBoundingBox = [self adjustedBoundingBox];
     for (GameObject *object in listOfGameObjects) {
         if ([object tag] == tBall)
@@ -82,9 +96,12 @@
                     
                     
                 }
-                if ( [object gameObjectType] == tEnemy && [self characterState] != sBallInvulnerable && [self characterState] != sBallHurt ) {
+                if ( [object gameObjectType] == tEnemy
+                        && [self characterState] != sBallInvulnerable
+                        && [self characterState] != sBallHurt
+                        && [self characterState] != sCharacterDead ) {
                     NSLog(@"Hit an Enemy!");
-                    
+                    health -= kEnemyBasicDamage;
                     [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
                     [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
                     
@@ -146,6 +163,8 @@
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
         [objectInfo setObject:[NSNumber numberWithInt:tBall] forKey:notificationUserInfoObjectType];
+        health = 100;
+
     }
     return self;
 }
@@ -156,7 +175,6 @@
         [self initAnimations];                                   // 1// 2
         gameObjectType = tBall;                    // 3
         [self changeState:sBallIdle];                       // 4
-        health = 100;
     }
     return self;
 }

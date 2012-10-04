@@ -48,12 +48,27 @@
     [statsKeeper setActive:TRUE];
 }
 
+-(void) playerDiedTransition:(NSNotification *)notification
+{
+    [self pauseGame];
+    [self unschedule:@selector(update:)];
+
+    NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
+    CGPoint playerLocation;
+    playerLocation.x = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionX]]floatValue];
+    playerLocation.y = [[userInfo objectForKey:[NSString stringWithString:notificationUserInfoKeyPositionY]]floatValue];
+    
+    [self placeAlert:@": (" AtLocation:playerLocation WithType:[NSNumber numberWithInt:tLargeAndSpin] WithDuration:2.0f];
+    [self performSelector:@selector(countdownToStart:) withObject:@"You Died" afterDelay:3.0f];
+    [self performSelector:@selector(resetLevel) withObject:nil afterDelay:4.5f];
+    [userInfo release];
+}
+
 -(void) restartLevelSceneTransition
 {
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"RESTARTING"] afterDelay:.5f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"READY"] afterDelay:2.0f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:3.5f];
-    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:3.7f];
+    [self performSelector:@selector(countdownToStart:) withObject:@"READY" afterDelay:.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:@"GO!" afterDelay:2.0f];
+    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
 }
 
 //transition from previous scene to this one
@@ -68,8 +83,8 @@
     [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:5.0f];
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:5.2f];
 */
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"READY"] afterDelay:.5f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:2.0f];
+    [self performSelector:@selector(countdownToStart:) withObject:@"READY" afterDelay:.5f];
+    [self performSelector:@selector(countdownToStart:) withObject:@"GO!" afterDelay:2.0f];
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
 }
 
@@ -111,18 +126,31 @@
 }
 
 
--(void) placeAlertAtLocation:(CGPoint)location
+-(void) placeAlert:(NSString*)alert AtLocation:(CGPoint)location WithType:(NSNumber*)transitionCode WithDuration:(ccTime)duration
 {
-    CCLabelTTF *l1 = [CCLabelTTF labelWithString:@"!" 
+    CCLabelTTF *l1 = [CCLabelTTF labelWithString:alert
                                         fontName:@"AmericanTypewriter-CondensedBold"
-                                        fontSize:25];                                                
+                                        fontSize:25];
+    id la1 = nil;
+    switch ([transitionCode intValue]) {
+        case tJumpUp:
+            la1 = [CCSequence actions:[CCScaleTo actionWithDuration:duration scale:3.0],
+                      [CCFadeOut actionWithDuration:duration],
+                      nil];
+            break;
+        case tLargeAndSpin:
+            la1 = [CCSpawn actions:[CCRotateBy actionWithDuration:duration angle:360], [CCScaleBy actionWithDuration:duration scale:5], [CCFadeOut actionWithDuration:duration], nil];
+            break;
+        default:
+            break;
+    }
+    
     [self addChild:l1];
     [l1 setPosition:location];    
-    id la1 = [CCSequence actions:[CCScaleTo actionWithDuration:1.0 scale:3.0], 
-              [CCFadeOut actionWithDuration:1.0], 
-              nil];
-    [l1 runAction:la1];      
     
+    if (la1 != nil) {
+        [l1 runAction:la1];
+    }
 }
 
 //hacked work around to have a selector call the above function
@@ -140,7 +168,7 @@
         [self placeParticleEmitterAtLocation:itemLocation ForObjectType:tCoin];
     }
     else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tEnemy) {
-        [self placeAlertAtLocation:itemLocation];
+        [self placeAlert:@"!" AtLocation:itemLocation WithType:[NSNumber numberWithInt:tJumpUp] WithDuration:1.0];
     }
     else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tBall) {
         NSLog(@"placing emitter for ball");
@@ -453,9 +481,13 @@
                                                  selector:@selector(playerAtDoorHandler:) 
                                                      name:@"doorEntered" object:nil];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self 
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(itemCapturedHandler:) 
                                                      name:@"playerTouchedEnemy" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(playerDiedTransition:)
+                                                     name:@"playerDied" object:nil];
         
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;

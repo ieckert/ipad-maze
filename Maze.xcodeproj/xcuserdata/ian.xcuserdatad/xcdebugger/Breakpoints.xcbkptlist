@@ -60,12 +60,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "370935452.466381"
+         timestampString = "371020734.908555"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "365"
-         endingLineNumber = "365"
-         landmarkName = "-resetLevel"
+         startingLineNumber = "393"
+         endingLineNumber = "393"
+         landmarkName = "-drawMaze"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -73,12 +73,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "370935452.466381"
+         timestampString = "371020734.908555"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
-         landmarkName = "-drawMaze"
+         startingLineNumber = "327"
+         endingLineNumber = "327"
+         landmarkName = "-update:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -99,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "370935452.466381"
+         timestampString = "371020734.908555"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "478"
-         endingLineNumber = "478"
+         startingLineNumber = "510"
+         endingLineNumber = "510"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -112,12 +112,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "370935452.466381"
+         timestampString = "371020734.908555"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "253"
-         endingLineNumber = "253"
-         landmarkName = "-update:"
+         startingLineNumber = "281"
+         endingLineNumber = "281"
+         landmarkName = "-endingTransition"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

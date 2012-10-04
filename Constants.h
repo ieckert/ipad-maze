@@ -40,6 +40,8 @@
 #define kEnemyVisionMultiplier 20
 #define kEnemyPeripheralVisionMultiplier 3
 
+#define kEnemyBasicDamage 25
+
 typedef enum {
     kEnemyWanderInMaze=0,
     kEnemyGoToPlayer=1,
@@ -79,6 +81,11 @@ typedef enum {
 } GameObjectType;
 
 typedef enum {
+    tJumpUp=0,
+    tLargeAndSpin=1
+} TransitionCode;
+
+typedef enum {
     sNewState=0,
     sBallRolling=1,
     sBallIdle=2,
@@ -98,7 +105,8 @@ typedef enum {
     sEnemySleeping=16,
     sEnemyReloading=17,
     sEnemyShooting=18,
-    sBallHurt=19
+    sBallHurt=19,
+    sCharacterDead=20
 } CharacterStates;
 
 
