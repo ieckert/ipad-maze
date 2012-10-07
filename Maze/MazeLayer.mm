@@ -76,13 +76,7 @@
 {
     mazeComplete = FALSE;
     onFinishDoor = FALSE;
-/*    
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"3"] afterDelay:.5f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"2"] afterDelay:2.0f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"1"] afterDelay:3.5f];
-    [self performSelector:@selector(countdownToStart:) withObject:[NSString stringWithString:@"GO!"] afterDelay:5.0f];
-    [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:5.2f];
-*/
+    
     [self performSelector:@selector(countdownToStart:) withObject:@"READY" afterDelay:.5f];
     [self performSelector:@selector(countdownToStart:) withObject:@"GO!" afterDelay:2.0f];
     [self performSelector:@selector(unpauseGame) withObject:nil afterDelay:2.2f];
@@ -518,14 +512,14 @@
         mazeGrid = [[NSMutableArray alloc] init];
         
         requirements = [[MazeRequirements alloc] initWithCoins:25
-                                                       Enemies:1
+                                                       Enemies:2
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
         
         mazeGrid = [[NSMutableArray alloc] init];
         
         mazeMaker = [[MazeMaker alloc] initWithHeight:screenSize.height
-                                                Width:screenSize.width
+                                                Width:(screenSize.width - 150)
                                        WallDimensions:[objectFactory returnObjectDimensions:tWall]
                                          Requirements:requirements
                                                  Maze:mazeGrid
@@ -700,21 +694,21 @@
         CCMenuItemFont *home = [CCMenuItemFont itemFromString:@"Main Menu" 
                                                          target:self 
                                                        selector:@selector(menuManager:)];
-        home.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+        home.fontName = @"AmericanTypewriter-CondensedBold";
         home.fontSize = 45;
         [home setTag:kInGameMenuHome];
         
         CCMenuItemFont *restart = [CCMenuItemFont itemFromString:@"Re-Start" 
                                                              target:self 
                                                            selector:@selector(menuManager:)];
-        restart.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+        restart.fontName = @"AmericanTypewriter-CondensedBold";
         restart.fontSize = 45;
         [restart setTag:kInGameMenuReloadLevel];
         
         CCMenuItemFont *cancel = [CCMenuItemFont itemFromString:@"Cancel" 
                                                        target:self 
                                                      selector:@selector(menuManager:)];
-        cancel.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+        cancel.fontName = @"AmericanTypewriter-CondensedBold";
         cancel.fontSize = 45;
         [cancel setTag:kInGameMenuCancel];
 

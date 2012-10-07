@@ -16,6 +16,8 @@
     
     NSInteger coins;
     NSInteger time;
+    NSInteger health;
+    
     int currentLevel;
     BOOL active;
 }
@@ -32,6 +34,7 @@
 -(NSInteger) returnCurrentCoinCount;
 -(NSInteger) returnCurrentTime;
 -(NSInteger) returnCurrentLevel;
+-(NSInteger) returnCurrentHealth;
 
 -(void) dropStatsFromCurrentLevel;
 @end

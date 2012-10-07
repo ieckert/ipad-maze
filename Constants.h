@@ -40,6 +40,7 @@
 #define kEnemyVisionMultiplier 20
 #define kEnemyPeripheralVisionMultiplier 3
 
+#define kBallBasicHealth 100
 #define kEnemyBasicDamage 25
 
 typedef enum {

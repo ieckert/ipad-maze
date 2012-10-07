@@ -16,6 +16,7 @@
     CCLabelTTF *timeLabel;
     CCLabelTTF *coinsLabel;
     CCLabelTTF *levelLabel;
+    CCLabelTTF *healthLabel;
     
 }
 

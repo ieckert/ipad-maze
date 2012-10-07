@@ -7,6 +7,8 @@
 //
 
 #import "StatsKeeper.h"
+#import "ObjectInfoConstants.h"
+#import "Constants.h"
 
 @implementation StatsKeeper
 @synthesize currentLevel, active;
@@ -30,6 +32,10 @@ static StatsKeeper *singleton = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(addTimeDueToNotification:) 
                                                      name:@"statsKeeperAddTime" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(changeHealthDueToNotification:)
+                                                     name:@"playerTouchedEnemy" object:nil];
     }
     
     return self;
@@ -70,7 +76,7 @@ static StatsKeeper *singleton = nil;
     }
     /*reset counters since old data is saved*/
     coins = 0;
-    time = 0;
+    [self dropStatsFromCurrentLevel];
     
     self.currentLevel++;
     return self.currentLevel;
@@ -103,11 +109,18 @@ static StatsKeeper *singleton = nil;
     return currentLevel;
 }
 
+-(NSInteger) returnCurrentHealth
+{
+    return health;
+}
+
 - (void)addCoinDueToNotification:(NSNotification *)notification {
     if (active == true)
+    {
         coins++;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"coinAddedToStats" 
                                                         object:self];
+    }
 }
 
 - (void)addTimeDueToNotification:(NSNotification *)notification {
@@ -115,10 +128,22 @@ static StatsKeeper *singleton = nil;
         time++;
 }
 
+- (void)changeHealthDueToNotification:(NSNotification *)notification {
+    if (active == true)
+    {
+        health = [[[notification userInfo] objectForKey:[NSString stringWithString:playerHealth]] intValue];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
+                                                        object:self];
+    }
+}
+
 -(void) dropStatsFromCurrentLevel
 {
     coins = 0;
     time = 0;
+    health = kBallBasicHealth;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
+                                                        object:self];
 }
 
 
