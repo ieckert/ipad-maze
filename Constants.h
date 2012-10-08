@@ -53,7 +53,8 @@ typedef enum {
 typedef enum {
     kEnemySense=0,
     kEnemyHearing=1,
-    kEnemySight=2
+    kEnemySightFront=2,
+    kEnemySightSide=3
 } EnemySense;
 
 typedef enum {

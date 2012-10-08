@@ -448,6 +448,7 @@
 {
     CGRect boundingBox;
     CGSize boundingSize;
+    CGPoint boundingOrigin;
     NSInteger distanceMultiplier;
     
     switch (sense) {
@@ -469,16 +470,29 @@
             boundingBox.origin.x -= boundingSize.width/2;
             boundingBox.origin.y -= boundingSize.height/2;
             break;
-        case kEnemySight:
+        case kEnemySightFront:
             distanceMultiplier = kEnemyVisionMultiplier;
             
             boundingSize.height = [self boundingBox].size.height*distanceMultiplier;
             boundingSize.width = [self boundingBox].size.width;
             
             boundingBox.size = boundingSize;
+            boundingOrigin.y = [self boundingBox].origin.y - (boundingSize.height/2);
+            boundingOrigin.x = [self boundingBox].origin.x;
             
-            boundingBox.origin = [self boundingBox].origin;            
+            boundingBox.origin = boundingOrigin;            
+            break;
+        case kEnemySightSide:
+            distanceMultiplier = kEnemyVisionMultiplier;
+            
+            boundingSize.height = [self boundingBox].size.height;
+            boundingSize.width = [self boundingBox].size.width*distanceMultiplier;
+            
+            boundingBox.size = boundingSize;
+            boundingOrigin.x = [self boundingBox].origin.x - (boundingSize.width/2);
+            boundingOrigin.y = [self boundingBox].origin.y;           
             break;    
+            
         default:
             break;
     }    

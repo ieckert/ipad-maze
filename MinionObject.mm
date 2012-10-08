@@ -108,7 +108,8 @@
 
     CGRect myBoundingBox = [self adjustedBoundingBox];
     CGRect mySoundBoundingBox = [self returnSenseBoundingBoxFor:kEnemyHearing];
-    CGRect myVisionBoundingBox = [self returnSenseBoundingBoxFor:kEnemySight];
+    CGRect myForwardVision = [self returnSenseBoundingBoxFor:kEnemySightFront];
+    CGRect mySideVision = [self returnSenseBoundingBoxFor:kEnemySightSide];
     
     BOOL detectedPlayer = false;
     
@@ -118,26 +119,15 @@
     
     for (GameObject *object in listOfGameObjects) {
         CGRect objectBoundingBox = [object adjustedBoundingBox];
-/*
-        if (canHear && CGRectIntersectsRect(mySoundBoundingBox, objectBoundingBox)) {
-            if ([object gameObjectType] == tBall && [object isObjectAudible]){
-                NSLog(@"Minion Heard something!!");
-                detectedPlayer = true;
-
-            }
-            
-        }
-*/      
+      
         //player touched minion
         if ([object gameObjectType] == tBall && CGRectIntersectsRect([object boundingBox], myBoundingBox)) {
 //            NSLog(@"Minion Touched something!!");
 
         }
         
-        if (canSee && CGRectIntersectsRect(myVisionBoundingBox, objectBoundingBox)) {
-            if ([object gameObjectType] == tBall && [self isObjectVisible:object 
-                                                            WithinThisBox:myVisionBoundingBox 
-                                                        OutOfTheseObjects:listOfGameObjects] ) {
+        if (canSee && [object gameObjectType] == tBall && ( CGRectIntersectsRect(myForwardVision, objectBoundingBox) || CGRectIntersectsRect(mySideVision, objectBoundingBox)) ) {
+            if ( [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] || [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] ) {
                 NSLog(@"Minion Saw something!!");
                 detectedPlayer = true;
                 
