@@ -95,6 +95,15 @@ static MazeInterface *singleton = nil;
         return tmp2;
 }
 
+-(CGPoint) returnRandomOpenPoint
+{
+    CGPoint tmpPoint;
+    tmpPoint.x = [[openXPoints objectAtIndex:(arc4random()%[openXPoints count])] floatValue] ;
+    tmpPoint.y = [[openYPoints objectAtIndex:(arc4random()%[openYPoints count])] floatValue] ;
+    return tmpPoint;
+}
+
+
 -(CGPoint) findClosestArrayMatchToPoint:(CGPoint)point
 {
 //    NSLog(@"in findClosestArrayMatchToPoint");

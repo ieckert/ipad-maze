@@ -13,17 +13,20 @@
 {
     NSInteger numCoins;
     NSInteger numEnemies;
+    NSInteger numAreas;
     NSInteger circles;
     BOOL straightShot;
     
 }
 @property (readwrite) NSInteger numCoins;
 @property (readwrite) NSInteger numEnemies;
+@property (readwrite) NSInteger numAreas;
 @property (readwrite) NSInteger circles;
 @property (readwrite) BOOL straightShot;
 
 -(id) initWithCoins: (NSInteger) coins
             Enemies: (NSInteger) enemies
+       SpecialAreas: (NSInteger) areas
  AllowableStraights: (BOOL) allowStraights
     NumberOfCircles: (NSInteger) numCircles;
 

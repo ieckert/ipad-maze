@@ -16,6 +16,9 @@
 #define kTrueMenuMazeCols kMenuMazeCols*kTrueScale
 #define kTrueMenuMazeRows kMenuMazeRows*kTrueScale
 
+#define kAreaZValue 0
+#define kAreaTagValue 4
+
 #define kBallZValue 100
 #define kBallTagValue 0
 
@@ -42,6 +45,8 @@
 
 #define kBallBasicHealth 100
 #define kEnemyBasicDamage 25
+
+#define kGameplayManagerUpdateInterval 5
 
 typedef enum {
     kEnemyWanderInMaze=0,
@@ -79,7 +84,8 @@ typedef enum {
     tCoin=3,
     tStart=4,
     tFinish=5,
-    tEnemy=6
+    tEnemy=6,
+    tArea=7
 } GameObjectType;
 
 typedef enum {
@@ -108,7 +114,10 @@ typedef enum {
     sEnemyReloading=17,
     sEnemyShooting=18,
     sBallHurt=19,
-    sCharacterDead=20
+    sCharacterDead=20,
+    sAreaActive=21,
+    sAreaInactive=22,
+    sAreaCharging=23
 } CharacterStates;
 
 

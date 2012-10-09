@@ -9,7 +9,7 @@
 #import "MazeRequirements.h"
 
 @implementation MazeRequirements
-@synthesize numCoins, numEnemies, straightShot, circles;
+@synthesize numCoins, numEnemies, straightShot, circles, numAreas;
 
 - (void) dealloc
 {
@@ -33,6 +33,7 @@
 
 -(id) initWithCoins: (NSInteger) coins
             Enemies: (NSInteger) enemies
+       SpecialAreas: (NSInteger) areas
  AllowableStraights: (BOOL) allowStraights
     NumberOfCircles: (NSInteger) numCircles
 {
@@ -41,6 +42,7 @@
         NSLog(@"MazeRequirements Init");
         numCoins = coins;
         numEnemies = enemies;
+        numAreas = areas;
         straightShot = allowStraights;
         circles = numCircles;
     }

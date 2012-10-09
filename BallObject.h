@@ -29,4 +29,7 @@
 - (id)initWithWorld:(b2World *)theWorld 
          atLocation:(CGPoint)location 
     withSpriteFrame:(CCSpriteFrame *)frame;
+
+- (void)applyDamage:(NSInteger) dmg;
+
 @end

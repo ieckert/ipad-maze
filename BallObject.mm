@@ -180,5 +180,10 @@
     return self;
 }
 
+- (void)applyDamage:(NSInteger) dmg
+{
+    health -= dmg;
+}
+
 
 @end

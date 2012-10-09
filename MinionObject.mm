@@ -107,12 +107,13 @@
         return;
 
     CGRect myBoundingBox = [self adjustedBoundingBox];
+/*
     CGRect mySoundBoundingBox = [self returnSenseBoundingBoxFor:kEnemyHearing];
     CGRect myForwardVision = [self returnSenseBoundingBoxFor:kEnemySightFront];
     CGRect mySideVision = [self returnSenseBoundingBoxFor:kEnemySightSide];
     
     BOOL detectedPlayer = false;
-    
+*/    
     [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
     [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
     [objectInfo setObject:[NSNumber numberWithInt:tEnemy] forKey:notificationUserInfoObjectType];
@@ -125,7 +126,8 @@
 //            NSLog(@"Minion Touched something!!");
 
         }
-        
+     
+        /*        
         if (canSee && [object gameObjectType] == tBall && ( CGRectIntersectsRect(myForwardVision, objectBoundingBox) || CGRectIntersectsRect(mySideVision, objectBoundingBox)) ) {
             if ( [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] || [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] ) {
                 NSLog(@"Minion Saw something!!");
@@ -145,7 +147,7 @@
                 [animationQueue enqueue:action];
             }
         }
-     /*
+
         if (detectedPlayer) {
 //                NSLog(@"Minion x: %f y: %f", [self position].x, [self position].y);
 //                NSLog(@"Player x: %f y: %f", [object position].x, [object position].y);

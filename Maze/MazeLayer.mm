@@ -15,6 +15,13 @@
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
 
+
+-(void) gameplayManager
+{
+    NSLog(@"in gameplay manager");
+    
+}
+
 -(void) countdownToStart:(NSString *) str
 {
     CGPoint location = CGPointMake(screenSize.width/2,screenSize.height/2);
@@ -401,6 +408,16 @@
                                       inWorld:world
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         }
+        else if ([[mazeGrid objectAtIndex:i] intValue] == tArea) {
+            NSLog(@"trying to place special areas");
+            [objectFactory createEnemyOfType:tArea
+                                   atLocation:tmpLocation 
+                                   withZValue:kAreaZValue 
+                                      inWorld:world
+                    addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                         withKnowledgeOfMaze:mazeMaker];    
+            [mazeInterface addPoint:tmpLocation];
+        }
         else {
             //empty location
             [mazeInterface addPoint:tmpLocation];
@@ -513,6 +530,7 @@
         
         requirements = [[MazeRequirements alloc] initWithCoins:25
                                                        Enemies:2
+                                                  SpecialAreas:3
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
         
@@ -532,8 +550,8 @@
         [mazeDimensions release];
 
         [self drawMaze];
-        
-        [self scheduleUpdate];                                    
+        [self scheduleUpdate];
+        gameplayManagerUpdateInterval = kGameplayManagerUpdateInterval;
         [self setTimer];
         [self pauseGame];
     }
@@ -611,9 +629,13 @@
 
 -(void) timerDuties
 {  
-    if ([statsKeeper active] == TRUE) {
+    if ([statsKeeper active] == TRUE && !paused) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddTime" object:self];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
+        timerCounter += [repeatingTimer timeInterval];
+        if ( (int)timerCounter % gameplayManagerUpdateInterval == 0) {
+            [self gameplayManager];
+        }
     }
 }
 

@@ -510,6 +510,7 @@ how to:
     [self cutOutOfRealMaze:startingLocation :endingLocation :true];
     [self placeItem:tCoin NumberOfTimes:[requirements numCoins]];
     [self placeItem:tEnemy NumberOfTimes:[requirements numEnemies]];
+    [self placeItem:tArea NumberOfTimes:[requirements numAreas]];
     
     returnMazeDimensions.num1 = largeMazeRows;
     returnMazeDimensions.num2 = largeMazeCols;

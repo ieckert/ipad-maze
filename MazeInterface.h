@@ -19,5 +19,6 @@
 -(void) removeAllOpenPoints;
 -(CGPoint) findClosestArrayMatchToPoint:(CGPoint)point;
 -(void) addPoint:(CGPoint)point;
+-(CGPoint) returnRandomOpenPoint;
 
 @end

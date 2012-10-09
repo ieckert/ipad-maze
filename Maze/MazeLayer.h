@@ -48,6 +48,8 @@
     CCSpriteBatchNode *sceneSpriteBatchNode;
     
     NSTimer *repeatingTimer;
+    float timerCounter;
+    NSInteger gameplayManagerUpdateInterval;
     
     NSMutableArray *mazeGrid;
     Pair *mazeDimensions;

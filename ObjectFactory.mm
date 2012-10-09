@@ -13,6 +13,7 @@
 #import "WallObject.h"
 #import "DoorObject.h"
 #import "MinionObject.h"
+#import "SpecialArea.h"
 #import "ObjectInfoConstants.h"
 #import "MazeMaker.h"
 
@@ -74,8 +75,20 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
                                      z:ZValue
                                    tag:kDoorTagValue];
         [enemy release];
-    }    
+    } 
+    else if (objectType == tArea) {
+        SpecialArea *specialArea = [[SpecialArea alloc] initWithWorld:world
+                                                           atLocation:spawnLocation
+                                                      withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                                                       spriteFrameByName:@"wall_1.png"]
+                                                  WithKnowledgeOfMaze:maze];
+        [sceneSpriteBatchNode addChild:specialArea
+                                     z:ZValue
+                                   tag:kAreaTagValue];
+        [specialArea release];   
+    }
 }
+
 -(void)createObjectOfType:(NSInteger)objectType
                atLocation:(CGPoint)spawnLocation
                withZValue:(int)ZValue
