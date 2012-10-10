@@ -22,6 +22,7 @@
         isActive = TRUE;
         gameObjectType = tNone;
         characterState = sNewState;
+        
     }
     return self;
 }

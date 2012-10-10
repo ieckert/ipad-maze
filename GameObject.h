@@ -19,9 +19,7 @@
     CGSize screenSize;
     GameObjectType gameObjectType;
     CharacterStates characterState;
-    
-    
-    
+
     b2Body *body;
 
 }

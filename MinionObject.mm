@@ -124,6 +124,8 @@
         //player touched minion
         if ([object gameObjectType] == tBall && CGRectIntersectsRect([object boundingBox], myBoundingBox)) {
 //            NSLog(@"Minion Touched something!!");
+             
+            
 
         }
      

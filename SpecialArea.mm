@@ -66,36 +66,6 @@
     }
 }
 
--(void)runLoop
-{
-    [self changeLocation];
-    [self recalculateRunLoopTime];
-    id action = [CCSequence actions:
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
-                 [CCFadeIn actionWithDuration:chargingAnimDuration],
-                     [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                [CCBlink actionWithDuration:activeAnimDuration blinks:1000],
-                     [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
-                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
-                 nil];
-    [self runAction:action];
-}
-
-- (void)changeLocation
-{
-    CGPoint location = [self locationOnScreen:[handleOnMaze returnEmptySlotInMaze]];
-    world->DestroyBody(body);
-    b2BodyDef bodyDef;
-    //prevent physics of collisions
-    bodyDef.active = false;
-    //prevents the body from moving with accelerometer
-    bodyDef.type = b2_staticBody;
-    bodyDef.position =
-    b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
-    body = world->CreateBody(&bodyDef);
-    body->SetUserData(self);
-}
-
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
            andListOfGameObjects:(CCArray*)listOfGameObjects {
     if ([self characterState] == sAreaActive) {
@@ -155,6 +125,21 @@
     chargingAnimDuration = arc4random()%([self chargingAnimDurationMax] - [self chargingAnimDurationMin]) + [self chargingAnimDurationMin];
 }
 
+-(void)runLoop
+{
+    [self changeLocation];
+    [self recalculateRunLoopTime];
+    id action = [CCSequence actions:
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
+                 [CCFadeIn actionWithDuration:chargingAnimDuration],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
+                 [CCBlink actionWithDuration:activeAnimDuration blinks:1000],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
+                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
+                 nil];
+    [self runAction:action];
+}
+
 - (void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodyDef;
 //prevent physics of collisions
@@ -203,6 +188,15 @@
         [self setChargingAnimDurationMin:1];
         [self setChargingAnimDurationMax:3];
         [self runLoop];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(respondToPauseCall) 
+                                                     name:@"pauseGameObjects" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(respondToUnPauseCall) 
+                                                     name:@"unPauseGameObjects" object:nil];
+        
     }
     return self;
 }
@@ -216,6 +210,32 @@
 
 - (void) dealloc{
     [super dealloc];
+}
+
+
+-(void)respondToPauseCall
+{
+    [self pauseSchedulerAndActions]; 
+}
+
+-(void)respondToUnPauseCall
+{
+    [self resumeSchedulerAndActions];
+}
+
+- (void)changeLocation
+{
+    CGPoint location = [self locationOnScreen:[handleOnMaze returnEmptySlotInMaze]];
+    world->DestroyBody(body);
+    b2BodyDef bodyDef;
+    //prevent physics of collisions
+    bodyDef.active = false;
+    //prevents the body from moving with accelerometer
+    bodyDef.type = b2_staticBody;
+    bodyDef.position =
+    b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
+    body = world->CreateBody(&bodyDef);
+    body->SetUserData(self);
 }
 
 @end

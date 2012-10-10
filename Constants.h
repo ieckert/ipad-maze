@@ -45,8 +45,10 @@
 
 #define kBallBasicHealth 100
 #define kEnemyBasicDamage 25
+#define kAreaBasicDamage 5
 
-#define kGameplayManagerUpdateInterval 5
+
+#define kGameplayManagerUpdateInterval 15
 
 typedef enum {
     kEnemyWanderInMaze=0,

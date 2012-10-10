@@ -38,6 +38,7 @@
     MazeRequirements *requirements;
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;
+    NSInteger screenOffset;
     
     CCMenu *pausedMenu;
 
@@ -50,6 +51,8 @@
     NSTimer *repeatingTimer;
     float timerCounter;
     NSInteger gameplayManagerUpdateInterval;
+    
+    NSInteger totalNumSpecialAreas;
     
     NSMutableArray *mazeGrid;
     Pair *mazeDimensions;

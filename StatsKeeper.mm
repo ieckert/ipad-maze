@@ -36,6 +36,10 @@ static StatsKeeper *singleton = nil;
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(changeHealthDueToNotification:)
                                                      name:@"playerTouchedEnemy" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(changeHealthDueToNotification:)
+                                                     name:@"resetPlayerHealth" object:nil];
     }
     
     return self;

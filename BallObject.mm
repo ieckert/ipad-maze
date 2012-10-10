@@ -55,15 +55,7 @@
             break;
         case sBallHurt:
             CCLOG(@"Ball->Changing State to Hurt");
-            health -= kEnemyBasicDamage;
             
-            [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
-            [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-            [objectInfo setObject:[NSNumber numberWithInt:health] forKey:playerHealth];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"playerTouchedEnemy"
-                                                                object:self
-                                                              userInfo:objectInfo];
             [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
             action = [CCBlink actionWithDuration:3.0 blinks:50];
             break;
@@ -103,12 +95,19 @@
                     
                     
                 }
-                if ( [object gameObjectType] == tEnemy
+                if ( ([object gameObjectType] == tEnemy)
                         && [self characterState] != sBallInvulnerable
                         && [self characterState] != sBallHurt
                         && [self characterState] != sCharacterDead ) {
                     NSLog(@"Hit an Enemy!");
-
+                    [self applyDamage:kEnemyBasicDamage];
+                    [self changeState:sBallHurt];
+                }
+                else if([object gameObjectType] == tArea 
+                        && [self characterState] != sBallInvulnerable
+                        && [self characterState] != sBallHurt
+                        && [self characterState] != sCharacterDead) {
+                    [self applyDamage:kAreaBasicDamage];
                     [self changeState:sBallHurt];
                 }
             }
@@ -156,6 +155,8 @@
 
 - (id)initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location withSpriteFrame:(CCSpriteFrame *)frame {
     if ((self = [super init])) {
+        health = 100;
+
         world = theWorld;
         [self setDisplayFrame:frame];
         gameObjectType = tBall;
@@ -164,8 +165,11 @@
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
         [objectInfo setObject:[NSNumber numberWithInt:tBall] forKey:notificationUserInfoObjectType];
-        health = 100;
-
+        [objectInfo setObject:[NSNumber numberWithInt:health] forKey:playerHealth];
+        //just to set the statskeeper / stats layer as default health
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"resetPlayerHealth"
+                                                            object:self
+                                                          userInfo:objectInfo];
     }
     return self;
 }
@@ -183,6 +187,14 @@
 - (void)applyDamage:(NSInteger) dmg
 {
     health -= dmg;
+    
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+    [objectInfo setObject:[NSNumber numberWithInt:health] forKey:playerHealth];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"playerTouchedEnemy"
+                                                        object:self
+                                                      userInfo:objectInfo];
 }
 
 

@@ -11,16 +11,12 @@
 #import "MazeLayer.h"
 #import "StatsLayer.h"
 #import "ObjectInfoConstants.h"
+@interface MazeLayer()
+-(void) gameplayManager;
+@end
 
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
-
-
--(void) gameplayManager
-{
-    NSLog(@"in gameplay manager");
-    
-}
 
 -(void) countdownToStart:(NSString *) str
 {
@@ -58,7 +54,6 @@
 -(void) playerDiedTransition:(NSNotification *)notification
 {
     [self pauseGame];
-    [self unschedule:@selector(update:)];
 
     NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];
     CGPoint playerLocation;
@@ -408,23 +403,12 @@
                                       inWorld:world
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         }
-        else if ([[mazeGrid objectAtIndex:i] intValue] == tArea) {
-            NSLog(@"trying to place special areas");
-            [objectFactory createEnemyOfType:tArea
-                                   atLocation:tmpLocation 
-                                   withZValue:kAreaZValue 
-                                      inWorld:world
-                    addToSceneSpriteBatchNode:sceneSpriteBatchNode
-                         withKnowledgeOfMaze:mazeMaker];    
-            [mazeInterface addPoint:tmpLocation];
-        }
         else {
             //empty location
             [mazeInterface addPoint:tmpLocation];
         }
         
     }
-    [mazeMaker returnEmptySlotInMaze];
     
 //    [tmpCoords release];
 }
@@ -509,6 +493,19 @@
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
         
         objectFactory = [ObjectFactory createSingleton];
+        
+        /*find the offset used for displaying things to the screen*/
+        /*based off the scene type*/
+        if ([mazeMaker mazeForScene] == kMainMenuScene) {
+            screenOffset = kMenuMazeScreenOffset;
+        }
+        else if ([mazeMaker mazeForScene] == kNormalLevel) {
+            screenOffset = kMazeScreenOffset;
+        }
+        else {
+            screenOffset = 0;
+        }
+        
         mazeInterface = [MazeInterface createSingleton];
         [mazeInterface removeAllOpenPoints];
 //calculate depends on objectFactory width/height for walls - so call after objectFactory's init
@@ -531,9 +528,10 @@
         
         requirements = [[MazeRequirements alloc] initWithCoins:25
                                                        Enemies:2
-                                                  SpecialAreas:3
+                                                  SpecialAreas:0
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
+        totalNumSpecialAreas = 3;
         
         mazeGrid = [[NSMutableArray alloc] init];
         
@@ -571,7 +569,8 @@
             [statsKeeper dropStatsFromCurrentLevel];
             
             [repeatingTimer invalidate];
-                        
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+            
             [[GameManager sharedGameManager]
              runSceneWithID:kMainMenuScene];
             break;
@@ -586,7 +585,8 @@
             [statsKeeper setActive:FALSE];
             
             [repeatingTimer invalidate];
-            
+            [[NSNotificationCenter defaultCenter] removeObserver:self];
+
             [[GameManager sharedGameManager]
              runSceneWithID:kNormalLevel];
             break;
@@ -603,7 +603,6 @@
 - (void) dealloc
 {
     NSLog(@"MazeLayer Dealloc");
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     [requirements release];
     [mazeMaker release];
@@ -751,6 +750,57 @@
         [pausedMenu runAction:moveEffect];
         [self addChild:pausedMenu z:1 tag:kSceneMenuTagValue];
     }
+}
+
+-(CGPoint) locationOnScreen:(NSInteger)currentIndex
+{
+    //    NSLog(@"in locationOnScreen");
+    
+    /*takes an index in the mazeArray and places it on the screen*/
+    CGPoint screenLocation;
+    screenLocation.x = ([objectFactory returnObjectDimensions:tWall].num2*[mazeMaker translateLargeArrayIndexToXY:currentIndex].num1)+screenOffset;
+    screenLocation.y = ([objectFactory returnObjectDimensions:tWall].num2*[mazeMaker translateLargeArrayIndexToXY:currentIndex].num2)+screenOffset;
+    //    NSLog(@"exiting locationOnScreen");
+    
+    return screenLocation;
+}
+
+-(NSInteger) locationInMaze:(CGPoint)currentLocation
+{
+    //    NSLog(@"in locationInMaze");
+    
+    /*takes a single location on the screen and translates it to an index in the mazeArray*/
+    /*only works with enemys because they move along a track*/
+    NSInteger location;
+    NSInteger wallHeight = [[objectFactory returnObjectDimensions:tWall]num2];
+    NSInteger wallWidth = [[objectFactory returnObjectDimensions:tWall]num2];
+    //    NSLog(@"in locationInMaze currentLocation: %f %f screenOffset:%i wallSize:%i", currentLocation.x, currentLocation.y, screenOffset, wallWidth);
+    
+    
+    int tmpX = ceil(((currentLocation.x-screenOffset)/wallHeight));
+    int tmpY = ceil(((currentLocation.y-screenOffset)/wallWidth));
+    
+    location = [mazeMaker translateLargeXYToArrayIndex:tmpX :tmpY];
+    //    NSLog(@"exiting locationInMaze");
+    
+    return location;
+}
+
+-(void) gameplayManager
+{
+    NSLog(@"in gameplay manager");
+    if (totalNumSpecialAreas > 0) {
+        totalNumSpecialAreas--;
+        NSLog(@"trying to place special areas");
+        CGPoint location = [self locationOnScreen:[mazeMaker returnEmptySlotInMaze]];
+        [objectFactory createEnemyOfType:tArea
+                              atLocation:location 
+                              withZValue:kAreaZValue 
+                                 inWorld:world
+               addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                     withKnowledgeOfMaze:mazeMaker];    
+    }
+    
 }
 
 
