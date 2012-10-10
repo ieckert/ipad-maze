@@ -424,6 +424,7 @@
         }
         
     }
+    [mazeMaker returnEmptySlotInMaze];
     
 //    [tmpCoords release];
 }

@@ -86,11 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "371264562.6683"
+         timestampString = "371541467.673924"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "504"
-         endingLineNumber = "504"
+         startingLineNumber = "505"
+         endingLineNumber = "505"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -104,7 +104,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "275"
          endingLineNumber = "275"
-         landmarkName = "-endingTransition"
+         landmarkName = "-accelerometer:didAccelerate:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -112,12 +112,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Maze/MazeLayer.mm"
-         timestampString = "371264562.6683"
+         timestampString = "371541467.673924"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "704"
-         endingLineNumber = "704"
-         landmarkName = "-ccTouchesBegan:withEvent:"
+         startingLineNumber = "705"
+         endingLineNumber = "705"
+         landmarkName = "-pausedAnimation"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

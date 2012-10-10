@@ -630,7 +630,8 @@ how to:
     while ([[realMaze objectAtIndex:emptySlot] intValue] != tNone) {
         emptySlot = arc4random()%largeMazeSize;
     }
-    return emptySlot;    
+
+    return emptySlot;
 }
 
 -(NSInteger) returnContentsOfMazePosition:(NSInteger)position

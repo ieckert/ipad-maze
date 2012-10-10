@@ -20,6 +20,8 @@
     GameObjectType gameObjectType;
     CharacterStates characterState;
     
+    
+    
     b2Body *body;
 
 }

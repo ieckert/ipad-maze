@@ -11,38 +11,79 @@
 #import "Pair.h"
 
 @implementation SpecialArea
-@synthesize activeAnim, chargingAnim, chargingAnimDurationMax, chargingAnimDurationMin, activeAnimDurationMax, activeAnimDurationMin;
+@synthesize chargingAnimDurationMax, chargingAnimDurationMin, activeAnimDurationMax, activeAnimDurationMin;
+
+-(void)forceActive
+{
+    [self changeState:sAreaActive];
+}
+
+-(void)forceInActive
+{
+    [self changeState:sAreaInactive];
+}
+
+-(void)forceCharging
+{
+    [self changeState:sAreaCharging];
+}
+
+-(id)buildInActiveAnim
+{
+    id action = [CCSequence actions:[CCFadeOut actionWithDuration:1],
+                 [CCCallFunc actionWithTarget:self selector:@selector(changeLocation)], nil];
+    return action;
+}
+
+-(id)buildChargingAnim
+{
+    id action = [CCSequence actions:[CCBlink actionWithDuration:chargingAnimDuration blinks:50],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceActive)], nil];
+    return action;
+}
+
+-(id)buildActiveAnim
+{
+    id action = [CCSequence actions:[CCTwirl actionWithDuration:activeAnimDuration],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)], nil];
+    return action;
+    
+}
 
 -(void)changeState:(CharacterStates)newState {
-    [self stopAllActions];
-    id action = nil;
     [self setCharacterState:newState];
     
     switch (newState) {
         case sAreaInactive:
-
-            
             break;
         case sAreaActive:
-            
             break;
         case sAreaCharging:
-            
             break;
         default:
             CCLOG(@"Unhandled state %d in SpecialArea", newState);
             break;
     }
-    
-    if (action != nil) {
-        [self runAction:action];
-    }
+}
+
+-(void)runLoop
+{
+    [self changeLocation];
+    [self recalculateRunLoopTime];
+    id action = [CCSequence actions:
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
+                 [CCFadeIn actionWithDuration:chargingAnimDuration],
+                     [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
+                [CCBlink actionWithDuration:activeAnimDuration blinks:1000],
+                     [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
+                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
+                 nil];
+    [self runAction:action];
 }
 
 - (void)changeLocation
 {
-    CGPoint location = [mazeInterface returnRandomOpenPoint];
-    
+    CGPoint location = [self locationOnScreen:[handleOnMaze returnEmptySlotInMaze]];
     world->DestroyBody(body);
     b2BodyDef bodyDef;
     //prevent physics of collisions
@@ -62,7 +103,7 @@
         for (GameObject *object in listOfGameObjects) {
             CGRect characterBox = [object adjustedBoundingBox];
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
-                if ([object gameObjectType] == tBall) {                
+                if ([object gameObjectType] == tBall) {
                     NSLog(@"In Special Area - Ball touched it!");
                 
                 
@@ -73,13 +114,46 @@
     
 }
 
--(void)initAnimations {    
-/*
-    [self setRollingAnim:
-     [self loadPlistForAnimationWithName:@"rollingAnim"
-                            andClassName:NSStringFromClass([self class])]];
-*/
- }
+-(CGPoint) locationOnScreen:(NSInteger)currentIndex
+{
+    //    NSLog(@"in locationOnScreen");
+    
+    /*takes an index in the mazeArray and places it on the screen*/
+    CGPoint screenLocation;
+    screenLocation.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:currentIndex].num1)+screenOffset;
+    screenLocation.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:currentIndex].num2)+screenOffset;
+    //    NSLog(@"exiting locationOnScreen");
+    
+    return screenLocation;
+}
+
+-(NSInteger) locationInMaze:(CGPoint)currentLocation
+{
+    //    NSLog(@"in locationInMaze");
+    
+    /*takes a single location on the screen and translates it to an index in the mazeArray*/
+    /*only works with enemys because they move along a track*/
+    NSInteger location;
+    NSInteger wallHeight = [[objectFactory returnObjectDimensions:tWall]num2];
+    NSInteger wallWidth = [[objectFactory returnObjectDimensions:tWall]num2];
+    //    NSLog(@"in locationInMaze currentLocation: %f %f screenOffset:%i wallSize:%i", currentLocation.x, currentLocation.y, screenOffset, wallWidth);
+    
+    
+    int tmpX = ceil(((currentLocation.x-screenOffset)/wallHeight));
+    int tmpY = ceil(((currentLocation.y-screenOffset)/wallWidth));
+    
+    location = [handleOnMaze translateLargeXYToArrayIndex:tmpX :tmpY];
+    //    NSLog(@"exiting locationInMaze");
+    
+    return location;
+}
+
+
+-(void)recalculateRunLoopTime
+{
+    activeAnimDuration = arc4random()%([self activeAnimDurationMax] - [self activeAnimDurationMin]) + [self activeAnimDurationMin]+1;
+    chargingAnimDuration = arc4random()%([self chargingAnimDurationMax] - [self chargingAnimDurationMin]) + [self chargingAnimDurationMin];
+}
 
 - (void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodyDef;
@@ -104,34 +178,31 @@
     body->CreateFixture(&fixtureDef);
 }
 
--(void)scheduleMovementTimer
-{    
-    activeAnimDuration = arc4random()%([self activeAnimDurationMax] - [self activeAnimDurationMin]) + [self activeAnimDurationMin];
-    chargingAnimDuration = arc4random()%([self chargingAnimDurationMax] - [self chargingAnimDurationMin]) + [self chargingAnimDurationMin];
-
-    [self schedule: @selector(changeLocation) interval:(activeAnimDuration + chargingAnimDuration)];    
-}
-
--(void) unScheduleMovementTimer
-{
-    [self unschedule: @selector(changeLocation)];
-}
-
 - (id)initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location withSpriteFrame:(CCSpriteFrame *)frame WithKnowledgeOfMaze:(MazeMaker*)maze {
     if ((self = [super init])) {
-        [self initAnimations];                                   
         gameObjectType = tArea;
         handleOnMaze = maze;
+        objectFactory = [ObjectFactory createSingleton];
         world = theWorld;
-        mazeInterface = [MazeInterface createSingleton];
+        
+        /*find the offset used for displaying things to the screen*/
+        /*based off the scene type*/
+        if ([handleOnMaze mazeForScene] == kMainMenuScene) {
+            screenOffset = kMenuMazeScreenOffset;
+        }
+        else if ([handleOnMaze mazeForScene] == kNormalLevel) {
+            screenOffset = kMazeScreenOffset;
+        }
+        else {
+            screenOffset = 0;
+        }
         [self setDisplayFrame:frame];
         [self createBodyAtLocation:location];
-        [self changeState:sAreaActive];
-        [self setActiveAnimDurationMin:3];
-        [self setActiveAnimDurationMax:7];
+        [self setActiveAnimDurationMin:2];
+        [self setActiveAnimDurationMax:5];
         [self setChargingAnimDurationMin:1];
-        [self setChargingAnimDurationMax:5];
-        [self scheduleMovementTimer];
+        [self setChargingAnimDurationMax:3];
+        [self runLoop];
     }
     return self;
 }
@@ -144,7 +215,6 @@
 }
 
 - (void) dealloc{
-    [activeAnim release];
     [super dealloc];
 }
 
