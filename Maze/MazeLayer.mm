@@ -436,6 +436,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCoinLabel" object:self];
 
+//bring back number of enemies / special areas to spawn
+    totalNumSpecialAreas = kNumberSpecialAreas;
+    
 //unpause game
     [self schedule:@selector(update:)];
     [self restartLevelSceneTransition];
@@ -531,7 +534,7 @@
                                                   SpecialAreas:0
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
-        totalNumSpecialAreas = 3;
+        totalNumSpecialAreas = kNumberSpecialAreas;
         
         mazeGrid = [[NSMutableArray alloc] init];
         

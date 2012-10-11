@@ -210,6 +210,7 @@
 
 - (void) dealloc{
     [super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
