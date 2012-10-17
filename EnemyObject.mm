@@ -98,6 +98,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(respondToUnPauseCall) 
                                                      name:@"unPauseGameObjects" object:nil];
+        [self changeState:sEnemySleeping];
     }
     return self;
 }
@@ -358,7 +359,7 @@
     }
     
     NSMutableArray *animationContainer = [[NSMutableArray alloc] init];
-    
+    [animationContainer removeAllObjects];
     //start recurisve function
     [self depthFirstSearchFrom:startLocation 
                             To:endLocation 

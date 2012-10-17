@@ -278,7 +278,7 @@
     [statsKeeper setActive:FALSE];
     
     NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
-    
+    [self performSelector:@selector(pauseGame) withObject:nil afterDelay:2.0f];
     [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
     
     CCArray *listOfGameObjects =

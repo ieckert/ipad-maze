@@ -16,7 +16,7 @@
 -(void)onEnterTransitionDidFinish
 {
     NSLog(@"### Minion on enter");
-
+    [self changeState:sEnemySleeping];
 }
 
 /*the logic of if the enemy is in a certain state and it ends - need to go to the next logical one*/
@@ -124,11 +124,9 @@
         //player touched minion
         if ([object gameObjectType] == tBall && CGRectIntersectsRect([object boundingBox], myBoundingBox)) {
 //            NSLog(@"Minion Touched something!!");
-             
-            
 
         }
-     
+
         /*        
         if (canSee && [object gameObjectType] == tBall && ( CGRectIntersectsRect(myForwardVision, objectBoundingBox) || CGRectIntersectsRect(mySideVision, objectBoundingBox)) ) {
             if ( [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] || [self isObjectVisible:object WithinThisBox:mySideVision OutOfTheseObjects:listOfGameObjects] ) {

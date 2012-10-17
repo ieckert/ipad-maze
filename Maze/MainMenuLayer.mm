@@ -487,7 +487,7 @@
         
         //begin creating the maze
         requirements = [[MazeRequirements alloc] initWithCoins:5
-                                                       Enemies:1
+                                                       Enemies:0
                                                   SpecialAreas:0
                                             AllowableStraights:NO
                                                NumberOfCircles:2];
