@@ -19,9 +19,69 @@
 @implementation MainMenuLayer
 @synthesize accel;
 
+
+-(void) screenRotationTapped: (id) sender
+{
+    NSLog(@"Settings - ScreenRotation button tapped!, %i", [sender tag]);
+   
+    switch ([sender tag]) {
+        case rLeft:
+            
+            break;
+        case rRight:
+            
+            break;
+        case rUp:
+            
+            break;
+        case rDown:
+            
+            break;
+        default:
+            break;
+    }
+    screenRotationToggle.tag = ([sender tag] == 3) ? 0 : [sender tag]+1;
+}
+
+-(void)displaySettingsMenu {
+    if (mainMenu != nil) {
+        [mainMenu removeFromParentAndCleanup:YES];
+    }
+    
+    CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"Left" target:nil selector:nil]; 
+    
+    CCMenuItemFont *screenRotation2 = [CCMenuItemFont itemFromString:@"Right" target:nil selector:nil];
+
+    CCMenuItemFont *screenRotation3 = [CCMenuItemFont itemFromString:@"Up" target:nil selector:nil];
+
+    CCMenuItemFont *screenRotation4 = [CCMenuItemFont itemFromString:@"Down" target:nil selector:nil];
+    
+    screenRotationToggle = [CCMenuItemToggle itemWithTarget:self
+                                                   selector:@selector(screenRotationTapped:)
+                                                      items:screenRotation1, screenRotation2, screenRotation3, screenRotation4, nil];
+    [screenRotationToggle setTag:rLeft];
+    
+    
+    settingsMenu = [CCMenu
+                    menuWithItems:screenRotationToggle, nil];
+    [settingsMenu alignItemsVerticallyWithPadding:
+     screenSize.height * 0.059f];
+    [settingsMenu setPosition:
+     ccp(screenSize.width * 2,
+         screenSize.height / 2)];
+    id moveAction =
+    [CCMoveTo actionWithDuration:1.2f
+                        position:ccp(screenSize.width * 0.85f,
+                                     screenSize.height/2)];
+    id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
+    [settingsMenu runAction:moveEffect];
+    [self addChild:settingsMenu z:0 tag:kMainMenuTagValue];
+}
+
+
 -(void)displayMainMenu {
-    if (sceneSelectMenu != nil) {
-        [sceneSelectMenu removeFromParentAndCleanup:YES];
+    if (mainMenu != nil) {
+        [mainMenu removeFromParentAndCleanup:YES];
     }
     // Main Menu
     
@@ -79,7 +139,7 @@
 
 -(void)displayOptions {
     CCLOG(@"Show the Options screen");
-    [[GameManager sharedGameManager] runSceneWithID:kOptionsScene];
+    [self displaySettingsMenu];
 }
 
 -(void)displaySceneSelection {

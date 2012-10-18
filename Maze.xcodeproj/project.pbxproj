@@ -195,6 +195,7 @@
 		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
 		3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD515D8B6B3006D6846 /* atlas1.plist */; };
 		3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD615D8B6B3006D6846 /* atlas1.png */; };
+		3F04D89E1630A86C00CB226D /* MainMenuSettingsLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F04D89D1630A86C00CB226D /* MainMenuSettingsLayer.mm */; };
 		3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F068F071624CA7300B415BC /* SpecialArea.mm */; };
 /* End PBXBuildFile section */
 
@@ -573,6 +574,8 @@
 		3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DoorObject.plist; sourceTree = "<group>"; };
 		3CF2BBD515D8B6B3006D6846 /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
 		3CF2BBD615D8B6B3006D6846 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
+		3F04D89C1630A86C00CB226D /* MainMenuSettingsLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuSettingsLayer.h; sourceTree = "<group>"; };
+		3F04D89D1630A86C00CB226D /* MainMenuSettingsLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainMenuSettingsLayer.mm; sourceTree = "<group>"; };
 		3F068F061624CA7300B415BC /* SpecialArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialArea.h; sourceTree = "<group>"; };
 		3F068F071624CA7300B415BC /* SpecialArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpecialArea.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1290,6 +1293,8 @@
 		3CE1F64915E87CDB0006819E /* Layers */ = {
 			isa = PBXGroup;
 			children = (
+				3F04D89C1630A86C00CB226D /* MainMenuSettingsLayer.h */,
+				3F04D89D1630A86C00CB226D /* MainMenuSettingsLayer.mm */,
 				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
 				3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */,
 			);
@@ -1576,6 +1581,7 @@
 				3CDCAB3015E9D3D10012A4FF /* Stats.m in Sources */,
 				3CE6C5B216141DA5004740D4 /* MazeInterface.m in Sources */,
 				3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */,
+				3F04D89E1630A86C00CB226D /* MainMenuSettingsLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

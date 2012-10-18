@@ -123,4 +123,11 @@ typedef enum {
     sAreaCharging=23
 } CharacterStates;
 
+typedef enum {
+    rLeft=0,
+    rRight=1,
+    rUp=2,
+    rDown=3
+} ScreenRotations;
+
 

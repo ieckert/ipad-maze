@@ -28,7 +28,9 @@
 {
     CCMenu *mainMenu;
     CCMenu *sceneSelectMenu;
-    
+    CCMenu *settingsMenu;
+    CCMenuItemToggle *screenRotationToggle;
+
     b2World *world;
     GLESDebugDraw *debugDraw;
 
