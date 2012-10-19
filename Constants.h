@@ -124,10 +124,8 @@ typedef enum {
 } CharacterStates;
 
 typedef enum {
-    rLeft=0,
-    rRight=1,
-    rUp=2,
-    rDown=3
+    rPortrait=0,
+    rLandscape=1
 } ScreenRotations;
 
 

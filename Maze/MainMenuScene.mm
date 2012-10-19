@@ -14,7 +14,6 @@
     if (self != nil) {
         mainMenuLayer = [MainMenuLayer node];
         [self addChild:mainMenuLayer z:10];
-        mainMenuSettingsLayer = [MainMenuSettingsLayer node];
     }
     return self;
 }

@@ -268,8 +268,14 @@
         didAccelerate:(UIAcceleration *)acceleration
 {
 //    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
-        b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
-        world->SetGravity(gravity);
+    b2Vec2 gravity;
+    if (screenRotation==rPortrait) {
+        gravity.Set(acceleration.x * accelNum, acceleration.y * accelNum);
+    }
+    else {
+        gravity.Set(-acceleration.y * accelNum, acceleration.x * accelNum);
+    }
+    world->SetGravity(gravity);
 }
 
 -(void) endingTransition
@@ -471,6 +477,13 @@
 	if( (self=[super init])) {   
         NSLog(@"MazeLayer Init");
         screenSize = [CCDirector sharedDirector].winSize;
+        tmpDirector = [CCDirector sharedDirector];
+        if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
+            screenRotation = rPortrait;
+        }
+        else {
+            screenRotation = rLandscape;
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(itemCapturedHandler:) 
@@ -537,13 +550,22 @@
         totalNumSpecialAreas = kNumberSpecialAreas;
         
         mazeGrid = [[NSMutableArray alloc] init];
-        
-        mazeMaker = [[MazeMaker alloc] initWithHeight:screenSize.height
-                                                Width:(screenSize.width - 150)
-                                       WallDimensions:[objectFactory returnObjectDimensions:tWall]
-                                         Requirements:requirements
-                                                 Maze:mazeGrid
-                                             ForScene:kNormalLevel];
+        if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
+            mazeMaker = [[MazeMaker alloc] initWithHeight:screenSize.height-90
+                                                    Width:screenSize.width
+                                           WallDimensions:[objectFactory returnObjectDimensions:tWall]
+                                             Requirements:requirements
+                                                     Maze:mazeGrid
+                                                 ForScene:kNormalLevel];
+        }
+        else {
+            mazeMaker = [[MazeMaker alloc] initWithHeight:screenSize.height
+                                                    Width:screenSize.width - 150
+                                           WallDimensions:[objectFactory returnObjectDimensions:tWall]
+                                             Requirements:requirements
+                                                     Maze:mazeGrid
+                                                 ForScene:kNormalLevel];
+        }
         
         mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         mazeDimensions = [mazeMaker createMaze];

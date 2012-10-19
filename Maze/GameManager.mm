@@ -10,6 +10,7 @@
 #import "GameScene.h"
 #import "MainMenuScene.h"
 #import "CCTransition.h"
+#import "Settings.h"
 
 @implementation GameManager
 static GameManager* _sharedGameManager = nil;                      
@@ -49,11 +50,27 @@ return nil;
         isSoundEffectsON = YES;
         hasPlayerDied = NO;
         currentScene = kNoSceneUninitialized;
-        
+        tmpDirector = [CCDirector sharedDirector];
+
         statsKeeper = [StatsKeeper createSingleton];
         objectFactory = [ObjectFactory createSingleton];
         dataAdapter = [DataAdapter createSingleton];
         mazeInterface = [MazeInterface createSingleton];
+        
+        Settings *settings = [dataAdapter returnSettings];
+        if (settings) {
+            if ([[settings screenRotation] intValue] == rLandscape) {
+                [tmpDirector setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+            } else {
+                [tmpDirector setDeviceOrientation:kCCDeviceOrientationPortrait];
+            }
+        }
+        else {
+            [dataAdapter changeSettings:[NSNumber numberWithInt:rLandscape]];
+            [tmpDirector setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+
+        }
+        
     }
     return self;
 }
@@ -69,6 +86,17 @@ return nil;
            
 -(void)runSceneWithID:(SceneTypes)sceneID {
     
+    Settings *settings = [dataAdapter returnSettings];
+    NSLog(@"running scene in mode: %i", [[settings screenRotation] intValue]);
+    if (settings) {
+        if ([[settings screenRotation] intValue] == rLandscape) {
+            [tmpDirector setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+        } else {
+            [tmpDirector setDeviceOrientation:kCCDeviceOrientationPortrait];
+        }
+    }
+    else
+        NSLog(@"in game manager - no settings?");
     SceneTypes oldScene = currentScene;
     currentScene = sceneID;
     id sceneToRun = nil;

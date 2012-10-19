@@ -23,56 +23,71 @@
 -(void) screenRotationTapped: (id) sender
 {
     NSLog(@"Settings - ScreenRotation button tapped!, %i", [sender tag]);
-   
-    switch ([sender tag]) {
-        case rLeft:
-            
+    screenRotationToggle.tag = ([sender tag] == 1) ? 0 : [sender tag]+1;
+
+    switch (screenRotationToggle.tag) {
+        case rLandscape:
+            [dataAdapter changeSettings:[NSNumber numberWithInt:rLandscape]];
             break;
-        case rRight:
-            
-            break;
-        case rUp:
-            
-            break;
-        case rDown:
-            
+        case rPortrait:
+            [dataAdapter changeSettings:[NSNumber numberWithInt:rPortrait]];
             break;
         default:
             break;
     }
-    screenRotationToggle.tag = ([sender tag] == 3) ? 0 : [sender tag]+1;
 }
 
 -(void)displaySettingsMenu {
     if (mainMenu != nil) {
         [mainMenu removeFromParentAndCleanup:YES];
+        mainMenu = nil;
     }
     
-    CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"Left" target:nil selector:nil]; 
+    CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"portrait" target:nil selector:nil];
+    screenRotation1.fontName = @"AmericanTypewriter-CondensedBold";
+    screenRotation1.fontSize = 45;
+    CCMenuItemFont *screenRotation2 = [CCMenuItemFont itemFromString:@"landscape" target:nil selector:nil];
+    screenRotation2.fontName = @"AmericanTypewriter-CondensedBold";
+    screenRotation2.fontSize = 45;
     
-    CCMenuItemFont *screenRotation2 = [CCMenuItemFont itemFromString:@"Right" target:nil selector:nil];
+    if ([[dataAdapter returnSettings].screenRotation intValue] == rPortrait) {
+        screenRotationToggle = [CCMenuItemToggle itemWithTarget:self
+                                                       selector:@selector(screenRotationTapped:)
+                                                          items:screenRotation1, screenRotation2, nil];
+    } else {
+        screenRotationToggle = [CCMenuItemToggle itemWithTarget:self
+                                                       selector:@selector(screenRotationTapped:)
+                                                          items:screenRotation2, screenRotation1, nil];
+    }
 
-    CCMenuItemFont *screenRotation3 = [CCMenuItemFont itemFromString:@"Up" target:nil selector:nil];
-
-    CCMenuItemFont *screenRotation4 = [CCMenuItemFont itemFromString:@"Down" target:nil selector:nil];
+    [screenRotationToggle setTag:[[dataAdapter returnSettings].screenRotation intValue]];
     
-    screenRotationToggle = [CCMenuItemToggle itemWithTarget:self
-                                                   selector:@selector(screenRotationTapped:)
-                                                      items:screenRotation1, screenRotation2, screenRotation3, screenRotation4, nil];
-    [screenRotationToggle setTag:rLeft];
+    CCMenuItemFont *backButton = [CCMenuItemFont itemFromString:@"Back"
+                                                         target:self
+                                                       selector:@selector(displayMainMenu)];
+    backButton.fontName = @"AmericanTypewriter-CondensedBold";
+    backButton.fontSize = 45;
     
     
     settingsMenu = [CCMenu
-                    menuWithItems:screenRotationToggle, nil];
+                    menuWithItems:screenRotationToggle, backButton, nil];
     [settingsMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
     [settingsMenu setPosition:
      ccp(screenSize.width * 2,
          screenSize.height / 2)];
-    id moveAction =
-    [CCMoveTo actionWithDuration:1.2f
-                        position:ccp(screenSize.width * 0.85f,
-                                     screenSize.height/2)];
+    id moveAction;
+    if (screenRotation == rPortrait) {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.80f,
+                                         screenSize.height/2)];
+    } else {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.85f,
+                                         screenSize.height/2)];
+    }
     id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
     [settingsMenu runAction:moveEffect];
     [self addChild:settingsMenu z:0 tag:kMainMenuTagValue];
@@ -80,27 +95,32 @@
 
 
 -(void)displayMainMenu {
-    if (mainMenu != nil) {
-        [mainMenu removeFromParentAndCleanup:YES];
+    if (settingsMenu != nil) {
+        [settingsMenu removeFromParentAndCleanup:YES];
+        settingsMenu = nil;
+    }
+    if (sceneSelectMenu != nil) {
+        [sceneSelectMenu removeFromParentAndCleanup:YES];
+        sceneSelectMenu = nil;
     }
     // Main Menu
     
     CCMenuItemFont *cont = [CCMenuItemFont itemFromString:@"Continue" 
                                                    target:self 
                                                  selector:@selector(startFromCurrentLevel)];
-    cont.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+    cont.fontName = @"AmericanTypewriter-CondensedBold";
     cont.fontSize = 45;
     
     CCMenuItemFont *level = [CCMenuItemFont itemFromString:@"Choose Level" 
                                                    target:self 
                                                  selector:@selector(displaySceneSelection)];
-    level.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+    level.fontName = @"AmericanTypewriter-CondensedBold";
     level.fontSize = 45;
     
     CCMenuItemFont *options = [CCMenuItemFont itemFromString:@"Options" 
                                                    target:self 
                                                  selector:@selector(displayOptions)];
-    options.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+    options.fontName = @"AmericanTypewriter-CondensedBold";
     options.fontSize = 45;
     
     
@@ -108,13 +128,25 @@
                 menuWithItems:cont, level, options, nil];
     [mainMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
+    
     [mainMenu setPosition:
      ccp(screenSize.width * 2,
          screenSize.height / 2)];
-    id moveAction =
-    [CCMoveTo actionWithDuration:1.2f
-                        position:ccp(screenSize.width * 0.85f,
-                                     screenSize.height/2)];
+    
+    id moveAction;
+    if (screenRotation == rPortrait) {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.80f,
+                                         screenSize.height/2)];
+    } else {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.85f,
+                                         screenSize.height/2)];
+    }
+    
+    
     id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
     [mainMenu runAction:moveEffect];
     [self addChild:mainMenu z:0 tag:kMainMenuTagValue];
@@ -145,19 +177,20 @@
 -(void)displaySceneSelection {
     if (mainMenu != nil) {
         [mainMenu removeFromParentAndCleanup:YES];
+        mainMenu = nil;
     }
     
     CCMenuItemFont *level1 = [CCMenuItemFont itemFromString:@"Level 1" 
                                                    target:self 
                                                  selector:@selector(playScene:)];
-    level1.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+    level1.fontName = @"AmericanTypewriter-CondensedBold";
     level1.fontSize = 45;
     [level1 setTag:1];
     
     CCMenuItemFont *backButton = [CCMenuItemFont itemFromString:@"Back" 
                                                      target:self 
                                                    selector:@selector(displayMainMenu)];
-    backButton.fontName = [NSString stringWithString:@"AmericanTypewriter-CondensedBold"];
+    backButton.fontName = @"AmericanTypewriter-CondensedBold";
     backButton.fontSize = 45;
 
     sceneSelectMenu = [CCMenu menuWithItems:level1, backButton, nil];
@@ -167,10 +200,18 @@
     [sceneSelectMenu setPosition:
      ccp(screenSize.width * 2,
          screenSize.height / 2)];
-    id moveAction =
-    [CCMoveTo actionWithDuration:1.2f
-                        position:ccp(screenSize.width * 0.85f,
-                                     screenSize.height/2)];
+    id moveAction;
+    if (screenRotation == rPortrait) {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.80f,
+                                         screenSize.height/2)];
+    } else {
+        moveAction =
+        [CCMoveTo actionWithDuration:1.2f
+                            position:ccp(screenSize.width * 0.85f,
+                                         screenSize.height/2)];
+    }
     id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
     [sceneSelectMenu runAction:moveEffect];
     [self addChild:sceneSelectMenu z:1 tag:kSceneMenuTagValue];
@@ -208,8 +249,13 @@
 {
 //    NSLog(@"x: %f y: %f", acceleration.x, acceleration.y);
 //    b2Vec2 gravity(-acceleration.y * 4, acceleration.x * 4);
-    b2Vec2 gravity(-acceleration.y * accelNum, acceleration.x * accelNum);
-
+    b2Vec2 gravity;
+    if (screenRotation==rPortrait) {
+        gravity.Set(acceleration.x * accelNum, acceleration.y * accelNum);
+    }
+    else {
+        gravity.Set(-acceleration.y * accelNum, acceleration.x * accelNum);
+    }
     world->SetGravity(gravity);
 }
 -(void) update:(ccTime)deltaTime
@@ -503,6 +549,17 @@
     self = [super init];
     if (self != nil) { 
         NSLog(@"MainMenuLayer Init");
+        dataAdapter = [DataAdapter createSingleton];
+        tmpDirector = [CCDirector sharedDirector];
+        if ([[[dataAdapter returnSettings] screenRotation] intValue] == rPortrait) {
+            screenRotation = rPortrait;
+            [tmpDirector setDeviceOrientation:kCCDeviceOrientationPortrait];
+        }
+        else {
+            screenRotation = rLandscape;
+            [tmpDirector setDeviceOrientation:kCCDeviceOrientationLandscapeLeft];
+
+        }
         screenSize = [CCDirector sharedDirector].winSize;
         
         //will respawn a coin right when one is grabbed        
@@ -510,7 +567,7 @@
                                                  selector:@selector(itemCapturedHandler:) 
                                                      name:@"positionOfItemToPlace" object:nil];
 
-//start debug        
+//start debug
         gravityScale = 0;
         angDamp = kAngularDamp;
         accelNum = kAccelerometerConstant;
@@ -553,12 +610,24 @@
                                                NumberOfCircles:2];
 
         menuMaze = [[NSMutableArray alloc] init];
-        mazeMaker = [[MazeMaker alloc] initWithHeight:500
-                                                Width:600
-                                       WallDimensions:[objectFactory returnObjectDimensions:tWall]
-                                         Requirements:requirements
-                                                 Maze:menuMaze
-                                             ForScene:kMainMenuScene];
+        tmpDirector = [CCDirector sharedDirector];
+        if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
+            mazeMaker = [[MazeMaker alloc] initWithHeight:800
+                                                    Width:400
+                                           WallDimensions:[objectFactory returnObjectDimensions:tWall]
+                                             Requirements:requirements
+                                                     Maze:menuMaze
+                                                 ForScene:kMainMenuScene];
+        }
+        else {
+            mazeMaker = [[MazeMaker alloc] initWithHeight:500
+                                                    Width:600
+                                           WallDimensions:[objectFactory returnObjectDimensions:tWall]
+                                             Requirements:requirements
+                                                     Maze:menuMaze
+                                                 ForScene:kMainMenuScene];
+        }
+        
         
         Pair* mazeDimensions = [[Pair alloc] initWithRequirements:0 :0];
         mazeDimensions = [mazeMaker createMaze];

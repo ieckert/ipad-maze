@@ -24,12 +24,17 @@
 #import "Pair.h"
 #import "ObjectFactory.h"
 #import "MazeInterface.h"
+#import "DataAdapter.h"
 @interface MainMenuLayer : CCLayer <UIAccelerometerDelegate>
 {
+    CCDirector *tmpDirector;
+    ScreenRotations screenRotation;
+
     CCMenu *mainMenu;
     CCMenu *sceneSelectMenu;
     CCMenu *settingsMenu;
     CCMenuItemToggle *screenRotationToggle;
+    DataAdapter *dataAdapter;
 
     b2World *world;
     GLESDebugDraw *debugDraw;

@@ -12,7 +12,8 @@
 
 @interface StatsLayer : CCLayer {
     StatsKeeper *statsKeeper;
-    
+    CCDirector *tmpDirector;
+
     CCLabelTTF *timeLabel;
     CCLabelTTF *coinsLabel;
     CCLabelTTF *levelLabel;

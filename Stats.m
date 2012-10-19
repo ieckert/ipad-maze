@@ -2,8 +2,8 @@
 //  Stats.m
 //  Maze
 //
-//  Created by ian on 8/25/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by ian on 10/18/12.
+//
 //
 
 #import "Stats.h"
@@ -11,8 +11,8 @@
 
 @implementation Stats
 
+@dynamic coins;
 @dynamic level;
 @dynamic time;
-@dynamic coins;
 
 @end

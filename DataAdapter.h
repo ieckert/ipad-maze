@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
+#import "Settings.h"
 @interface DataAdapter : NSObject
 {
     NSManagedObjectContext *managedObjectContext;
@@ -24,6 +24,8 @@
 -(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins;
 -(BOOL)deleteStatisticsForLevel:(NSNumber*)level;
 -(BOOL)deleteStatisticsForAllLevels;
+-(Settings*)returnSettings;
+-(BOOL)changeSettings:(NSNumber*) screenRotation;
 
 /*mainly for debugging*/
 -(void)printAllLevelStats;

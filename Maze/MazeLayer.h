@@ -33,6 +33,10 @@
 
 @interface MazeLayer : CCLayer <UIAccelerometerDelegate>
 {
+    
+    CCDirector *tmpDirector;
+    ScreenRotations screenRotation;
+    
     MazeMaker *mazeMaker;
     MazeInterface *mazeInterface;
     MazeRequirements *requirements;

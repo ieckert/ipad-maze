@@ -19,7 +19,8 @@
     BOOL hasPlayerDied;
     
     SceneTypes currentScene;
-    
+    CCDirector *tmpDirector;
+
     MazeInterface *mazeInterface;
     StatsKeeper *statsKeeper;
     ObjectFactory *objectFactory;

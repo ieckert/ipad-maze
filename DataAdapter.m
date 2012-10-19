@@ -8,6 +8,7 @@
 
 #import "DataAdapter.h"
 #import "Stats.h"
+#import "Settings.h"
 @interface DataAdapter()
 
 -(NSURL *)itemArchivePath;
@@ -67,6 +68,57 @@ static DataAdapter *singleton = nil;
     [managedObjectModel release];
         
     [super dealloc];
+}
+
+-(BOOL)changeSettings:(NSNumber*) screenRotation
+{
+    NSLog(@"trying to add change settings");
+
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:@"Settings"];
+        
+    [request setEntity:entityDescription];
+    
+    NSError *error = nil;
+    NSArray *result = [managedObjectContext executeFetchRequest:request error:&error];
+    if (!result) {
+        [NSException raise:@"fetch failed" format:@"reason: %@", [error localizedDescription]];
+    }
+    if ([result count] > 0) {
+        Settings *settings = [result objectAtIndex:0];
+        [settings setScreenRotation:screenRotation];
+        NSLog(@"should have saved settings");
+    }
+    else
+    {
+        Settings *settings = (Settings*)[NSEntityDescription insertNewObjectForEntityForName:@"Settings"
+                                                                 inManagedObjectContext:managedObjectContext];
+        [settings setScreenRotation:screenRotation];
+        NSError *error = nil;
+    }
+    return [managedObjectContext save:&error];
+}
+
+-(Settings*)returnSettings
+{
+    NSLog(@"trying to returnSettings");
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    
+    NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:@"Settings"];
+    
+    [request setEntity:entityDescription];
+    
+    NSError *error = nil;
+    NSArray *result = [managedObjectContext executeFetchRequest:request error:&error];
+    if (!result) {
+        [NSException raise:@"fetch failed" format:@"reason: %@", [error localizedDescription]];
+    }
+    if ([result count] > 0) {
+        Settings *settings = [result objectAtIndex:0];
+        return settings;
+    }
+    return nil;
 }
 
 -(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins
