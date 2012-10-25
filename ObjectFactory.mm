@@ -92,12 +92,12 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
         ShootingEnemy *shootingEnemy = [[ShootingEnemy alloc] initWithWorld:world
                                                               withDirection:lTop 
                                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
-                                                                             spriteFrameByName:@"wall_1.png"]
+                                                                             spriteFrameByName:@"wall_2.png"]
                                                         WithKnowledgeOfMaze:maze
                                                            WillFollowPlayer:false];
         [sceneSpriteBatchNode addChild:shootingEnemy
                                      z:ZValue
-                                   tag:kAreaTagValue];
+                                   tag:kBallZValue];
         [shootingEnemy release];   
     }
 }

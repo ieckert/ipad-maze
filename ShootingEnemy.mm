@@ -85,7 +85,6 @@
     CGPoint screenLocation;
     screenLocation.x = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:currentIndex].num1)+screenOffset;
     screenLocation.y = ([objectFactory returnObjectDimensions:tWall].num2*[handleOnMaze translateLargeArrayIndexToXY:currentIndex].num2)+screenOffset;
-    //    NSLog(@"exiting locationOnScreen");
     
     return screenLocation;
 }
@@ -121,21 +120,15 @@
 -(void)runLoop
 {
     [self recalculateRunLoopTime];
-/*
+
+    CGPoint tmp = [self changeLocation];
+    NSLog(@"tmp: x:%f y:%f", tmp.x, tmp.y);
+    NSLog(@"animDuration: %i", chargingAnimDuration);
+
     id action = [CCSequence actions:
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
-                 [CCFadeIn actionWithDuration:chargingAnimDuration],
+                 [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
                  [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                 [CCBlink actionWithDuration:activeAnimDuration blinks:1000],
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
-                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
-                 nil];
-*/
-    id action = [CCSequence actions:
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
-                 [CCMoveTo actionWithDuration:chargingAnimDuration position:[self changeLocation]],
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                 [CCBlink actionWithDuration:activeAnimDuration blinks:1000],
+                 [CCBlink actionWithDuration:activeAnimDuration blinks:60],
                  [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
                  [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
                  nil];
@@ -184,7 +177,10 @@
     }
     else {
         NSInteger index = arc4random()%[moveableLocations count];
-        newLocation = [[moveableLocations objectAtIndex:index] CGPointValue];
+        NSLog(@"random index: %i", index);
+        NSLog(@"point at index: %i", [[moveableLocations objectAtIndex:index] intValue]);
+
+        newLocation = [self locationOnScreen:[[moveableLocations objectAtIndex:index] intValue]];
     }
     return newLocation;
 }
@@ -197,8 +193,9 @@
     NSInteger start = 0;
     switch (enemyPathLocation) {
         case lTop:
-            diff = -1;
-            start = (rows*cols)-1;
+            for (int i = (rows*cols); i>(rows*cols)-cols+1; i--) {
+                [moveableLocations addObject:[NSNumber numberWithInt:i]];
+            }
             break;
         case lBottom:
             diff = 1;
@@ -215,9 +212,8 @@
         default:
             break;
     }
-    for (int i = start; i<rows; i+=diff) {
-        [moveableLocations addObject:[NSNumber numberWithInt:i]];
-    }   
+    
+  
 }
 
 - (id)initWithWorld:(b2World *)theWorld 
@@ -238,12 +234,10 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         if ([handleOnMaze mazeForScene] == kMainMenuScene) {
             screenOffset = kMenuMazeScreenOffset;
         }
-        else if ([handleOnMaze mazeForScene] == kNormalLevel) {
+        else {
             screenOffset = kMazeScreenOffset;
         }
-        else {
-            screenOffset = 0;
-        }
+        
         [self setDisplayFrame:frame];
         
         enemyPathLocation = location;
