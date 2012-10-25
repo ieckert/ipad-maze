@@ -19,10 +19,13 @@
     CGSize screenSize;
     GameObjectType gameObjectType;
     CharacterStates characterState;
+    bool unTouchable;
 
     b2Body *body;
 
 }
+@property (readwrite) bool unTouchable;
+
 @property (readwrite) BOOL isActive;
 @property (readwrite) BOOL reactsToScreenBoundaries;
 @property (readwrite) CGSize screenSize;

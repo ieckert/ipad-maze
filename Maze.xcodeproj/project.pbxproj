@@ -197,6 +197,7 @@
 		3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD515D8B6B3006D6846 /* atlas1.plist */; };
 		3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD615D8B6B3006D6846 /* atlas1.png */; };
 		3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F068F071624CA7300B415BC /* SpecialArea.mm */; };
+		3FC8652C1638A9A90040A475 /* ShootingEnemy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8652B1638A9A90040A475 /* ShootingEnemy.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -578,6 +579,8 @@
 		3CF2BBD615D8B6B3006D6846 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
 		3F068F061624CA7300B415BC /* SpecialArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialArea.h; sourceTree = "<group>"; };
 		3F068F071624CA7300B415BC /* SpecialArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpecialArea.mm; sourceTree = "<group>"; };
+		3FC8652A1638A9A90040A475 /* ShootingEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShootingEnemy.h; sourceTree = "<group>"; };
+		3FC8652B1638A9A90040A475 /* ShootingEnemy.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShootingEnemy.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1250,6 +1253,8 @@
 				3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */,
 				3F068F061624CA7300B415BC /* SpecialArea.h */,
 				3F068F071624CA7300B415BC /* SpecialArea.mm */,
+				3FC8652A1638A9A90040A475 /* ShootingEnemy.h */,
+				3FC8652B1638A9A90040A475 /* ShootingEnemy.mm */,
 			);
 			name = GameObjects;
 			sourceTree = "<group>";
@@ -1582,6 +1587,7 @@
 				3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */,
 				3CE8322C1630FED6005A88BF /* Settings.m in Sources */,
 				3CE8322F1630FED8005A88BF /* Stats.m in Sources */,
+				3FC8652C1638A9A90040A475 /* ShootingEnemy.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

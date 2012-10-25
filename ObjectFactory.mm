@@ -14,6 +14,7 @@
 #import "DoorObject.h"
 #import "MinionObject.h"
 #import "SpecialArea.h"
+#import "ShootingEnemy.h"
 #import "ObjectInfoConstants.h"
 #import "MazeMaker.h"
 
@@ -86,6 +87,18 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
                                      z:ZValue
                                    tag:kAreaTagValue];
         [specialArea release];   
+    }
+    else if (objectType == tShoot) {
+        ShootingEnemy *shootingEnemy = [[ShootingEnemy alloc] initWithWorld:world
+                                                              withDirection:lTop 
+                                                            withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                                                             spriteFrameByName:@"wall_1.png"]
+                                                        WithKnowledgeOfMaze:maze
+                                                           WillFollowPlayer:false];
+        [sceneSpriteBatchNode addChild:shootingEnemy
+                                     z:ZValue
+                                   tag:kAreaTagValue];
+        [shootingEnemy release];   
     }
 }
 

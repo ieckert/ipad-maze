@@ -136,6 +136,8 @@ static StatsKeeper *singleton = nil;
     if (active == true)
     {
         health = [[[notification userInfo] objectForKey:[NSString stringWithString:playerHealth]] intValue];
+        if (health < 0)
+            health = 0;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
                                                         object:self];
     }

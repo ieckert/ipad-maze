@@ -186,15 +186,17 @@
 
 - (void)applyDamage:(NSInteger) dmg
 {
-    health -= dmg;
-    
-    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
-    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
-    [objectInfo setObject:[NSNumber numberWithInt:health] forKey:playerHealth];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"playerTouchedEnemy"
-                                                        object:self
-                                                      userInfo:objectInfo];
+    if ([self characterState] != sBallInvulnerable && [self unTouchable] == false) {
+        health -= dmg;
+        
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+        [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+        [objectInfo setObject:[NSNumber numberWithInt:health] forKey:playerHealth];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"playerTouchedEnemy"
+                                                            object:self
+                                                          userInfo:objectInfo];
+    }
 }
 
 

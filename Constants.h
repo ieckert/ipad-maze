@@ -48,6 +48,7 @@
 #define kAreaBasicDamage 5
 
 #define kNumberSpecialAreas 3
+#define kNumberShootingEnemies 1
 
 #define kGameplayManagerUpdateInterval 15
 
@@ -88,8 +89,16 @@ typedef enum {
     tStart=4,
     tFinish=5,
     tEnemy=6,
-    tArea=7
+    tArea=7,
+    tShoot=8
 } GameObjectType;
+
+typedef enum {
+    lTop=0,
+    lBottom=1,
+    lLeft=2,
+    lRight=3
+} ShootingEnemyLocation;
 
 typedef enum {
     tJumpUp=0,

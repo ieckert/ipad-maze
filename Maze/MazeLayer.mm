@@ -290,8 +290,20 @@
     CCArray *listOfGameObjects =
     [sceneSpriteBatchNode children];                     
     for (GameObject *tempObject in listOfGameObjects) {
-        if ([tempObject isActive] == true)
-            [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];        
+        
+        if ([tempObject gameObjectType] != tBall && [tempObject gameObjectType] != tWall && [tempObject isActive] == true)
+        {
+            [tempObject setIsActive:false];
+            [tempObject runAction:[CCFadeOut actionWithDuration:2.0f]];
+        }
+         
+        if ([tempObject gameObjectType] == tBall)
+        {
+            [tempObject setUnTouchable:true];
+        }
+        
+        if ([tempObject gameObjectType] == tWall)
+            [tempObject runAction:[CCFadeOut actionWithDuration:5.0f]];
     }
     
     for(b2Body *b=world->GetBodyList(); b!=NULL; b=b->GetNext()) {
@@ -372,6 +384,8 @@
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         }
         else if ([[mazeGrid objectAtIndex:i] intValue] == tCoin){
+            [mazeInterface addPoint:tmpLocation];
+
             //create coin as GameObject:
             [objectFactory createObjectOfType:tCoin
                                    atLocation:tmpLocation
@@ -380,6 +394,8 @@
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         }
         else if ([[mazeGrid objectAtIndex:i] intValue] == tEnemy) {
+            [mazeInterface addPoint:tmpLocation];
+
             [objectFactory createEnemyOfType:tEnemy
                                   atLocation:tmpLocation
                                   withZValue:kCoinZValue
@@ -389,6 +405,8 @@
         }
         else if ([[mazeGrid objectAtIndex:i] intValue] == tStart) {
             NSLog(@"starting position at: %i", i);
+            [mazeInterface addPoint:tmpLocation];
+
             [objectFactory createObjectOfType:tStart
                                    atLocation:tmpLocation
                                    withZValue:kDoorZValue
@@ -402,6 +420,8 @@
                     addToSceneSpriteBatchNode:sceneSpriteBatchNode];
         }
         else if ([[mazeGrid objectAtIndex:i] intValue] == tFinish) {
+            [mazeInterface addPoint:tmpLocation];
+
             NSLog(@"ending position at: %i", i);
             [objectFactory createObjectOfType:tFinish
                                    atLocation:tmpLocation
@@ -415,6 +435,14 @@
         }
         
     }
+    
+//add correct number of shooing enemies to the screen
+    [objectFactory createEnemyOfType:tShoot
+                          atLocation:tmpLocation 
+                          withZValue:kCoinZValue 
+                             inWorld:world 
+           addToSceneSpriteBatchNode:sceneSpriteBatchNode 
+                 withKnowledgeOfMaze:mazeMaker];
     
 //    [tmpCoords release];
 }

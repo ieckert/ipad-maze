@@ -13,13 +13,14 @@
 @synthesize reactsToScreenBoundaries;
 @synthesize screenSize;
 @synthesize isActive;
-@synthesize gameObjectType, characterState, body;
+@synthesize gameObjectType, characterState, body, unTouchable;
 
 -(id) init {
     if((self=[super init])){
 //        CCLOG(@"GameObject init");
         screenSize = [CCDirector sharedDirector].winSize;
         isActive = TRUE;
+        unTouchable = false;
         gameObjectType = tNone;
         characterState = sNewState;
         

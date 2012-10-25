@@ -16,6 +16,7 @@
     CCAnimation *idleAnim;
     
     b2World *world;
+    //used for player not dying during ending transitions
     
     NSInteger health;
 
@@ -25,6 +26,7 @@
 @property (nonatomic, retain) CCAnimation *idleAnim;
 @property (nonatomic, retain) CCAnimation *rollingAnim;
 @property (readwrite) NSInteger health;
+
 
 - (id)initWithWorld:(b2World *)theWorld 
          atLocation:(CGPoint)location 
