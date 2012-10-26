@@ -68,10 +68,20 @@
 
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
            andListOfGameObjects:(CCArray*)listOfGameObjects {
+    if (!isActive) {
+        return;
+    }
     if ([self characterState] == sAreaActive) {
-        CGRect myBoundingBox = [self adjustedBoundingBox];
+
+        shootBoundingBox.origin = [self boundingBox].origin;
+        shootBoundingBox.origin.x -= boundingSize.width/2;
+        shootBoundingBox.origin.y -= boundingSize.height/2;
+
         for (GameObject *object in listOfGameObjects) {
-            
+            CGRect characterBox = [object adjustedBoundingBox];
+            if ( [object gameObjectType] == tBall && CGRectIntersectsRect(shootBoundingBox, characterBox)) {
+                [object applyDamage:kAreaBasicDamage];
+            }
         }
     }
     
@@ -135,30 +145,6 @@
     [self runAction:action];
 }
 
-- (void)createBodyAtLocation:(CGPoint)location {
-    b2BodyDef bodyDef;
-    //prevent physics of collisions
-    bodyDef.active = false;
-    //prevents the body from moving with accelerometer
-    bodyDef.type = b2_staticBody;
-    bodyDef.position =
-    b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
-    body = world->CreateBody(&bodyDef);
-    body->SetUserData(self);
-    
-    b2FixtureDef fixtureDef;
-    
-    b2PolygonShape shape;
-    shape.SetAsBox(self.contentSize.width/2/PTM_RATIO, self.contentSize.height/2/PTM_RATIO);
-    
-    fixtureDef.shape = &shape;
-    
-    fixtureDef.density = 0.0;
-    
-    body->CreateFixture(&fixtureDef);
-}
-
-
 -(void)respondToPauseCall
 {
     [self pauseSchedulerAndActions]; 
@@ -172,48 +158,74 @@
 - (CGPoint)changeLocation
 {
     CGPoint newLocation;
+    int xDiff, yDiff;
+    NSInteger index;
+    int wallSize = ([objectFactory returnObjectDimensions:tWall].num2*6);
+
     if (follow) {
         
     }
     else {
-        NSInteger index = arc4random()%[moveableLocations count];
-        NSLog(@"random index: %i", index);
-        NSLog(@"point at index: %i", [[moveableLocations objectAtIndex:index] intValue]);
-
+        index = arc4random()%[moveableLocations count];
         newLocation = [self locationOnScreen:[[moveableLocations objectAtIndex:index] intValue]];
+        xDiff = abs(abs([self position].x) - abs(newLocation.x));
+        yDiff = abs(abs([self position].y) - abs(newLocation.y));
+        while (yDiff > wallSize || xDiff > wallSize) {
+            index = arc4random()%[moveableLocations count];
+            newLocation = [self locationOnScreen:[[moveableLocations objectAtIndex:index] intValue]];
+            xDiff = abs(abs([self position].x) - abs(newLocation.x));
+            yDiff = abs(abs([self position].y) - abs(newLocation.y));
+        }
     }
     return newLocation;
 }
 
 -(void)buildMoveableLocations
 {
+//also makes the bounding box!!
     NSInteger rows = [handleOnMaze largeMazeRows];
     NSInteger cols = [handleOnMaze largeMazeCols];
-    NSInteger diff = 0;
-    NSInteger start = 0;
+    
+    int distanceMultiplier = (rows+cols)*[objectFactory returnObjectDimensions:tWall].num2;
+    
     switch (enemyPathLocation) {
         case lTop:
-            for (int i = (rows*cols); i>(rows*cols)-cols+1; i--) {
+            for (int i = (rows*cols)-1; i>(rows*cols)-cols-1; i--) {
                 [moveableLocations addObject:[NSNumber numberWithInt:i]];
             }
+            boundingSize.height = -[self boundingBox].size.height*distanceMultiplier;
+            boundingSize.width = [self boundingBox].size.width*3;
+            
             break;
         case lBottom:
-            diff = 1;
-            start = 1;
+            for (int i = cols-1; i>1; i--) {
+                [moveableLocations addObject:[NSNumber numberWithInt:i]];
+            }
+            boundingSize.height = [self boundingBox].size.height*distanceMultiplier;
+            boundingSize.width = [self boundingBox].size.width*3;
+            
             break;
         case lLeft:
-            diff = cols;
-            start = cols;
-            break;        
+            for (int i = (rows*cols)-1; i>cols+rows; i-=cols) {
+                [moveableLocations addObject:[NSNumber numberWithInt:i]];
+            }
+            boundingSize.height = [self boundingBox].size.height*3;
+            boundingSize.width = -[self boundingBox].size.width*distanceMultiplier;
+            
+            break;
         case lRight:
-            diff = -cols;
-            start = (rows*cols)-cols;
+            for (int i = (rows*cols)-cols; i>2*cols; i-=cols) {
+                [moveableLocations addObject:[NSNumber numberWithInt:i]];
+            }
+            boundingSize.height = [self boundingBox].size.height*3;
+            boundingSize.width = [self boundingBox].size.width*distanceMultiplier;
+            
             break;
         default:
             break;
     }
     
-  
+    shootBoundingBox.size = boundingSize;
 }
 
 - (id)initWithWorld:(b2World *)theWorld 
@@ -243,8 +255,7 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         enemyPathLocation = location;
         [self buildMoveableLocations];
         
-        [self createBodyAtLocation:[self changeLocation]];
-        
+        [self setPosition:[self locationOnScreen:[[moveableLocations objectAtIndex:0] intValue]]];
         [self setActiveAnimDurationMin:2];
         [self setActiveAnimDurationMax:5];
         [self setChargingAnimDurationMin:1];

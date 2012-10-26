@@ -90,7 +90,7 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
     }
     else if (objectType == tShoot) {
         ShootingEnemy *shootingEnemy = [[ShootingEnemy alloc] initWithWorld:world
-                                                              withDirection:lTop 
+                                                              withDirection:lRight
                                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
                                                                              spriteFrameByName:@"wall_2.png"]
                                                         WithKnowledgeOfMaze:maze

@@ -73,9 +73,9 @@
         for (GameObject *object in listOfGameObjects) {
             CGRect characterBox = [object adjustedBoundingBox];
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
-                if ([object gameObjectType] == tBall) {
+                if ([object gameObjectType] == tBall && [self characterState] == sAreaActive) {
                     NSLog(@"In Special Area - Ball touched it!");
-                
+                    [object applyDamage:kAreaBasicDamage];
                 
                 }
             }
@@ -183,10 +183,10 @@
         }
         [self setDisplayFrame:frame];
         [self createBodyAtLocation:location];
-        [self setActiveAnimDurationMin:2];
-        [self setActiveAnimDurationMax:5];
-        [self setChargingAnimDurationMin:1];
-        [self setChargingAnimDurationMax:3];
+        [self setActiveAnimDurationMin:1];
+        [self setActiveAnimDurationMax:3];
+        [self setChargingAnimDurationMin:3];
+        [self setChargingAnimDurationMax:5];
         [self runLoop];
         
         [[NSNotificationCenter defaultCenter] addObserver:self 

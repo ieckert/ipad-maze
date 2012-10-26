@@ -41,6 +41,8 @@
                                 andClassName:(NSString*)className;
 
 -(BOOL)isObjectAudible;
+- (void)applyDamage:(NSInteger) dmg;
+
 
 @end
 

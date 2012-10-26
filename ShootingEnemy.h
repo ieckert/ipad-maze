@@ -12,8 +12,9 @@
 #import "MazeInterface.h"
 #import "ObjectFactory.h"
 #import "Constants.h"
+#import "EnemyObject.h"
 
-@interface ShootingEnemy : GameObject
+@interface ShootingEnemy : EnemyObject
 {
     NSInteger activeAnimDuration;
     NSInteger activeAnimDurationMax;
@@ -27,13 +28,12 @@
     
     
     NSMutableArray *moveableLocations;
-    NSInteger shootDirection;
     ShootingEnemyLocation enemyPathLocation;
     bool follow;
+    CGRect shootBoundingBox;
+    CGSize boundingSize;
+    CGPoint boundingOrigin;
     
-    MazeMaker *handleOnMaze;
-    ObjectFactory *objectFactory;
-    NSInteger screenOffset;
 }
 
 @property (readwrite) NSInteger chargingAnimDurationMax;

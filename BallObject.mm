@@ -95,21 +95,7 @@
                     
                     
                 }
-                if ( ([object gameObjectType] == tEnemy)
-                        && [self characterState] != sBallInvulnerable
-                        && [self characterState] != sBallHurt
-                        && [self characterState] != sCharacterDead ) {
-                    NSLog(@"Hit an Enemy!");
-                    [self applyDamage:kEnemyBasicDamage];
-                    [self changeState:sBallHurt];
-                }
-                else if([object gameObjectType] == tArea 
-                        && [self characterState] != sBallInvulnerable
-                        && [self characterState] != sBallHurt
-                        && [self characterState] != sCharacterDead) {
-                    [self applyDamage:kAreaBasicDamage];
-                    [self changeState:sBallHurt];
-                }
+
             }
         }
     }
@@ -186,7 +172,11 @@
 
 - (void)applyDamage:(NSInteger) dmg
 {
-    if ([self characterState] != sBallInvulnerable && [self unTouchable] == false) {
+    if ([self characterState] != sBallInvulnerable
+        && [self unTouchable] == false
+        && [self characterState] != sBallHurt
+        && [self characterState] != sCharacterDead) {
+        [self changeState:sBallHurt];
         health -= dmg;
         
         [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];

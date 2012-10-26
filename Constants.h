@@ -45,7 +45,7 @@
 
 #define kBallBasicHealth 100
 #define kEnemyBasicDamage 25
-#define kAreaBasicDamage 5
+#define kAreaBasicDamage 15
 
 #define kNumberSpecialAreas 3
 #define kNumberShootingEnemies 1
