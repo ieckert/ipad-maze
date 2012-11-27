@@ -37,4 +37,5 @@
 -(NSInteger) returnCurrentHealth;
 
 -(void) dropStatsFromCurrentLevel;
+-(void) dropStatsFromAllLevels;
 @end

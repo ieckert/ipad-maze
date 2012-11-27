@@ -58,7 +58,7 @@
     id tmpObject = nil;
     QueueObject *tmpContainer = nil;
     if (head == nil) {
-//        NSLog(@"the queue is empty");
+        NSLog(@"the queue is empty");
     }
     else if ([head m_next] == nil)
     {
@@ -119,9 +119,13 @@
 
 -(void) removeAllObjects
 {
+/*
     while (counter != 0) {
         [self dequeue];
     }
+ */
+    while (head)
+        [self dequeue];
     return;
 }
 

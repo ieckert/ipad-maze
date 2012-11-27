@@ -497,7 +497,7 @@ how to:
              if there is a wall between the two points - break that shit down!
              prevents us from breaking down a path that is already there
              */             
-            if (![self  wallBetweenPoint1:num1 AndPoint2:num2 pointsInSmallMazeFormat:TRUE])
+            if (![self wallBetweenPoint1:num1 AndPoint2:num2 pointsInSmallMazeFormat:TRUE])
                 continue;
             
             [self cutOutOfRealMaze:num1 :num2 :false];

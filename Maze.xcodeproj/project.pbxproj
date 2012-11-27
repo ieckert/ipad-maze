@@ -196,6 +196,8 @@
 		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
 		3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD515D8B6B3006D6846 /* atlas1.plist */; };
 		3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD615D8B6B3006D6846 /* atlas1.png */; };
+		3CF33210166477E1000F21A7 /* RecordLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CF3320F166477E1000F21A7 /* RecordLayer.mm */; };
+		3CF332B0166484E4000F21A7 /* CCScrollLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CF33280166484E4000F21A7 /* CCScrollLayer.m */; };
 		3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3F068F071624CA7300B415BC /* SpecialArea.mm */; };
 		3FC8652C1638A9A90040A475 /* ShootingEnemy.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3FC8652B1638A9A90040A475 /* ShootingEnemy.mm */; };
 /* End PBXBuildFile section */
@@ -577,6 +579,10 @@
 		3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DoorObject.plist; sourceTree = "<group>"; };
 		3CF2BBD515D8B6B3006D6846 /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
 		3CF2BBD615D8B6B3006D6846 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
+		3CF3320E166477E1000F21A7 /* RecordLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordLayer.h; sourceTree = "<group>"; };
+		3CF3320F166477E1000F21A7 /* RecordLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RecordLayer.mm; sourceTree = "<group>"; };
+		3CF3327F166484E4000F21A7 /* CCScrollLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCScrollLayer.h; path = Extensions/CCScrollLayer/CCScrollLayer.h; sourceTree = "<group>"; };
+		3CF33280166484E4000F21A7 /* CCScrollLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCScrollLayer.m; path = Extensions/CCScrollLayer/CCScrollLayer.m; sourceTree = "<group>"; };
 		3F068F061624CA7300B415BC /* SpecialArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialArea.h; sourceTree = "<group>"; };
 		3F068F071624CA7300B415BC /* SpecialArea.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SpecialArea.mm; sourceTree = "<group>"; };
 		3FC8652A1638A9A90040A475 /* ShootingEnemy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShootingEnemy.h; sourceTree = "<group>"; };
@@ -893,6 +899,8 @@
 		3C29B73A15979E5B00F28168 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				3CF3327F166484E4000F21A7 /* CCScrollLayer.h */,
+				3CF33280166484E4000F21A7 /* CCScrollLayer.m */,
 				3C189EB715A7A164000F2345 /* Box2D */,
 				3C29B83015979E6500F28168 /* LICENSE_cocos2d.txt */,
 				3C29B83F15979E6600F28168 /* LICENSE_CocosDenshion.txt */,
@@ -1300,6 +1308,8 @@
 			children = (
 				3C128AEA15AA72B000883E52 /* MainMenuLayer.h */,
 				3C128AEB15AA72B000883E52 /* MainMenuLayer.mm */,
+				3CF3320E166477E1000F21A7 /* RecordLayer.h */,
+				3CF3320F166477E1000F21A7 /* RecordLayer.mm */,
 			);
 			name = Layers;
 			sourceTree = "<group>";
@@ -1588,6 +1598,8 @@
 				3CE8322C1630FED6005A88BF /* Settings.m in Sources */,
 				3CE8322F1630FED8005A88BF /* Stats.m in Sources */,
 				3FC8652C1638A9A90040A475 /* ShootingEnemy.mm in Sources */,
+				3CF33210166477E1000F21A7 /* RecordLayer.mm in Sources */,
+				3CF332B0166484E4000F21A7 /* CCScrollLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

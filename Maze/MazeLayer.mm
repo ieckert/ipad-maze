@@ -571,7 +571,7 @@
         mazeGrid = [[NSMutableArray alloc] init];
         
         requirements = [[MazeRequirements alloc] initWithCoins:25
-                                                       Enemies:2
+                                                       Enemies:1
                                                   SpecialAreas:0
                                             AllowableStraights:NO
                                                NumberOfCircles:5];

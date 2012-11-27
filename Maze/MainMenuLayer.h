@@ -43,6 +43,7 @@
     
     NSMutableArray *menuMaze;
     MazeMaker *mazeMaker;
+    StatsKeeper *statsKeeper;
     MazeInterface *mazeInterface;
     MazeRequirements *requirements;
     ObjectFactory *objectFactory;    

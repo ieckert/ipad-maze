@@ -22,7 +22,7 @@ static StatsKeeper *singleton = nil;
         NSLog(@"StatsKeeper Init");
         
         dataAdapter = [DataAdapter createSingleton];
-        self.currentLevel = 0;
+        self.currentLevel = [dataAdapter returnLatestLevel];
         active = false;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -148,6 +148,17 @@ static StatsKeeper *singleton = nil;
     coins = 0;
     time = 0;
     health = kBallBasicHealth;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
+                                                        object:self];
+}
+
+-(void) dropStatsFromAllLevels
+{
+    coins = 0;
+    time = 0;
+    health = kBallBasicHealth;
+    [dataAdapter deleteStatisticsForAllLevels];
+    currentLevel = [dataAdapter returnLatestLevel];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
                                                         object:self];
 }

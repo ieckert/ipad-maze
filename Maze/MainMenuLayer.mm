@@ -9,6 +9,9 @@
 #import "MainMenuLayer.h"
 #import "ObjectInfoConstants.h"
 #import "Queue.h"
+#include "CCScrollLayer.h"
+#import "Stats.h"
+
 
 
 @interface MainMenuLayer()
@@ -37,16 +40,69 @@
     }
 }
 
+-(void)showDataPopup {
+    if (settingsMenu != nil) {
+        [settingsMenu removeFromParentAndCleanup:YES];
+        settingsMenu = nil;
+    }
+    
+    NSMutableArray *recordLayers = [[NSMutableArray alloc] init];
+    CCLayer *tmpLayer = [[CCLayer alloc] init];
+    CGPoint tmpPoint = CGPointMake(50, 50);
+    for (Stats* stat in [dataAdapter loadAllLevels]) {
+        if ([[stat level] intValue] % 6 == 0) {
+            [recordLayers addObject:tmpLayer];
+            [tmpLayer release];
+            tmpLayer = [[CCLayer alloc] init];
+            tmpPoint = CGPointMake(50, 50);
+        }
+        CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"sup"
+                                                 dimensions:CGSizeMake(0.0f, 0.0f)
+                                                  alignment:UITextAlignmentLeft
+                                                   fontName:@"AmericanTypewriter-CondensedBold"
+                                                   fontSize:45.0f];
+        tmpPoint.y += 50;
+        timeLabel.position = tmpPoint;
+        [tmpLayer addChild:timeLabel];
+    }
+    
+    CCScrollLayer *scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:200];
+    [self addChild:scroller];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"got into alertView");
+	if (buttonIndex == 0) {
+		NSLog(@"user pressed Cancel");
+
+	}
+	else {
+        NSLog(@"got into alertView - dropping stats");
+        
+		[statsKeeper dropStatsFromAllLevels];
+	}
+}
+
+-(void)dataRemovalPopup {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Clear Data"
+                                                   message:@"really clear the data??"
+                                                  delegate:self
+                                         cancelButtonTitle:@"nope"
+                                         otherButtonTitles:@"yep", nil];
+    [alert show];
+    [alert release];
+}
+
 -(void)displaySettingsMenu {
     if (mainMenu != nil) {
         [mainMenu removeFromParentAndCleanup:YES];
         mainMenu = nil;
     }
     
-    CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"portrait" target:nil selector:nil];
+    CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"Portrait" target:nil selector:nil];
     screenRotation1.fontName = @"AmericanTypewriter-CondensedBold";
     screenRotation1.fontSize = 45;
-    CCMenuItemFont *screenRotation2 = [CCMenuItemFont itemFromString:@"landscape" target:nil selector:nil];
+    CCMenuItemFont *screenRotation2 = [CCMenuItemFont itemFromString:@"Landscape" target:nil selector:nil];
     screenRotation2.fontName = @"AmericanTypewriter-CondensedBold";
     screenRotation2.fontSize = 45;
     
@@ -68,9 +124,20 @@
     backButton.fontName = @"AmericanTypewriter-CondensedBold";
     backButton.fontSize = 45;
     
+    CCMenuItemFont *data = [CCMenuItemFont itemFromString:@"Clear Data"
+                                                   target:self
+                                                 selector:@selector(dataRemovalPopup)];
+    data.fontName = @"AmericanTypewriter-CondensedBold";
+    data.fontSize = 45;
+    
+    CCMenuItemFont *score = [CCMenuItemFont itemFromString:@"Records"
+                                                   target:self
+                                                 selector:@selector(showDataPopup)];
+    score.fontName = @"AmericanTypewriter-CondensedBold";
+    score.fontSize = 45;
     
     settingsMenu = [CCMenu
-                    menuWithItems:screenRotationToggle, backButton, nil];
+                    menuWithItems:screenRotationToggle, score, data, backButton, nil];
     [settingsMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
     [settingsMenu setPosition:
@@ -550,6 +617,7 @@
     if (self != nil) { 
         NSLog(@"MainMenuLayer Init");
         dataAdapter = [DataAdapter createSingleton];
+        statsKeeper = [StatsKeeper createSingleton];
         tmpDirector = [CCDirector sharedDirector];
         if ([[[dataAdapter returnSettings] screenRotation] intValue] == rPortrait) {
             screenRotation = rPortrait;

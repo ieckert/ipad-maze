@@ -43,9 +43,9 @@ static DataAdapter *singleton = nil;
         
         [managedObjectContext setUndoManager:nil];
         
-        [self deleteStatisticsForAllLevels];
+//        [self deleteStatisticsForAllLevels];
 
-        [self printAllLevelStats];
+//        [self printAllLevelStats];
     }
     
     return self;
@@ -221,7 +221,15 @@ static DataAdapter *singleton = nil;
     return successful;
 }
 
--(void)printAllLevelStats
+-(NSInteger) returnLatestLevel
+{
+    NSArray *allLevels = [self loadAllLevels];
+    Stats *tmp = [allLevels lastObject];
+    return (tmp==nil || !tmp) ? 1 : [[tmp level] intValue]+1;
+}
+
+
+-(void) printAllLevelStats
 {
     NSArray *allLevels = [self loadAllLevels];
     NSLog(@"core data holds %i levels", [allLevels count]);

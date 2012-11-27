@@ -26,6 +26,7 @@
 -(BOOL)deleteStatisticsForAllLevels;
 -(Settings*)returnSettings;
 -(BOOL)changeSettings:(NSNumber*) screenRotation;
+-(NSInteger) returnLatestLevel;
 
 /*mainly for debugging*/
 -(void)printAllLevelStats;

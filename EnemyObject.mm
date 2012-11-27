@@ -27,7 +27,8 @@
                           To:(NSInteger)endLocation 
              WithVisitedList:(NSMutableArray*)visitedLocationList 
               WithWhiteNodes:(NSInteger&)whiteNodes
-               WithContainer:(NSMutableArray*)animationContainer;
+               WithContainer:(NSMutableArray*)animationContainer
+           AlsoWithContainer:(NSMutableArray*)tmpContainer;
 
 -(CGPoint) locationOnScreen:(NSInteger)currentIndex;
 
@@ -359,13 +360,27 @@
     }
     
     NSMutableArray *animationContainer = [[NSMutableArray alloc] init];
+    NSMutableArray *tmpContainer = [[NSMutableArray alloc] init];
+
+    
     [animationContainer removeAllObjects];
     //start recurisve function
     [self depthFirstSearchFrom:startLocation 
                             To:endLocation 
                WithVisitedList:visitedList 
                 WithWhiteNodes:(NSInteger&)tmpSize
-                 WithContainer:animationContainer];
+                 WithContainer:animationContainer
+             AlsoWithContainer:tmpContainer];
+    
+    int prev=-1;
+    NSLog(@"DFS PRINTING");
+    for (NSNumber *num in tmpContainer) {
+        if (prev > 0 && ( abs([num intValue]-prev) != 1 || abs([num intValue]-prev) != [handleOnMaze largeMazeCols]))
+            NSLog(@"%i", [num intValue]);
+        prev = [num intValue];
+    }
+    NSLog(@"DFS PRINTING");
+
    
     [animationContainer insertObject:[CCCallFunc actionWithTarget:self selector:@selector(stateMap)] atIndex:[animationContainer count]];
     [animationQueue enqueueObjects:animationContainer];
@@ -382,6 +397,8 @@
              WithVisitedList:(NSMutableArray*)visitedLocationList 
               WithWhiteNodes:(NSInteger&)whiteNodes
                WithContainer:(NSMutableArray*)animationContainer
+           AlsoWithContainer:(NSMutableArray*)tmpContainer
+
 {
 //    NSLog(@"in depthFirstSearchFrom");
 
@@ -399,19 +416,23 @@
         animPoint = [self locationOnScreen:newLocation];
         id action;
         action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
+        [tmpContainer insertObject:[NSNumber numberWithInt:newLocation] atIndex:[tmpContainer count]];
         [animationContainer insertObject:action atIndex:[animationContainer count]];
     
         [self depthFirstSearchFrom:newLocation
                                 To:endLocation 
                    WithVisitedList:visitedLocationList 
                     WithWhiteNodes:whiteNodes
-                     WithContainer:animationContainer];
+                     WithContainer:animationContainer
+                 AlsoWithContainer:tmpContainer];
         
         newLocation = [self checkUnvisitedPathsFromLocation:startLocation UsingWallList:visitedLocationList];
         
         animPoint = [self locationOnScreen:startLocation];
 
         action = [CCMoveTo actionWithDuration:actionInterval position:animPoint];
+        [tmpContainer insertObject:[NSNumber numberWithInt:startLocation] atIndex:[tmpContainer count]];
+
         [animationContainer insertObject:action atIndex:[animationContainer count]];
     }
 //    NSLog(@"exiting depthFirstSearchFrom");
