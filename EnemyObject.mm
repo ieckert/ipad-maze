@@ -99,6 +99,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(respondToUnPauseCall) 
                                                      name:@"unPauseGameObjects" object:nil];
+ 
         [self changeState:sEnemySleeping];
     }
     return self;

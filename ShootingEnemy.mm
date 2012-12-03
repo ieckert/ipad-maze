@@ -134,26 +134,32 @@
     CGPoint tmp = [self changeLocation];
     NSLog(@"tmp: x:%f y:%f", tmp.x, tmp.y);
     NSLog(@"animDuration: %i", chargingAnimDuration);
-
-    id action = [CCSequence actions:
-                 [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                 [CCBlink actionWithDuration:activeAnimDuration blinks:60],
-                 [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
-                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
-                 nil];
-    [self runAction:action];
+    if (isActive) {
+        id action = [CCSequence actions:
+                     [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
+                     [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
+                     [CCBlink actionWithDuration:activeAnimDuration blinks:60],
+                     [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
+                     [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
+                     nil];
+        [self runAction:action];
+    }
 }
+
 
 -(void)respondToPauseCall
 {
+    isActive = false;
+    NSLog(@"paused called for shooting enemy");
     [self pauseSchedulerAndActions]; 
 }
 
 -(void)respondToUnPauseCall
 {
+    isActive = true;
     [self resumeSchedulerAndActions];
 }
+
 
 - (CGPoint)changeLocation
 {
@@ -234,6 +240,7 @@
 WithKnowledgeOfMaze:(MazeMaker*)maze
    WillFollowPlayer:(bool)followPlayer {
     if ((self = [super init])) {
+        isActive = true;
         gameObjectType = tShoot;
         handleOnMaze = maze;
         objectFactory = [ObjectFactory createSingleton];
@@ -255,13 +262,7 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         enemyPathLocation = location;
         [self buildMoveableLocations];
         
-        [self setPosition:[self locationOnScreen:[[moveableLocations objectAtIndex:0] intValue]]];
-        [self setActiveAnimDurationMin:2];
-        [self setActiveAnimDurationMax:5];
-        [self setChargingAnimDurationMin:1];
-        [self setChargingAnimDurationMax:3];
-        [self runLoop];
-        
+       
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(respondToPauseCall) 
                                                      name:@"pauseGameObjects" object:nil];
@@ -269,6 +270,13 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(respondToUnPauseCall) 
                                                      name:@"unPauseGameObjects" object:nil];
+        [self setPosition:[self locationOnScreen:[[moveableLocations objectAtIndex:0] intValue]]];
+        [self setActiveAnimDurationMin:2];
+        [self setActiveAnimDurationMax:5];
+        [self setChargingAnimDurationMin:1];
+        [self setChargingAnimDurationMax:3];
+        [self runLoop];
+        //[self pauseSchedulerAndActions];
         
     }
     return self;

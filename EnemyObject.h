@@ -43,7 +43,8 @@
 -(void) runDFSWith:(NSMutableDictionary*)directions;
 -(void) chargeForwardFrom:(CGPoint)location To:(CGPoint)target;
 -(CGPoint) backOnTrack:(CGPoint)location;
-
+-(void)respondToPauseCall;
+-(void)respondToUnPauseCall;
 - (id)initWithSpriteFrame:(CCSpriteFrame *)frame 
                AtLocation:(CGPoint)location
       WithKnowledgeOfMaze:(MazeMaker*)maze;
