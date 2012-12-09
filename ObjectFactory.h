@@ -21,6 +21,8 @@
 @interface ObjectFactory : NSObject
 {
     Pair *objectInfo;
+    ShootingEnemyLocation shootLocation;
+    
 }
 
 +(ObjectFactory *) createSingleton;

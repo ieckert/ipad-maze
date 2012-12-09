@@ -188,6 +188,10 @@
 		3CE8322C1630FED6005A88BF /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8322B1630FED6005A88BF /* Settings.m */; };
 		3CE8322F1630FED8005A88BF /* Stats.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8322E1630FED8005A88BF /* Stats.m */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
+		3CE99774166FB90800A7F7BC /* atlas3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99772166FB90800A7F7BC /* atlas3.plist */; };
+		3CE99775166FB90800A7F7BC /* atlas3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99773166FB90800A7F7BC /* atlas3.png */; };
+		3CE99779166FBFDB00A7F7BC /* LaserLarge.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99777166FBFDB00A7F7BC /* LaserLarge.png */; };
+		3CE9977A166FBFDB00A7F7BC /* LaserSmall.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99778166FBFDB00A7F7BC /* LaserSmall.png */; };
 		3CE9AD6115B23E7F00EA1D29 /* MazeRequirements.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */; };
 		3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.mm */; };
 		3CEA4F6E15DDE1E800F841C9 /* QueueObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */; };
@@ -566,6 +570,10 @@
 		3CE8322D1630FED8005A88BF /* Stats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stats.h; sourceTree = "<group>"; };
 		3CE8322E1630FED8005A88BF /* Stats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stats.m; sourceTree = "<group>"; };
 		3CE972D715CA432D001307BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		3CE99772166FB90800A7F7BC /* atlas3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas3.plist; sourceTree = "<group>"; };
+		3CE99773166FB90800A7F7BC /* atlas3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas3.png; sourceTree = "<group>"; };
+		3CE99777166FBFDB00A7F7BC /* LaserLarge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaserLarge.png; sourceTree = "<group>"; };
+		3CE99778166FBFDB00A7F7BC /* LaserSmall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaserSmall.png; sourceTree = "<group>"; };
 		3CE9AD5F15B23E7F00EA1D29 /* MazeRequirements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeRequirements.h; sourceTree = "<group>"; };
 		3CE9AD6015B23E7F00EA1D29 /* MazeRequirements.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MazeRequirements.mm; sourceTree = "<group>"; };
 		3CEA4F6915DDE0A500F841C9 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Queue.h; sourceTree = "<group>"; };
@@ -1224,6 +1232,10 @@
 		3C29B8951598135700F28168 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				3CE99777166FBFDB00A7F7BC /* LaserLarge.png */,
+				3CE99778166FBFDB00A7F7BC /* LaserSmall.png */,
+				3CE99772166FB90800A7F7BC /* atlas3.plist */,
+				3CE99773166FB90800A7F7BC /* atlas3.png */,
 				3CF2BBD515D8B6B3006D6846 /* atlas1.plist */,
 				3CF2BBD615D8B6B3006D6846 /* atlas1.png */,
 				3C189DBA15A51F08000F2345 /* atlas2.plist */,
@@ -1424,6 +1436,10 @@
 				3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */,
 				3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */,
 				3CF2BBD815D8B6B4006D6846 /* atlas1.png in Resources */,
+				3CE99774166FB90800A7F7BC /* atlas3.plist in Resources */,
+				3CE99775166FB90800A7F7BC /* atlas3.png in Resources */,
+				3CE99779166FBFDB00A7F7BC /* LaserLarge.png in Resources */,
+				3CE9977A166FBFDB00A7F7BC /* LaserSmall.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

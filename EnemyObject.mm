@@ -372,7 +372,7 @@
                 WithWhiteNodes:(NSInteger&)tmpSize
                  WithContainer:animationContainer
              AlsoWithContainer:tmpContainer];
-    
+/*
     int prev=-1;
     NSLog(@"DFS PRINTING");
     for (NSNumber *num in tmpContainer) {
@@ -381,6 +381,7 @@
         prev = [num intValue];
     }
     NSLog(@"DFS PRINTING");
+*/
 
    
     [animationContainer insertObject:[CCCallFunc actionWithTarget:self selector:@selector(stateMap)] atIndex:[animationContainer count]];

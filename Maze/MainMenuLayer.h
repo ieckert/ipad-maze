@@ -40,6 +40,7 @@
     GLESDebugDraw *debugDraw;
 
     CCSpriteBatchNode *sceneSpriteBatchNode;
+    CCLayer *tmpLayer;
     
     NSMutableArray *menuMaze;
     MazeMaker *mazeMaker;

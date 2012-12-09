@@ -47,26 +47,50 @@
     }
     
     NSMutableArray *recordLayers = [[NSMutableArray alloc] init];
-    CCLayer *tmpLayer = [[CCLayer alloc] init];
-    CGPoint tmpPoint = CGPointMake(50, 50);
-    for (Stats* stat in [dataAdapter loadAllLevels]) {
-        if ([[stat level] intValue] % 6 == 0) {
-            [recordLayers addObject:tmpLayer];
-            [tmpLayer release];
-            tmpLayer = [[CCLayer alloc] init];
-            tmpPoint = CGPointMake(50, 50);
-        }
-        CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"sup"
-                                                 dimensions:CGSizeMake(0.0f, 0.0f)
+    tmpLayer = [[CCLayer alloc] init];
+    CGPoint tmpPoint = CGPointMake(550, 50);
+    if ([recordLayers count] == 0) {
+        CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"no levels completed!"
+                                                 dimensions:CGSizeMake(300.0f, 300.0f)
                                                   alignment:UITextAlignmentLeft
                                                    fontName:@"AmericanTypewriter-CondensedBold"
                                                    fontSize:45.0f];
-        tmpPoint.y += 50;
-        timeLabel.position = tmpPoint;
         [tmpLayer addChild:timeLabel];
+        timeLabel.position = tmpPoint;
+        [recordLayers addObject:tmpLayer];
+    }
+    else {
+        for (Stats* stat in [dataAdapter loadAllLevels]) {
+            if ([[stat level] intValue] % 6 == 0) {
+                [recordLayers addObject:tmpLayer];
+                [tmpLayer release];
+                tmpLayer = [[CCLayer alloc] init];
+                tmpPoint = CGPointMake(550, 100);
+            }
+            CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"sup"
+                                                     dimensions:CGSizeMake(100.0f, 100.0f)
+                                                      alignment:UITextAlignmentLeft
+                                                       fontName:@"AmericanTypewriter-CondensedBold"
+                                                       fontSize:45.0f];
+            tmpPoint.y += 50;
+            timeLabel.position = tmpPoint;
+            [tmpLayer addChild:timeLabel];
+        }
     }
     
-    CCScrollLayer *scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:200];
+     
+    CCMenuItemFont *back = [CCMenuItemFont itemFromString:@"Records"
+                                                    target:self
+                                                  selector:@selector(showDataPopup)];
+    back.fontName = @"AmericanTypewriter-CondensedBold";
+    back.position = CGPointMake(600, 50);
+    back.fontSize = 45;
+    
+    CCMenu *tmpMenu = [CCMenu
+                    menuWithItems:back, nil];
+    
+    CCScrollLayer *scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:300];
+    [tmpLayer addChild:tmpMenu];
     [self addChild:scroller];
 }
 
@@ -97,6 +121,10 @@
     if (mainMenu != nil) {
         [mainMenu removeFromParentAndCleanup:YES];
         mainMenu = nil;
+    }
+    if (tmpLayer != nil) {
+        [tmpLayer removeFromParentAndCleanup:YES];
+        tmpLayer = nil;
     }
     
     CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"Portrait" target:nil selector:nil];
@@ -137,7 +165,7 @@
     score.fontSize = 45;
     
     settingsMenu = [CCMenu
-                    menuWithItems:screenRotationToggle, score, data, backButton, nil];
+                    menuWithItems:screenRotationToggle, data, backButton, nil];
     [settingsMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
     [settingsMenu setPosition:
@@ -171,18 +199,13 @@
         sceneSelectMenu = nil;
     }
     // Main Menu
-    
-    CCMenuItemFont *cont = [CCMenuItemFont itemFromString:@"Continue" 
+
+    CCMenuItemFont *cont = [CCMenuItemFont itemFromString:@"Play Game" 
                                                    target:self 
-                                                 selector:@selector(startFromCurrentLevel)];
+                                                 selector:@selector(playScene:)];
     cont.fontName = @"AmericanTypewriter-CondensedBold";
     cont.fontSize = 45;
-    
-    CCMenuItemFont *level = [CCMenuItemFont itemFromString:@"Choose Level" 
-                                                   target:self 
-                                                 selector:@selector(displaySceneSelection)];
-    level.fontName = @"AmericanTypewriter-CondensedBold";
-    level.fontSize = 45;
+    [cont setTag:1];
     
     CCMenuItemFont *options = [CCMenuItemFont itemFromString:@"Options" 
                                                    target:self 
@@ -192,7 +215,7 @@
     
     
     mainMenu = [CCMenu
-                menuWithItems:cont, level, options, nil];
+                menuWithItems:cont, options, nil];
     [mainMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
     
@@ -239,49 +262,6 @@
 -(void)displayOptions {
     CCLOG(@"Show the Options screen");
     [self displaySettingsMenu];
-}
-
--(void)displaySceneSelection {
-    if (mainMenu != nil) {
-        [mainMenu removeFromParentAndCleanup:YES];
-        mainMenu = nil;
-    }
-    
-    CCMenuItemFont *level1 = [CCMenuItemFont itemFromString:@"Level 1" 
-                                                   target:self 
-                                                 selector:@selector(playScene:)];
-    level1.fontName = @"AmericanTypewriter-CondensedBold";
-    level1.fontSize = 45;
-    [level1 setTag:1];
-    
-    CCMenuItemFont *backButton = [CCMenuItemFont itemFromString:@"Back" 
-                                                     target:self 
-                                                   selector:@selector(displayMainMenu)];
-    backButton.fontName = @"AmericanTypewriter-CondensedBold";
-    backButton.fontSize = 45;
-
-    sceneSelectMenu = [CCMenu menuWithItems:level1, backButton, nil];
-    
-    [sceneSelectMenu alignItemsVerticallyWithPadding:
-     screenSize.height * 0.059f];
-    [sceneSelectMenu setPosition:
-     ccp(screenSize.width * 2,
-         screenSize.height / 2)];
-    id moveAction;
-    if (screenRotation == rPortrait) {
-        moveAction =
-        [CCMoveTo actionWithDuration:1.2f
-                            position:ccp(screenSize.width * 0.80f,
-                                         screenSize.height/2)];
-    } else {
-        moveAction =
-        [CCMoveTo actionWithDuration:1.2f
-                            position:ccp(screenSize.width * 0.85f,
-                                         screenSize.height/2)];
-    }
-    id moveEffect = [CCEaseIn actionWithAction:moveAction rate:1.0f];
-    [sceneSelectMenu runAction:moveEffect];
-    [self addChild:sceneSelectMenu z:1 tag:kSceneMenuTagValue];
 }
 
 - (void)setupWorld {
@@ -642,15 +622,15 @@
         
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas1.plist"];           // 1
+             addSpriteFramesWithFile:@"atlas3.plist"];           // 1
             sceneSpriteBatchNode =
-            [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
+            [CCSpriteBatchNode batchNodeWithFile:@"atlas3.png"]; // 2
         } else {
             [[CCSpriteFrameCache sharedSpriteFrameCache]
-             addSpriteFramesWithFile:@"atlas1.plist"];     // 1
+             addSpriteFramesWithFile:@"atlas3.plist"];     // 1
             sceneSpriteBatchNode =
             [CCSpriteBatchNode
-             batchNodeWithFile:@"atlas1.png"];             // 2
+             batchNodeWithFile:@"atlas3.png"];             // 2
         }
         
         [self addChild:sceneSpriteBatchNode z:0];                  // 3
@@ -666,7 +646,7 @@
 //        [self addChild:background];
         
         [self setupWorld];
-        [self setupDebugDraw];
+        //[self setupDebugDraw];
     
         objectFactory = [ObjectFactory createSingleton];
         

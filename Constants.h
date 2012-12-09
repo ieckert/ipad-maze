@@ -52,6 +52,7 @@
 
 #define kGameplayManagerUpdateInterval 15
 
+#define kDifficultyMod 3
 typedef enum {
     kEnemyWanderInMaze=0,
     kEnemyGoToPlayer=1,

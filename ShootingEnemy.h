@@ -26,7 +26,8 @@
     
     b2World *world;
     
-    
+    CCSprite *laserSprite;
+
     NSMutableArray *moveableLocations;
     ShootingEnemyLocation enemyPathLocation;
     bool follow;

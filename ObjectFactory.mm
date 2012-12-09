@@ -25,7 +25,8 @@ static ObjectFactory *singleton = nil;
 
 -(id) init {
     if( (self=[super init]) ) {
-        objectInfo = [[Pair alloc] init];                           
+        objectInfo = [[Pair alloc] init];
+        shootLocation = lLeft;
     }
     return self;
 }
@@ -89,8 +90,11 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
         [specialArea release];   
     }
     else if (objectType == tShoot) {
+        if (shootLocation == lRight) {
+            shootLocation = lTop;
+        }
         ShootingEnemy *shootingEnemy = [[ShootingEnemy alloc] initWithWorld:world
-                                                              withDirection:lRight
+                                                              withDirection:shootLocation
                                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
                                                                              spriteFrameByName:@"wall_2.png"]
                                                         WithKnowledgeOfMaze:maze
@@ -98,7 +102,8 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
         [sceneSpriteBatchNode addChild:shootingEnemy
                                      z:ZValue
                                    tag:kBallZValue];
-        [shootingEnemy release];   
+        [shootingEnemy release];
+        shootLocation++;
     }
 }
 

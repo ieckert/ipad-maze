@@ -436,14 +436,6 @@
         
     }
     
-//add correct number of shooing enemies to the screen
-    [objectFactory createEnemyOfType:tShoot
-                          atLocation:tmpLocation 
-                          withZValue:kCoinZValue 
-                             inWorld:world 
-           addToSceneSpriteBatchNode:sceneSpriteBatchNode 
-                 withKnowledgeOfMaze:mazeMaker];
-    
 //    [tmpCoords release];
 }
 
@@ -470,9 +462,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadTimeLabel" object:self];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadCoinLabel" object:self];
 
-//bring back number of enemies / special areas to spawn
-    totalNumSpecialAreas = kNumberSpecialAreas;
-    
+    [self spawnEnemiesByLevel];
 //unpause game
     [self schedule:@selector(update:)];
     [self restartLevelSceneTransition];
@@ -482,15 +472,15 @@
 {
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         [[CCSpriteFrameCache sharedSpriteFrameCache]
-         addSpriteFramesWithFile:@"atlas1.plist"];           // 1
+         addSpriteFramesWithFile:@"atlas3.plist"];           // 1
         sceneSpriteBatchNode =
-        [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"]; // 2
+        [CCSpriteBatchNode batchNodeWithFile:@"atlas3.png"]; // 2
     } else {
         [[CCSpriteFrameCache sharedSpriteFrameCache]
-         addSpriteFramesWithFile:@"atlas1.plist"];     // 1
+         addSpriteFramesWithFile:@"atlas3.plist"];     // 1
         sceneSpriteBatchNode =
         [CCSpriteBatchNode
-         batchNodeWithFile:@"atlas1.png"];             // 2
+         batchNodeWithFile:@"atlas3.png"];             // 2
     }
 }
 
@@ -575,7 +565,6 @@
                                                   SpecialAreas:0
                                             AllowableStraights:NO
                                                NumberOfCircles:5];
-        totalNumSpecialAreas = kNumberSpecialAreas;
         
         mazeGrid = [[NSMutableArray alloc] init];
         if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
@@ -603,7 +592,7 @@
 
         [self drawMaze];
         [self scheduleUpdate];
-        gameplayManagerUpdateInterval = kGameplayManagerUpdateInterval;
+        [self spawnEnemiesByLevel];
         [self setTimer];
         [self pauseGame];
     }
@@ -837,6 +826,25 @@
     //    NSLog(@"exiting locationInMaze");
     
     return location;
+}
+
+-(void) spawnEnemiesByLevel
+{
+    int levelMultiplier = [statsKeeper returnCurrentLevel]/kDifficultyMod;
+    totalNumSpecialAreas = levelMultiplier/2;
+    levelMultiplier -= totalNumSpecialAreas;
+    //interval for when dangerZones will spawn
+    gameplayManagerUpdateInterval = kGameplayManagerUpdateInterval;
+    
+    for (int i=0; i<levelMultiplier; i++) {
+        //add correct number of shooing enemies to the screen
+        [objectFactory createEnemyOfType:tShoot
+                              atLocation:CGPointMake(0, 0)
+                              withZValue:kCoinZValue
+                                 inWorld:world
+               addToSceneSpriteBatchNode:sceneSpriteBatchNode
+                     withKnowledgeOfMaze:mazeMaker];
+    }
 }
 
 -(void) gameplayManager

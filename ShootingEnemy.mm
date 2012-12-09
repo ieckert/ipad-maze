@@ -13,6 +13,17 @@
 @implementation ShootingEnemy
 @synthesize chargingAnimDurationMax, chargingAnimDurationMin, activeAnimDurationMax, activeAnimDurationMin;
 
+-(void)noLaser
+{
+    [[self getChildByTag:0] runAction:[CCHide action]];
+}
+
+-(void)prepLaser
+{
+    [[self getChildByTag:0] runAction:[CCShow action]];
+//    [[self getChildByTag:0] setPosition:shootBoundingBox.origin];
+}
+
 -(void)forceActive
 {
     [self changeState:sAreaActive];
@@ -71,15 +82,16 @@
     if (!isActive) {
         return;
     }
-    if ([self characterState] == sAreaActive) {
 
-        shootBoundingBox.origin = [self boundingBox].origin;
-        shootBoundingBox.origin.x -= boundingSize.width/2;
-        shootBoundingBox.origin.y -= boundingSize.height/2;
+    shootBoundingBox.origin = [self boundingBox].origin;
+    shootBoundingBox.origin.x -= boundingSize.width/2;
+    shootBoundingBox.origin.y -= boundingSize.height/2;
+    
+    if ([self characterState] == sAreaActive) {
 
         for (GameObject *object in listOfGameObjects) {
             CGRect characterBox = [object adjustedBoundingBox];
-            if ( [object gameObjectType] == tBall && CGRectIntersectsRect(shootBoundingBox, characterBox)) {
+            if ([object gameObjectType] == tBall && CGRectIntersectsRect(shootBoundingBox, characterBox)) {
                 [object applyDamage:kAreaBasicDamage];
             }
         }
@@ -129,28 +141,29 @@
 
 -(void)runLoop
 {
+    
     [self recalculateRunLoopTime];
 
     CGPoint tmp = [self changeLocation];
-    NSLog(@"tmp: x:%f y:%f", tmp.x, tmp.y);
-    NSLog(@"animDuration: %i", chargingAnimDuration);
-    if (isActive) {
-        id action = [CCSequence actions:
-                     [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
-                     [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                     [CCBlink actionWithDuration:activeAnimDuration blinks:60],
-                     [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
-                     [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
-                     nil];
-        [self runAction:action];
-    }
+    NSLog(@"for shooting enemy: animDuration: %i", chargingAnimDuration);
+    id action = [CCSequence actions:
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
+                 [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
+                 [CCCallFunc actionWithTarget:self selector:@selector(prepLaser)],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
+                 [CCBlink actionWithDuration:chargingAnimDuration blinks:60],
+                 [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
+                 [CCCallFunc actionWithTarget:self selector:@selector(noLaser)],
+                 [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
+                 nil];
+    [self runAction:action];
 }
 
 
 -(void)respondToPauseCall
 {
-    isActive = false;
     NSLog(@"paused called for shooting enemy");
+    isActive = false;
     [self pauseSchedulerAndActions]; 
 }
 
@@ -258,7 +271,19 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         }
         
         [self setDisplayFrame:frame];
-        
+        laserSprite = [CCSprite spriteWithFile:@"LaserLarge.png"];
+        laserSprite.tag = 0;
+        laserSprite.scaleX = 1.5;
+        laserSprite.scaleY = 1.5;
+
+        CGPoint tmp = self.position;
+        laserSprite.position = tmp;
+        if (location == lTop || location == lBottom) {
+            laserSprite.rotation = 90.0;
+        }
+        [self addChild:laserSprite];
+        [[self getChildByTag:0] runAction:[CCHide action]];
+
         enemyPathLocation = location;
         [self buildMoveableLocations];
         
@@ -275,9 +300,10 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         [self setActiveAnimDurationMax:5];
         [self setChargingAnimDurationMin:1];
         [self setChargingAnimDurationMax:3];
-        [self runLoop];
-        //[self pauseSchedulerAndActions];
-        
+        [self runAction:[CCSequence actions:
+         [CCRotateBy actionWithDuration:5.0 angle:0],
+         [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
+         nil]];
     }
     return self;
 }
