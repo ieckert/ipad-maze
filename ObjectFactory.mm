@@ -101,7 +101,7 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
                                                            WillFollowPlayer:false];
         [sceneSpriteBatchNode addChild:shootingEnemy
                                      z:ZValue
-                                   tag:kBallZValue];
+                                   tag:kAreaTagValue];
         [shootingEnemy release];
         shootLocation++;
     }

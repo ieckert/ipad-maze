@@ -20,8 +20,14 @@
 
 -(void)prepLaser
 {
+    laserSprite.scaleY = 0.05;
     [[self getChildByTag:0] runAction:[CCShow action]];
-//    [[self getChildByTag:0] setPosition:shootBoundingBox.origin];
+}
+
+-(void)realLaser
+{
+    laserSprite.scaleY = 0.5;
+    [[self getChildByTag:0] runAction:[CCShow action]];
 }
 
 -(void)forceActive
@@ -150,8 +156,10 @@
                  [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
                  [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
                  [CCCallFunc actionWithTarget:self selector:@selector(prepLaser)],
+                 [CCDelayTime actionWithDuration:chargingAnimDuration],
+                 [CCCallFunc actionWithTarget:self selector:@selector(realLaser)],
                  [CCCallFunc actionWithTarget:self selector:@selector(forceActive)],
-                 [CCBlink actionWithDuration:chargingAnimDuration blinks:60],
+                 [CCDelayTime actionWithDuration:activeAnimDuration],
                  [CCCallFunc actionWithTarget:self selector:@selector(forceInActive)],
                  [CCCallFunc actionWithTarget:self selector:@selector(noLaser)],
                  [CCCallFunc actionWithTarget:self selector:@selector(runLoop)],
@@ -271,16 +279,26 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         }
         
         [self setDisplayFrame:frame];
-        laserSprite = [CCSprite spriteWithFile:@"LaserLarge.png"];
+        
+        laserSprite = [CCSprite spriteWithSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
+                                        spriteFrameByName:@"LaserLarge.png"]];
+        
         laserSprite.tag = 0;
-        laserSprite.scaleX = 1.5;
-        laserSprite.scaleY = 1.5;
-
         CGPoint tmp = self.position;
-        laserSprite.position = tmp;
+
         if (location == lTop || location == lBottom) {
             laserSprite.rotation = 90.0;
+            tmp.x += 7;
+            tmp.y -= 750;
         }
+        else {
+            tmp.x -= 750;
+            tmp.y += 7;
+        }
+        laserSprite.position = tmp;
+
+        laserSprite.scaleX = 1.5;
+        laserSprite.scaleY = 1.5;
         [self addChild:laserSprite];
         [[self getChildByTag:0] runAction:[CCHide action]];
 
