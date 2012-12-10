@@ -58,7 +58,7 @@
     id tmpObject = nil;
     QueueObject *tmpContainer = nil;
     if (head == nil) {
-        NSLog(@"the queue is empty");
+//        NSLog(@"the queue is empty");
     }
     else if ([head m_next] == nil)
     {

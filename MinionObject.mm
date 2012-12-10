@@ -56,22 +56,22 @@
     
     switch (newState) {
         case sEnemyPatrol:
-            NSLog(@"Enemy->Starting sEnemyPatrol");
+//            NSLog(@"Enemy->Starting sEnemyPatrol");
             
             break;
         case sEnemyPathFinding:
-            NSLog(@"Enemy->Starting sEnemyPathFinding");
+//            NSLog(@"Enemy->Starting sEnemyPathFinding");
             [self setCanSee:TRUE];
             [self setCanHear:TRUE];
             [logicQueue addOperation:[self enemyLogic:kEnemyWanderInMaze From:[self locationInMaze:[self backOnTrack:[self position]]] To:[handleOnMaze returnEmptySlotInMaze]]];
             
             break;
         case sEnemyAggressive:
-            NSLog(@"Enemy->Starting sEnemyAggressive");
+//            NSLog(@"Enemy->Starting sEnemyAggressive");
 
             break;
         case sEnemySleeping:
-            NSLog(@"Enemy->Starting sEnemySleeping");
+//            NSLog(@"Enemy->Starting sEnemySleeping");
             [self setCanHear:TRUE];
             [self setCanSee:TRUE];
             [animationQueue removeAllObjects];
@@ -86,15 +86,15 @@
             
             break;
         case sEnemyReloading:
-            NSLog(@"Enemy->Starting sEnemyReloading");
+//            NSLog(@"Enemy->Starting sEnemyReloading");
             
             break;
         case sEnemyShooting:
-            NSLog(@"Enemy->Starting sEnemyShooting");
+//            NSLog(@"Enemy->Starting sEnemyShooting");
             
             break;
         default:
-            NSLog(@"Unhandled state %d in EnemyObject", newState);
+//            NSLog(@"Unhandled state %d in EnemyObject", newState);
             break;
     }
 

@@ -74,7 +74,7 @@
             CGRect characterBox = [object adjustedBoundingBox];
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
                 if ([object gameObjectType] == tBall && [self characterState] == sAreaActive) {
-                    NSLog(@"In Special Area - Ball touched it!");
+//                    NSLog(@"In Special Area - Ball touched it!");
                     [object applyDamage:kAreaBasicDamage];
                 
                 }

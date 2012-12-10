@@ -90,9 +90,6 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
         [specialArea release];   
     }
     else if (objectType == tShoot) {
-        if (shootLocation == lRight) {
-            shootLocation = lTop;
-        }
         ShootingEnemy *shootingEnemy = [[ShootingEnemy alloc] initWithWorld:world
                                                               withDirection:shootLocation
                                                             withSpriteFrame:[[CCSpriteFrameCache sharedSpriteFrameCache]
@@ -103,7 +100,12 @@ addToSceneSpriteBatchNode:(CCSpriteBatchNode*)sceneSpriteBatchNode
                                      z:ZValue
                                    tag:kAreaTagValue];
         [shootingEnemy release];
-        shootLocation++;
+        
+        if (shootLocation == lRight) {
+            shootLocation = lTop;
+        }
+        else
+            shootLocation++;
     }
 }
 

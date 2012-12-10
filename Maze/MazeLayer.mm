@@ -167,7 +167,7 @@
         [self placeAlert:@"!" AtLocation:itemLocation WithType:[NSNumber numberWithInt:tJumpUp] WithDuration:1.0];
     }
     else if ([[userInfo objectForKey:notificationUserInfoObjectType] intValue] == tBall) {
-        NSLog(@"placing emitter for ball");
+//        NSLog(@"placing emitter for ball");
         [self placeParticleEmitterAtLocation:itemLocation ForObjectType:tBall];
     }
     [userInfo release];
@@ -280,7 +280,7 @@
 
 -(void) endingTransition
 {
-    NSLog(@"playing ending transition");
+//    NSLog(@"playing ending transition");
     [statsKeeper setActive:FALSE];
     
     NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
@@ -404,7 +404,7 @@
                          withKnowledgeOfMaze:mazeMaker];
         }
         else if ([[mazeGrid objectAtIndex:i] intValue] == tStart) {
-            NSLog(@"starting position at: %i", i);
+//            NSLog(@"starting position at: %i", i);
             [mazeInterface addPoint:tmpLocation];
 
             [objectFactory createObjectOfType:tStart
@@ -422,7 +422,7 @@
         else if ([[mazeGrid objectAtIndex:i] intValue] == tFinish) {
             [mazeInterface addPoint:tmpLocation];
 
-            NSLog(@"ending position at: %i", i);
+//            NSLog(@"ending position at: %i", i);
             [objectFactory createObjectOfType:tFinish
                                    atLocation:tmpLocation
                                    withZValue:kDoorZValue
@@ -493,7 +493,7 @@
 -(id) init
 {
 	if( (self=[super init])) {   
-        NSLog(@"MazeLayer Init");
+//        NSLog(@"MazeLayer Init");
         screenSize = [CCDirector sharedDirector].winSize;
         tmpDirector = [CCDirector sharedDirector];
         if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
@@ -603,7 +603,7 @@
 {    
     switch ([option intValue]) {
         case kInGameMenuHome:
-            NSLog(@"chose main menu");
+//            NSLog(@"chose main menu");
 
             [[UIAccelerometer sharedAccelerometer] setDelegate:nil];
             
@@ -618,7 +618,7 @@
             break;
             
         case kInGameMenuReloadLevel:
-            NSLog(@"chose reload");
+//            NSLog(@"chose reload");
             break;
             
         case kProgressNextLevel:
@@ -644,7 +644,7 @@
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
-    NSLog(@"MazeLayer Dealloc");
+//    NSLog(@"MazeLayer Dealloc");
 
     [requirements release];
     [mazeMaker release];
@@ -686,13 +686,13 @@
     NSNumber *tmp;
     switch ([option tag]) {
         case kInGameMenuHome:
-            NSLog(@"chose main menu");
+//            NSLog(@"chose main menu");
             tmp = [NSNumber numberWithInt:kInGameMenuHome];
             [self endingDuties:tmp];
             break;
         
         case kInGameMenuReloadLevel:
-            NSLog(@"chose reload");
+//            NSLog(@"chose reload");
             if (pausedMenu != nil) {
                 [self resetLevel];
                 [pausedMenu removeFromParentAndCleanup:YES];
@@ -700,7 +700,7 @@
             break;
         
         case kInGameMenuCancel:
-            NSLog(@"chose cancel");
+//            NSLog(@"chose cancel");
             if (pausedMenu != nil) {
                 [pausedMenu removeFromParentAndCleanup:YES];
                 [self unpauseGame];
@@ -749,7 +749,7 @@
 }
 
 - (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    NSLog(@"world grav: %f, %f ", world->GetGravity().x, world->GetGravity().y);
+//    NSLog(@"world grav: %f, %f ", world->GetGravity().x, world->GetGravity().y);
 //'paused' prevents the user from tapping multiple times and having the game crash
 //'mazeComplete' prevents the user from tapping the screen when the ending transition is active
     if (paused == FALSE && mazeComplete == FALSE) {
@@ -836,7 +836,8 @@
     //interval for when dangerZones will spawn
     gameplayManagerUpdateInterval = kGameplayManagerUpdateInterval;
     
-    for (int i=0; i<levelMultiplier; i++) {
+    for (int i=0; i<4; i++) {
+    //for (int i=0; i<levelMultiplier; i++) {
         //add correct number of shooing enemies to the screen
         [objectFactory createEnemyOfType:tShoot
                               atLocation:CGPointMake(0, 0)

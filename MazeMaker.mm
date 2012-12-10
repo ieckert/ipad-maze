@@ -34,7 +34,7 @@
 
 - (void) dealloc
 {
-    NSLog(@"MazeMaker Dealloc");
+//    NSLog(@"MazeMaker Dealloc");
     
     [wallList release];
     [fullBreakdownOptionsList release];
@@ -54,7 +54,7 @@
 {
     if (self = [super init])
     {
-        NSLog(@"MazeMaker InitWithSizeAndRequirements");
+//        NSLog(@"MazeMaker InitWithSizeAndRequirements");
         mazeForScene = scene;
         wallHeight = [wallSpriteDimensions num1];
         wallWidth = [wallSpriteDimensions num2];

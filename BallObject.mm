@@ -91,7 +91,7 @@
             CGRect characterBox = [object adjustedBoundingBox];
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
                 if ([object gameObjectType] == tCoin) {
-                    NSLog(@"Hit a Coin!");
+//                    NSLog(@"Hit a Coin!");
                     
                     
                 }

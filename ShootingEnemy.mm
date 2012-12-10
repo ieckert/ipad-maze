@@ -151,7 +151,7 @@
     [self recalculateRunLoopTime];
 
     CGPoint tmp = [self changeLocation];
-    NSLog(@"for shooting enemy: animDuration: %i", chargingAnimDuration);
+//    NSLog(@"for shooting enemy: animDuration: %i", chargingAnimDuration);
     id action = [CCSequence actions:
                  [CCCallFunc actionWithTarget:self selector:@selector(forceCharging)],
                  [CCMoveTo actionWithDuration:chargingAnimDuration position:tmp],
@@ -170,7 +170,7 @@
 
 -(void)respondToPauseCall
 {
-    NSLog(@"paused called for shooting enemy");
+//    NSLog(@"paused called for shooting enemy");
     isActive = false;
     [self pauseSchedulerAndActions]; 
 }
@@ -221,7 +221,7 @@
                 [moveableLocations addObject:[NSNumber numberWithInt:i]];
             }
             boundingSize.height = -[self boundingBox].size.height*distanceMultiplier;
-            boundingSize.width = [self boundingBox].size.width*3;
+            boundingSize.width = [self boundingBox].size.width;
             
             break;
         case lBottom:
@@ -229,14 +229,14 @@
                 [moveableLocations addObject:[NSNumber numberWithInt:i]];
             }
             boundingSize.height = [self boundingBox].size.height*distanceMultiplier;
-            boundingSize.width = [self boundingBox].size.width*3;
+            boundingSize.width = [self boundingBox].size.width;
             
             break;
         case lLeft:
             for (int i = (rows*cols)-1; i>cols+rows; i-=cols) {
                 [moveableLocations addObject:[NSNumber numberWithInt:i]];
             }
-            boundingSize.height = [self boundingBox].size.height*3;
+            boundingSize.height = [self boundingBox].size.height;
             boundingSize.width = -[self boundingBox].size.width*distanceMultiplier;
             
             break;
@@ -244,7 +244,7 @@
             for (int i = (rows*cols)-cols; i>2*cols; i-=cols) {
                 [moveableLocations addObject:[NSNumber numberWithInt:i]];
             }
-            boundingSize.height = [self boundingBox].size.height*3;
+            boundingSize.height = [self boundingBox].size.height;
             boundingSize.width = [self boundingBox].size.width*distanceMultiplier;
             
             break;
@@ -285,15 +285,28 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         
         laserSprite.tag = 0;
         CGPoint tmp = self.position;
-
-        if (location == lTop || location == lBottom) {
-            laserSprite.rotation = 90.0;
-            tmp.x += 7;
-            tmp.y -= 750;
-        }
-        else {
-            tmp.x -= 750;
-            tmp.y += 7;
+        switch (location) {
+            case lTop:
+                laserSprite.rotation = 90.0;
+                tmp.x += 7;
+                tmp.y -= 750;
+                break;
+            case lBottom:
+                laserSprite.rotation = 90.0;
+                tmp.x += 7;
+                tmp.y += 770;
+                break;
+            case lLeft:
+                tmp.x -= 750;
+                tmp.y += 7;
+                break;
+            case lRight:
+                tmp.x += 775;
+                tmp.y += 7;
+                break;
+                
+            default:
+                break;
         }
         laserSprite.position = tmp;
 
@@ -305,7 +318,6 @@ WithKnowledgeOfMaze:(MazeMaker*)maze
         enemyPathLocation = location;
         [self buildMoveableLocations];
         
-       
         [[NSNotificationCenter defaultCenter] addObserver:self 
                                                  selector:@selector(respondToPauseCall) 
                                                      name:@"pauseGameObjects" object:nil];

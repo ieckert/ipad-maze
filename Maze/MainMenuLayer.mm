@@ -25,7 +25,7 @@
 
 -(void) screenRotationTapped: (id) sender
 {
-    NSLog(@"Settings - ScreenRotation button tapped!, %i", [sender tag]);
+//    NSLog(@"Settings - ScreenRotation button tapped!, %i", [sender tag]);
     screenRotationToggle.tag = ([sender tag] == 1) ? 0 : [sender tag]+1;
 
     switch (screenRotationToggle.tag) {
@@ -45,10 +45,12 @@
         [settingsMenu removeFromParentAndCleanup:YES];
         settingsMenu = nil;
     }
-    
+
+
     NSMutableArray *recordLayers = [[NSMutableArray alloc] init];
     tmpLayer = [[CCLayer alloc] init];
     CGPoint tmpPoint = CGPointMake(550, 50);
+/*
     if ([recordLayers count] == 0) {
         CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"no levels completed!"
                                                  dimensions:CGSizeMake(300.0f, 300.0f)
@@ -60,7 +62,9 @@
         [recordLayers addObject:tmpLayer];
     }
     else {
+*/
         for (Stats* stat in [dataAdapter loadAllLevels]) {
+            NSLog(@"level: %@ time: %@ coins %@", stat.level, stat.time, stat.coins);
             if ([[stat level] intValue] % 6 == 0) {
                 [recordLayers addObject:tmpLayer];
                 [tmpLayer release];
@@ -76,7 +80,7 @@
             timeLabel.position = tmpPoint;
             [tmpLayer addChild:timeLabel];
         }
-    }
+//    }
     
      
     CCMenuItemFont *back = [CCMenuItemFont itemFromString:@"Records"
@@ -95,13 +99,13 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSLog(@"got into alertView");
+//    NSLog(@"got into alertView");
 	if (buttonIndex == 0) {
-		NSLog(@"user pressed Cancel");
+//		NSLog(@"user pressed Cancel");
 
 	}
 	else {
-        NSLog(@"got into alertView - dropping stats");
+//        NSLog(@"got into alertView - dropping stats");
         
 		[statsKeeper dropStatsFromAllLevels];
 	}
@@ -165,7 +169,7 @@
     score.fontSize = 45;
     
     settingsMenu = [CCMenu
-                    menuWithItems:screenRotationToggle, data, backButton, nil];
+                    menuWithItems:screenRotationToggle, data, score, backButton, nil];
     [settingsMenu alignItemsVerticallyWithPadding:
      screenSize.height * 0.059f];
     [settingsMenu setPosition:
@@ -334,7 +338,7 @@
 
 - (void) dealloc
 {
-    NSLog(@"MainMenuLayer Dealloc");
+//    NSLog(@"MainMenuLayer Dealloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [menuMaze release];
     [requirements release];
@@ -595,7 +599,7 @@
 -(id)init {
     self = [super init];
     if (self != nil) { 
-        NSLog(@"MainMenuLayer Init");
+//        NSLog(@"MainMenuLayer Init");
         dataAdapter = [DataAdapter createSingleton];
         statsKeeper = [StatsKeeper createSingleton];
         tmpDirector = [CCDirector sharedDirector];
@@ -702,7 +706,7 @@
             tmpLocation.x = [objectFactory returnObjectDimensions:tWall].num2*x+kMenuMazeScreenOffset;
             tmpLocation.y = [objectFactory returnObjectDimensions:tWall].num2*y+kMenuMazeScreenOffset;
             
-            NSLog(@"obj x:%f y:%f", tmpLocation.x, tmpLocation.y);
+//            NSLog(@"obj x:%f y:%f", tmpLocation.x, tmpLocation.y);
             
             if ([[menuMaze objectAtIndex:i] intValue] == tWall) {
                 [objectFactory createObjectOfType:tWall

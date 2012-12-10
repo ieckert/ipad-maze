@@ -72,7 +72,7 @@ static DataAdapter *singleton = nil;
 
 -(BOOL)changeSettings:(NSNumber*) screenRotation
 {
-    NSLog(@"trying to add change settings");
+//    NSLog(@"trying to add change settings");
 
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
@@ -88,7 +88,7 @@ static DataAdapter *singleton = nil;
     if ([result count] > 0) {
         Settings *settings = [result objectAtIndex:0];
         [settings setScreenRotation:screenRotation];
-        NSLog(@"should have saved settings");
+//        NSLog(@"should have saved settings");
     }
     else
     {
@@ -102,7 +102,7 @@ static DataAdapter *singleton = nil;
 
 -(Settings*)returnSettings
 {
-    NSLog(@"trying to returnSettings");
+//    NSLog(@"trying to returnSettings");
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:@"Settings"];
@@ -123,7 +123,7 @@ static DataAdapter *singleton = nil;
 
 -(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins
 {
-    NSLog(@"trying to add new level stat");
+//    NSLog(@"trying to add new level stat");
     if ( [self shouldUpdateLevel:level Time:time Coins:coins] )
     {
         /*just incase the user beat their last score*/
@@ -135,7 +135,7 @@ static DataAdapter *singleton = nil;
         [levelStat setTime:time];
         [levelStat setCoins:coins];
         
-        NSLog(@"in add - Level:%i Time:%i Coins:%i", [[levelStat level] intValue], [[levelStat time] intValue], [[levelStat coins] intValue]);
+//        NSLog(@"in add - Level:%i Time:%i Coins:%i", [[levelStat level] intValue], [[levelStat time] intValue], [[levelStat coins] intValue]);
         
     }
     else {
@@ -148,7 +148,7 @@ static DataAdapter *singleton = nil;
 
 -(BOOL)deleteStatisticsForLevel:(NSNumber*)level
 {
-    NSLog(@"delete stats for level! %i", [level intValue]);
+//    NSLog(@"delete stats for level! %i", [level intValue]);
 
     BOOL returnBool = TRUE;
     
@@ -180,7 +180,7 @@ static DataAdapter *singleton = nil;
 
 -(BOOL)deleteStatisticsForAllLevels
 {
-    NSLog(@"delete stats for all levels!");
+//    NSLog(@"delete stats for all levels!");
     NSArray *allLevels = [self loadAllLevels];
     for (Stats* object in allLevels) {
         [managedObjectContext deleteObject:object];
@@ -191,7 +191,7 @@ static DataAdapter *singleton = nil;
 
 -(NSArray*)loadAllLevels
 {
-    NSLog(@"loading all levels!");
+//    NSLog(@"loading all levels!");
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     
     NSEntityDescription *entityDescription = [[managedObjectModel entitiesByName] objectForKey:@"Stats"];
