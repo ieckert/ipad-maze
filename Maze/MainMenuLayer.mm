@@ -96,7 +96,7 @@
     [tmpLayer addChild:tmpMenu];
     [recordLayers addObject:tmpLayer];
     
-    scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:20];
+    scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:10];
     [self addChild:scroller];
 }
 
