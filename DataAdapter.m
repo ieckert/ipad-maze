@@ -121,10 +121,10 @@ static DataAdapter *singleton = nil;
     return nil;
 }
 
--(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins
+-(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins WithHealth:(NSNumber *)health
 {
 //    NSLog(@"trying to add new level stat");
-    if ( [self shouldUpdateLevel:level Time:time Coins:coins] )
+    if ( [self shouldUpdateLevel:level Time:time Coins:coins Health:health] )
     {
         /*just incase the user beat their last score*/
         [self deleteStatisticsForLevel:level];
@@ -134,6 +134,7 @@ static DataAdapter *singleton = nil;
         [levelStat setLevel:level];
         [levelStat setTime:time];
         [levelStat setCoins:coins];
+        [levelStat setHealth:health];
         
 //        NSLog(@"in add - Level:%i Time:%i Coins:%i", [[levelStat level] intValue], [[levelStat time] intValue], [[levelStat coins] intValue]);
         
@@ -228,19 +229,25 @@ static DataAdapter *singleton = nil;
     return (tmp==nil || !tmp) ? 1 : [[tmp level] intValue]+1;
 }
 
+-(NSInteger) returnLatestHealth
+{
+    NSArray *allLevels = [self loadAllLevels];
+    Stats *tmp = [allLevels lastObject];
+    return (tmp==nil || !tmp) ? 100 : [[tmp health] intValue];
+}
 
 -(void) printAllLevelStats
 {
     NSArray *allLevels = [self loadAllLevels];
-    NSLog(@"core data holds %i levels", [allLevels count]);
+//    NSLog(@"core data holds %i levels", [allLevels count]);
     for (Stats* object in allLevels) {
-        NSLog(@"Level:%i Time:%i Coins:%i", [[object level] intValue], [[object time] intValue], [[object coins] intValue]);
+//        NSLog(@"Level:%i Time:%i Coins:%i", [[object level] intValue], [[object time] intValue], [[object coins] intValue]);
     }
     
     return;
 }
 
--(BOOL)shouldUpdateLevel:(NSNumber*)level Time:(NSNumber*)time Coins:(NSNumber*)coins
+-(BOOL)shouldUpdateLevel:(NSNumber*)level Time:(NSNumber*)time Coins:(NSNumber*)coins Health:(NSNumber*)health
 {
     BOOL returnBool = FALSE;
     
@@ -268,7 +275,10 @@ static DataAdapter *singleton = nil;
     for (Stats* object in array) {
         NSLog(@"in should update level - Level:%i Time:%i Coins:%i", [[object level] intValue], [[object time] intValue], [[object coins] intValue]);
     }
-*/    
+*/
+    if (health <= 0 ) {
+        returnBool = FALSE;
+    }
     return returnBool;
 }
 

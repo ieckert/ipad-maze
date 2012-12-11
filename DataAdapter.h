@@ -21,12 +21,13 @@
 -(BOOL)saveChanges;
 -(NSArray*)loadAllLevels;
 
--(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins;
+-(BOOL)addStatisticsToLevel:(NSNumber*) level WithTime:(NSNumber*) time AndCoins:(NSNumber*) coins WithHealth:(NSNumber*)health;
 -(BOOL)deleteStatisticsForLevel:(NSNumber*)level;
 -(BOOL)deleteStatisticsForAllLevels;
 -(Settings*)returnSettings;
 -(BOOL)changeSettings:(NSNumber*) screenRotation;
 -(NSInteger) returnLatestLevel;
+-(NSInteger) returnLatestHealth;
 
 /*mainly for debugging*/
 -(void)printAllLevelStats;

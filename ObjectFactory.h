@@ -22,6 +22,7 @@
 {
     Pair *objectInfo;
     ShootingEnemyLocation shootLocation;
+    StatsKeeper *statsKeeper;
     
 }
 

@@ -43,6 +43,8 @@
 -(BOOL)isObjectAudible;
 - (void)applyDamage:(NSInteger) dmg;
 
+-(void)addHealth;
+
 
 @end
 

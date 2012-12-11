@@ -75,7 +75,7 @@
             if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
                 if ([object gameObjectType] == tBall) {
                     if (characterState != sCoinCaptured) {
-                        
+                        [object addHealth];
                         [self changeState:sCoinCaptured];
 
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"statsKeeperAddCoin" 

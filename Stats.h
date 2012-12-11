@@ -2,7 +2,7 @@
 //  Stats.h
 //  Maze
 //
-//  Created by ian on 10/18/12.
+//  Created by ian on 12/11/12.
 //
 //
 
@@ -15,5 +15,6 @@
 @property (nonatomic, retain) NSNumber * coins;
 @property (nonatomic, retain) NSNumber * level;
 @property (nonatomic, retain) NSNumber * time;
+@property (nonatomic, retain) NSNumber * health;
 
 @end

@@ -27,6 +27,7 @@ static ObjectFactory *singleton = nil;
     if( (self=[super init]) ) {
         objectInfo = [[Pair alloc] init];
         shootLocation = lLeft;
+        statsKeeper = [StatsKeeper createSingleton];
     }
     return self;
 }

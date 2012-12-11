@@ -186,7 +186,6 @@
 		3CE6B7AE15C46E93006C2664 /* Pair.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6B7AD15C46E93006C2664 /* Pair.mm */; };
 		3CE6C5B216141DA5004740D4 /* MazeInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE6C5B116141DA5004740D4 /* MazeInterface.m */; };
 		3CE8322C1630FED6005A88BF /* Settings.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8322B1630FED6005A88BF /* Settings.m */; };
-		3CE8322F1630FED8005A88BF /* Stats.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE8322E1630FED8005A88BF /* Stats.m */; };
 		3CE972D815CA432D001307BC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE972D715CA432D001307BC /* CoreData.framework */; };
 		3CE99774166FB90800A7F7BC /* atlas3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99772166FB90800A7F7BC /* atlas3.plist */; };
 		3CE99775166FB90800A7F7BC /* atlas3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE99773166FB90800A7F7BC /* atlas3.png */; };
@@ -196,6 +195,7 @@
 		3CEA4F6B15DDE0A500F841C9 /* Queue.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6A15DDE0A500F841C9 /* Queue.mm */; };
 		3CEA4F6E15DDE1E800F841C9 /* QueueObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */; };
 		3CEA4F7115DEE65A00F841C9 /* MinionObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */; };
+		3CEC2EC21677CEF100DB9B4A /* Stats.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEC2EC11677CEF100DB9B4A /* Stats.m */; };
 		3CF2BBD215D8B313006D6846 /* DoorObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD115D8B312006D6846 /* DoorObject.mm */; };
 		3CF2BBD415D8B5AC006D6846 /* DoorObject.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */; };
 		3CF2BBD715D8B6B4006D6846 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CF2BBD515D8B6B3006D6846 /* atlas1.plist */; };
@@ -567,8 +567,6 @@
 		3CE6C5B116141DA5004740D4 /* MazeInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MazeInterface.m; sourceTree = "<group>"; };
 		3CE8322A1630FED6005A88BF /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Settings.h; sourceTree = "<group>"; };
 		3CE8322B1630FED6005A88BF /* Settings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Settings.m; sourceTree = "<group>"; };
-		3CE8322D1630FED8005A88BF /* Stats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stats.h; sourceTree = "<group>"; };
-		3CE8322E1630FED8005A88BF /* Stats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stats.m; sourceTree = "<group>"; };
 		3CE972D715CA432D001307BC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		3CE99772166FB90800A7F7BC /* atlas3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas3.plist; sourceTree = "<group>"; };
 		3CE99773166FB90800A7F7BC /* atlas3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas3.png; sourceTree = "<group>"; };
@@ -582,6 +580,8 @@
 		3CEA4F6D15DDE1E800F841C9 /* QueueObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = QueueObject.mm; sourceTree = "<group>"; };
 		3CEA4F6F15DEE65900F841C9 /* MinionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MinionObject.h; sourceTree = "<group>"; };
 		3CEA4F7015DEE65A00F841C9 /* MinionObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MinionObject.mm; sourceTree = "<group>"; };
+		3CEC2EC01677CEF100DB9B4A /* Stats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stats.h; sourceTree = "<group>"; };
+		3CEC2EC11677CEF100DB9B4A /* Stats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stats.m; sourceTree = "<group>"; };
 		3CF2BBD015D8B312006D6846 /* DoorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoorObject.h; sourceTree = "<group>"; };
 		3CF2BBD115D8B312006D6846 /* DoorObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DoorObject.mm; sourceTree = "<group>"; };
 		3CF2BBD315D8B5AC006D6846 /* DoorObject.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = DoorObject.plist; sourceTree = "<group>"; };
@@ -1350,8 +1350,8 @@
 				3CE1F65215E932590006819E /* DataAdapter.h */,
 				3CE1F65315E932590006819E /* DataAdapter.m */,
 				3CDCAB2815E9D3010012A4FF /* Model.xcdatamodeld */,
-				3CE8322D1630FED8005A88BF /* Stats.h */,
-				3CE8322E1630FED8005A88BF /* Stats.m */,
+				3CEC2EC01677CEF100DB9B4A /* Stats.h */,
+				3CEC2EC11677CEF100DB9B4A /* Stats.m */,
 				3CE8322A1630FED6005A88BF /* Settings.h */,
 				3CE8322B1630FED6005A88BF /* Settings.m */,
 			);
@@ -1612,10 +1612,10 @@
 				3CE6C5B216141DA5004740D4 /* MazeInterface.m in Sources */,
 				3F068F081624CA7300B415BC /* SpecialArea.mm in Sources */,
 				3CE8322C1630FED6005A88BF /* Settings.m in Sources */,
-				3CE8322F1630FED8005A88BF /* Stats.m in Sources */,
 				3FC8652C1638A9A90040A475 /* ShootingEnemy.mm in Sources */,
 				3CF33210166477E1000F21A7 /* RecordLayer.mm in Sources */,
 				3CF332B0166484E4000F21A7 /* CCScrollLayer.m in Sources */,
+				3CEC2EC21677CEF100DB9B4A /* Stats.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

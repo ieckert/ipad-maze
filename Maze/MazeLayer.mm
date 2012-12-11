@@ -67,6 +67,9 @@
 
 -(void) playerDiedTransition:(NSNotification *)notification
 {
+    if ([statsKeeper returnCurrentTime] <= 0) {
+        return;
+    }
     [self pauseGame];
 
     NSDictionary *userInfo = [[NSDictionary alloc] initWithDictionary:[notification userInfo]];

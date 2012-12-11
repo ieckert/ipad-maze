@@ -2,7 +2,7 @@
 //  Stats.m
 //  Maze
 //
-//  Created by ian on 10/18/12.
+//  Created by ian on 12/11/12.
 //
 //
 
@@ -14,5 +14,6 @@
 @dynamic coins;
 @dynamic level;
 @dynamic time;
+@dynamic health;
 
 @end

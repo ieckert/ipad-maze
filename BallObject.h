@@ -6,11 +6,13 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 #import "GameObject.h"
-
+#import "StatsKeeper.h"
+#import "DataAdapter.h"
 @interface BallObject : GameObject
 {
     NSMutableDictionary *objectInfo;
-
+    StatsKeeper *statsKeeper;
+    DataAdapter *dataAdapter;
     CCAnimation *collisionAnim;
     CCAnimation *rollingAnim;
     CCAnimation *idleAnim;

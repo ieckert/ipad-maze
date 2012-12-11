@@ -19,6 +19,11 @@
     [super dealloc];
 }
 
+-(void)goVisible
+{
+    self.visible=true;
+}
+
 -(void)forceRollingState
 {
     if ([self characterState]!=sCharacterDead) {
@@ -36,6 +41,9 @@
 //            CCLOG(@"Ball->Starting the Spawning Animation");
 //            action = [CCAnimate actionWithAnimation:idleAnim
 //                               restoreOriginalFrame:NO];
+            if (health <= 0) {
+                health = [statsKeeper returnCurrentHealth];
+            }
             break;
             
         case sBallColliding:
@@ -45,22 +53,24 @@
             break;
         
         case sBallRolling:
-            CCLOG(@"Ball->Changing State to Rolling");
-
+//            CCLOG(@"Ball->Changing State to Rolling");
+            if (health <= 0) {
+                health = [statsKeeper returnCurrentHealth];
+            }
             break;
         case sBallInvulnerable:
-            CCLOG(@"Ball->Changing State to Invulnerable");
-            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:2.0f];
+//            CCLOG(@"Ball->Changing State to Invulnerable");
+            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:1.9f];
 
             break;
         case sBallHurt:
-            CCLOG(@"Ball->Changing State to Hurt");
+//            CCLOG(@"Ball->Changing State to Hurt");
             
             [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:2.0f];
-            action = [CCBlink actionWithDuration:2.0 blinks:50];
+            action = [CCSequence actions:[CCBlink actionWithDuration:2.0 blinks:50], [CCShow action] ,nil];
             break;
         case sCharacterDead:
-            CCLOG(@"Ball->Changing State to Dead");
+//            CCLOG(@"Ball->Changing State to Dead");
             [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
             [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"playerDied"
@@ -77,27 +87,30 @@
     }
 }
 
+-(void)addHealth
+{
+//    NSLog(@"hit coin");
+    self.health += 3;
+    if (self.health > 100) {
+        self.health = 100;
+    }
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].x ] forKey:notificationUserInfoKeyPositionX];
+    [objectInfo setObject:[NSNumber numberWithFloat:[self position].y ] forKey:notificationUserInfoKeyPositionY];
+    [objectInfo setObject:[NSNumber numberWithInt:self.health] forKey:playerHealth];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"resetPlayerHealth"
+                                                        object:self
+                                                      userInfo:objectInfo];
+}
+
 -(void)updateStateWithDeltaTime:(ccTime)deltaTime
            andListOfGameObjects:(CCArray*)listOfGameObjects {
 
     if (health <= 0 && [self characterState] != sCharacterDead) {
-        [self changeState:sCharacterDead];
+        [self changeState:sCharacterDead]; 
     }
-    CGRect myBoundingBox = [self adjustedBoundingBox];
-    for (GameObject *object in listOfGameObjects) {
-        if ([object tag] == tBall)
-            continue;
-        else {
-            CGRect characterBox = [object adjustedBoundingBox];
-            if (CGRectIntersectsRect(myBoundingBox, characterBox)) {
-                if ([object gameObjectType] == tCoin) {
-//                    NSLog(@"Hit a Coin!");
-                    
-                    
-                }
-
-            }
-        }
+    if ([self characterState] == sBallRolling && self.visible == false) {
+        self.visible = true;
     }
     
 }
@@ -141,7 +154,13 @@
 
 - (id)initWithWorld:(b2World *)theWorld atLocation:(CGPoint)location withSpriteFrame:(CCSpriteFrame *)frame {
     if ((self = [super init])) {
-        health = 100;
+        
+        CCLOG(@"### BallObject init with world");
+        statsKeeper = [StatsKeeper createSingleton];
+        dataAdapter = [DataAdapter createSingleton];
+        health = [dataAdapter returnLatestHealth];
+
+        [self changeState:sBallIdle];                       // 4
 
         world = theWorld;
         [self setDisplayFrame:frame];
@@ -163,9 +182,13 @@
 -(id) init {
     if( (self=[super init]) ) {
         CCLOG(@"### BallObject initialized");
+        statsKeeper = [StatsKeeper createSingleton];
+
         [self initAnimations];                                   // 1// 2
         gameObjectType = tBall;                    // 3
-        [self changeState:sBallIdle];                       // 4
+        health = [statsKeeper returnCurrentHealth];
+
+
     }
     return self;
 }

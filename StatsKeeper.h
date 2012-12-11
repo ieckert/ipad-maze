@@ -36,6 +36,8 @@
 -(NSInteger) returnCurrentLevel;
 -(NSInteger) returnCurrentHealth;
 
+-(void) changePlayerHealth:(NSInteger)hp;
+
 -(void) dropStatsFromCurrentLevel;
 -(void) dropStatsFromAllLevels;
 @end

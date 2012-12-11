@@ -23,6 +23,7 @@ static StatsKeeper *singleton = nil;
         
         dataAdapter = [DataAdapter createSingleton];
         self.currentLevel = [dataAdapter returnLatestLevel];
+        health = [dataAdapter returnLatestHealth];
         active = false;
         
         [[NSNotificationCenter defaultCenter] addObserver:self 
@@ -66,14 +67,15 @@ static StatsKeeper *singleton = nil;
 
 -(NSInteger) nextLevel
 {
-    NSLog(@"StatsKeeper NextLevel");
+//    NSLog(@"StatsKeeper NextLevel");
     BOOL tmpBool = FALSE;
     /*save off time and stats to core data*/
     tmpBool = [dataAdapter addStatisticsToLevel:[NSNumber numberWithInt:currentLevel]
                              WithTime:[NSNumber numberWithInt:time]
-                             AndCoins:[NSNumber numberWithInt:coins]];
+                             AndCoins:[NSNumber numberWithInt:coins]
+                           WithHealth:[NSNumber numberWithInt:health]];
     if (tmpBool) {
-        NSLog(@"level saved correctly");
+//        NSLog(@"level saved correctly");
     }
     else {
         NSLog(@"level not saved");
@@ -135,9 +137,13 @@ static StatsKeeper *singleton = nil;
 - (void)changeHealthDueToNotification:(NSNotification *)notification {
     if (active == true)
     {
-        health = [[[notification userInfo] objectForKey:[NSString stringWithString:playerHealth]] intValue];
-        if (health < 0)
+        int tmp = [[[notification userInfo] objectForKey:[NSString stringWithString:playerHealth]] intValue];
+        if (tmp < 0)
             health = 0;
+        else if (tmp > 100)
+            health = 100;
+        else
+            health = tmp;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
                                                         object:self];
     }
@@ -147,17 +153,28 @@ static StatsKeeper *singleton = nil;
 {
     coins = 0;
     time = 0;
-    health = kBallBasicHealth;
+    if (health <= 0) {
+        health = [dataAdapter returnLatestHealth];
+    }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
                                                         object:self];
+}
+
+
+-(void) changePlayerHealth:(NSInteger)hp
+{
+    if (hp < 100) {
+        health = hp;        
+    }
 }
 
 -(void) dropStatsFromAllLevels
 {
     coins = 0;
     time = 0;
-    health = kBallBasicHealth;
-    [dataAdapter deleteStatisticsForAllLevels];
+    if (health <= 0) {
+        health = [dataAdapter returnLatestHealth];
+    }    [dataAdapter deleteStatisticsForAllLevels];
     currentLevel = [dataAdapter returnLatestLevel];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"healthChanged"
                                                         object:self];

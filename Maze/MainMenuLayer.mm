@@ -68,7 +68,7 @@
                 tmpPoint = CGPointMake(870, 560);
             }
             
-            NSString *text = [NSString stringWithFormat:@"level: %@ time: %@ coins: %@", stat.level, stat.time, stat.coins];
+            NSString *text = [NSString stringWithFormat:@"%@: time: %@ coins: %@ hp: %@", stat.level, stat.time, stat.coins, stat.health];
             CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:text
                                                      dimensions:CGSizeMake(400.0f, 100.0f)
                                                       alignment:UITextAlignmentLeft
@@ -662,7 +662,7 @@
         objectFactory = [ObjectFactory createSingleton];
         
         //begin creating the maze
-        requirements = [[MazeRequirements alloc] initWithCoins:5
+        requirements = [[MazeRequirements alloc] initWithCoins:0
                                                        Enemies:0
                                                   SpecialAreas:0
                                             AllowableStraights:NO
