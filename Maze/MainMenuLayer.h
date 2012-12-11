@@ -17,6 +17,7 @@
 #import "GameManager.h"
 #import "Box2D.h"
 #import "GLES-Render.h"
+#include "CCScrollLayer.h"
 
 #import "WallObject.h"
 #import "BallObject.h"
@@ -41,6 +42,7 @@
 
     CCSpriteBatchNode *sceneSpriteBatchNode;
     CCLayer *tmpLayer;
+    CCScrollLayer *scroller;
     
     NSMutableArray *menuMaze;
     MazeMaker *mazeMaker;

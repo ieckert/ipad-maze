@@ -18,6 +18,20 @@
 @implementation MazeLayer
 @synthesize repeatingTimer, accel;
 
+-(void) displayToScreen:(NSString *) str
+{
+    CGPoint location = CGPointMake(screenSize.width/2,screenSize.height/2);
+    CCLabelTTF *l1 = [CCLabelTTF labelWithString:@""
+                                        fontName:@"AmericanTypewriter-CondensedBold"
+                                        fontSize:100];
+    [self addChild:l1];
+    [l1 setPosition:location];
+    [l1 setString:str];
+    id la1 = [CCSequence actions:[CCFadeIn actionWithDuration:1.0f],
+              [CCFadeOut actionWithDuration:1.0f],
+              nil];
+    [l1 runAction:la1];
+}
 -(void) countdownToStart:(NSString *) str
 {
     CGPoint location = CGPointMake(screenSize.width/2,screenSize.height/2);
@@ -284,8 +298,9 @@
     [statsKeeper setActive:FALSE];
     
     NSNumber *tmp = [NSNumber numberWithInt:kProgressNextLevel];
+    [self performSelector:@selector(displayToScreen:) withObject:@"Level Complete" afterDelay:1.5f];
     [self performSelector:@selector(pauseGame) withObject:nil afterDelay:2.0f];
-    [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:5.0f];
+    [self performSelector:@selector(endingDuties:) withObject:tmp afterDelay:4.25f];
     
     CCArray *listOfGameObjects =
     [sceneSpriteBatchNode children];                     
@@ -294,6 +309,9 @@
         if ([tempObject gameObjectType] != tBall && [tempObject gameObjectType] != tWall && [tempObject isActive] == true)
         {
             [tempObject setIsActive:false];
+            for (GameObject *child in [tempObject children]) {
+                [child runAction:[CCFadeOut actionWithDuration:2.0f]];
+            }
             [tempObject runAction:[CCFadeOut actionWithDuration:2.0f]];
         }
          
@@ -560,11 +578,13 @@
         //begin creating the maze
         mazeGrid = [[NSMutableArray alloc] init];
         
+        int numCircles = kBaseCircles + [statsKeeper currentLevel]/(kDifficultyMod+3);
+        
         requirements = [[MazeRequirements alloc] initWithCoins:25
                                                        Enemies:1
                                                   SpecialAreas:0
                                             AllowableStraights:NO
-                                               NumberOfCircles:5];
+                                               NumberOfCircles:numCircles];
         
         mazeGrid = [[NSMutableArray alloc] init];
         if ([tmpDirector deviceOrientation] == kCCDeviceOrientationPortrait) {
@@ -836,8 +856,7 @@
     //interval for when dangerZones will spawn
     gameplayManagerUpdateInterval = kGameplayManagerUpdateInterval;
     
-    for (int i=0; i<4; i++) {
-    //for (int i=0; i<levelMultiplier; i++) {
+    for (int i=0; i<levelMultiplier; i++) {
         //add correct number of shooing enemies to the screen
         [objectFactory createEnemyOfType:tShoot
                               atLocation:CGPointMake(0, 0)

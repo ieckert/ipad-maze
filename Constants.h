@@ -44,15 +44,16 @@
 #define kEnemyPeripheralVisionMultiplier 3
 
 #define kBallBasicHealth 100
-#define kEnemyBasicDamage 25
-#define kAreaBasicDamage 15
+#define kEnemyBasicDamage 30
+#define kAreaBasicDamage 20
 
 #define kNumberSpecialAreas 3
 #define kNumberShootingEnemies 1
 
-#define kGameplayManagerUpdateInterval 15
+#define kGameplayManagerUpdateInterval 7
 
-#define kDifficultyMod 3
+#define kBaseCircles 3
+#define kDifficultyMod 2
 typedef enum {
     kEnemyWanderInMaze=0,
     kEnemyGoToPlayer=1,

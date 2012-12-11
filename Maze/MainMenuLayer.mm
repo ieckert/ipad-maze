@@ -9,7 +9,6 @@
 #import "MainMenuLayer.h"
 #import "ObjectInfoConstants.h"
 #import "Queue.h"
-#include "CCScrollLayer.h"
 #import "Stats.h"
 
 
@@ -25,7 +24,6 @@
 
 -(void) screenRotationTapped: (id) sender
 {
-//    NSLog(@"Settings - ScreenRotation button tapped!, %i", [sender tag]);
     screenRotationToggle.tag = ([sender tag] == 1) ? 0 : [sender tag]+1;
 
     switch (screenRotationToggle.tag) {
@@ -49,52 +47,56 @@
 
     NSMutableArray *recordLayers = [[NSMutableArray alloc] init];
     tmpLayer = [[CCLayer alloc] init];
-    CGPoint tmpPoint = CGPointMake(550, 50);
-/*
-    if ([recordLayers count] == 0) {
+    CGPoint tmpPoint = CGPointMake(870, 560);
+
+    if ([[dataAdapter loadAllLevels] count] == 0) {
         CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"no levels completed!"
-                                                 dimensions:CGSizeMake(300.0f, 300.0f)
+                                                 dimensions:CGSizeMake(400.0f, 100.0f)
                                                   alignment:UITextAlignmentLeft
                                                    fontName:@"AmericanTypewriter-CondensedBold"
-                                                   fontSize:45.0f];
-        [tmpLayer addChild:timeLabel];
+                                                   fontSize:30.0f];
         timeLabel.position = tmpPoint;
-        [recordLayers addObject:tmpLayer];
+        [tmpLayer addChild:timeLabel];
     }
     else {
-*/
+
         for (Stats* stat in [dataAdapter loadAllLevels]) {
-            NSLog(@"level: %@ time: %@ coins %@", stat.level, stat.time, stat.coins);
-            if ([[stat level] intValue] % 6 == 0) {
+            if ( ([[stat level] intValue]-1) % 8 == 0 && [[stat level]intValue] != 1) {
                 [recordLayers addObject:tmpLayer];
                 [tmpLayer release];
                 tmpLayer = [[CCLayer alloc] init];
-                tmpPoint = CGPointMake(550, 100);
+                tmpPoint = CGPointMake(870, 560);
             }
-            CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:@"sup"
-                                                     dimensions:CGSizeMake(100.0f, 100.0f)
+            
+            NSString *text = [NSString stringWithFormat:@"level: %@ time: %@ coins: %@", stat.level, stat.time, stat.coins];
+            CCLabelTTF *timeLabel = [CCLabelTTF labelWithString:text
+                                                     dimensions:CGSizeMake(400.0f, 100.0f)
                                                       alignment:UITextAlignmentLeft
                                                        fontName:@"AmericanTypewriter-CondensedBold"
-                                                       fontSize:45.0f];
-            tmpPoint.y += 50;
+                                                       fontSize:30.0f];
+            tmpPoint.y -= 50;
             timeLabel.position = tmpPoint;
             [tmpLayer addChild:timeLabel];
         }
-//    }
-    
-     
-    CCMenuItemFont *back = [CCMenuItemFont itemFromString:@"Records"
+    }
+    tmpPoint.y -= 50;
+    tmpPoint.x -= 25;
+
+    CCMenuItemFont *back = [CCMenuItemFont itemFromString:@"Back"
                                                     target:self
-                                                  selector:@selector(showDataPopup)];
+                                                  selector:@selector(displaySettingsMenu)];
     back.fontName = @"AmericanTypewriter-CondensedBold";
-    back.position = CGPointMake(600, 50);
-    back.fontSize = 45;
+    back.position = tmpPoint;
+    back.fontSize = 30;
     
     CCMenu *tmpMenu = [CCMenu
                     menuWithItems:back, nil];
-    
-    CCScrollLayer *scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:300];
+    [tmpMenu alignItemsHorizontallyWithPadding:0.0f];
+    tmpMenu.position = tmpPoint;
     [tmpLayer addChild:tmpMenu];
+    [recordLayers addObject:tmpLayer];
+    
+    scroller = [[CCScrollLayer alloc] initWithLayers:recordLayers widthOffset:20];
     [self addChild:scroller];
 }
 
@@ -129,6 +131,11 @@
     if (tmpLayer != nil) {
         [tmpLayer removeFromParentAndCleanup:YES];
         tmpLayer = nil;
+    }
+    
+    if (scroller != nil) {
+        [scroller removeFromParentAndCleanup:YES];
+        scroller = nil;
     }
     
     CCMenuItemFont *screenRotation1 = [CCMenuItemFont itemFromString:@"Portrait" target:nil selector:nil];

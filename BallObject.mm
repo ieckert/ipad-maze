@@ -50,14 +50,14 @@
             break;
         case sBallInvulnerable:
             CCLOG(@"Ball->Changing State to Invulnerable");
-            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
+            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:2.0f];
 
             break;
         case sBallHurt:
             CCLOG(@"Ball->Changing State to Hurt");
             
-            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:3.0f];
-            action = [CCBlink actionWithDuration:3.0 blinks:50];
+            [self performSelector:@selector(forceRollingState) withObject:nil afterDelay:2.0f];
+            action = [CCBlink actionWithDuration:2.0 blinks:50];
             break;
         case sCharacterDead:
             CCLOG(@"Ball->Changing State to Dead");
