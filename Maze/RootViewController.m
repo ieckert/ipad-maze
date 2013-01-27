@@ -2,8 +2,8 @@
 //  RootViewController.m
 //  Maze
 //
-//  Created by ian on 6/24/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by ian on 1/21/13.
+//  Copyright __MyCompanyName__ 2013. All rights reserved.
 //
 
 //

@@ -2,24 +2,19 @@
 //  AppDelegate.m
 //  Maze
 //
-//  Created by ian on 6/24/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by ian on 1/21/13.
+//  Copyright __MyCompanyName__ 2013. All rights reserved.
 //
 
 #import "cocos2d.h"
 
 #import "AppDelegate.h"
 #import "GameConfig.h"
-#import "GameManager.h"
-
+#import "HelloWorldLayer.h"
 #import "RootViewController.h"
 
 @implementation AppDelegate
-/*
-@synthesize managedObjectContext=__managedObjectContext;
-@synthesize managedObjectModel=__managedObjectModel;
-@synthesize persistentStoreCoordinator=__persistentStoreCoordinator;
-*/ 
+
 @synthesize window;
 
 - (void) removeStartupFlicker
@@ -30,25 +25,22 @@
 	// Uncomment the following code if you Application only supports landscape mode
 	//
 #if GAME_AUTOROTATION == kGameAutorotationUIViewController
-
-	CC_ENABLE_DEFAULT_GL_STATES();
-	CCDirector *director = [CCDirector sharedDirector];
-	CGSize size = [director winSize];
-	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
-	sprite.position = ccp(size.width/2, size.height/2);
-	sprite.rotation = -90;
-	[sprite visit];
-	[[director openGLView] swapBuffers];
-	CC_ENABLE_DEFAULT_GL_STATES();
+	
+	//	CC_ENABLE_DEFAULT_GL_STATES();
+	//	CCDirector *director = [CCDirector sharedDirector];
+	//	CGSize size = [director winSize];
+	//	CCSprite *sprite = [CCSprite spriteWithFile:@"Default.png"];
+	//	sprite.position = ccp(size.width/2, size.height/2);
+	//	sprite.rotation = -90;
+	//	[sprite visit];
+	//	[[director openGLView] swapBuffers];
+	//	CC_ENABLE_DEFAULT_GL_STATES();
 	
 #endif // GAME_AUTOROTATION == kGameAutorotationUIViewController	
 }
+
 - (void) applicationDidFinishLaunching:(UIApplication*)application
 {
-    [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
-
-    srandom(time(NULL)); // Seeds the random number generator
-
 	// Init the window
 	window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	
@@ -119,9 +111,7 @@
 	[self removeStartupFlicker];
 	
 	// Run the intro Scene
-//	[[CCDirector sharedDirector] runWithScene: [GameScene node]];
-    [[GameManager sharedGameManager] runSceneWithID:kMainMenuScene];
-
+	[[CCDirector sharedDirector] runWithScene: [HelloWorldLayer scene]];
 }
 
 
@@ -146,7 +136,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-
 	CCDirector *director = [CCDirector sharedDirector];
 	
 	[[director openGLView] removeFromSuperview];
@@ -162,63 +151,6 @@
 	[[CCDirector sharedDirector] setNextDeltaTimeZero:YES];
 }
 
-/*
-
-- (NSManagedObjectModel *)managedObjectModel {
-    if (__managedObjectModel != nil) {
-        return __managedObjectModel;
-    }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
-    __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
-    return __managedObjectModel;
-}
-
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (__persistentStoreCoordinator != nil) {
-        return __persistentStoreCoordinator;
-    }
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Maze.sqlite"];
-    
-    NSError *error = nil;
-    __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
-    return __persistentStoreCoordinator;
-}
-
-- (NSManagedObjectContext *)managedObjectContext {
-    if (__managedObjectContext != nil) {
-        return __managedObjectContext;
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        __managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [__managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    return __managedObjectContext;
-}
-
-- (NSURL *)applicationDocumentsDirectory {
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
-
-- (void)saveContext {
-    NSError *error = nil;
-    NSManagedObjectContext *managedObjectContext = self.managedObjectContext;
-    if (managedObjectContext != nil) {
-        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
-            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-            abort();
-        } 
-    }
-}
-
-*/
- 
 - (void)dealloc {
 	[[CCDirector sharedDirector] end];
 	[window release];
