@@ -73,6 +73,16 @@ static PoolManager *singleton = nil;
     
 }
 
+-(NSMutableArray *)getAllBatchNodes
+{
+    NSMutableArray *r_array = [[NSMutableArray alloc] init];
+    for (Pool *pool in pools) {
+        [r_array addObject:[pool getBatchNode]];
+    }
+    return r_array;
+}
+
+
 -(BOOL)returnObject:(GameObject**)gameObject;
 {
     BOOL r_return = FALSE;
@@ -128,13 +138,6 @@ static PoolManager *singleton = nil;
     if (pool != nil)
         r_size = [pool countAllObjects];
     return r_size;
-}
-
--(void)fillPools
-{
-    for (Pool* pool in pools) {
-        [pool fillPool];
-    }
 }
 
 -(void)emptyPools

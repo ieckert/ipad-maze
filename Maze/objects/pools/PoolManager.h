@@ -25,6 +25,7 @@
 
 -(Pool*)getPool:(ObjectType)objectType;
 -(CCArray *)getActiveObjects;
+-(NSMutableArray *)getAllBatchNodes;
 
 -(NSInteger)countPools;
 -(NSInteger)countAllObjectsInPool:(ObjectType)type;

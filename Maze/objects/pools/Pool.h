@@ -37,6 +37,7 @@
 -(GameObject *)getObject;
 -(BOOL)returnObject:(GameObject**)gameObject;
 -(CCArray *)getActiveObjects;
+-(CCSpriteBatchNode *)getBatchNode;
 
 -(NSInteger)countActiveObjects;
 -(NSInteger)countInactiveObjects;

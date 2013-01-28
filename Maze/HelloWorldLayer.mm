@@ -110,6 +110,10 @@ enum {
         [poolManager printAllPoolStats];
         [obj1 setHealth:75];
         [obj1 printDebugStats];
+        
+        for (CCSpriteBatchNode *batchNode in [poolManager getAllBatchNodes]) {
+            [self addChild:batchNode z:0];
+        }
 
         /* TEST1
         poolManager = [PoolManager createSingleton];
