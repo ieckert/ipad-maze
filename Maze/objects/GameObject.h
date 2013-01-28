@@ -10,9 +10,11 @@
 #import "cocos2d.h"
 #import "Box2D.h"
 #import "Constants.h"
+#import "WorldObject.h"
 
 @interface GameObject : CCSprite {
     b2Body *body;
+    WorldObject *worldObject;
     
     /*Location*/
     
@@ -26,6 +28,12 @@
 @property (assign) b2Body *body;
 @property (readwrite) ObjectType type;
 @property (readwrite) NSInteger health;
+
+-(CCAnimation*)loadPlistForAnimationWithName:(NSString*)animationName
+                                andClassName:(NSString*)className;
+-(void)updateStateWithDeltaTime:(ccTime)deltaTime
+           andListOfGameObjects:(CCArray*)listOfGameObjects;
+-(CGRect)adjustedBoundingBox;
 
 /*Location*/
 -(void)placeAtLocation:(CGPoint)location;

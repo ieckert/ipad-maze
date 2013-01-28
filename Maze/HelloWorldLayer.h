@@ -15,14 +15,13 @@
 #import "PoolManager.h"
 #import "GameObject.h"
 #import "MazeObject.h"
+#import "WorldObject.h"
 
 // HelloWorldLayer
 @interface HelloWorldLayer : CCLayer
-{
-	b2World* world;
-	GLESDebugDraw *m_debugDraw;
-    
+{    
     PoolManager *poolManager;
+    WorldObject *worldObject;
 }
 
 // returns a CCScene that contains the HelloWorldLayer as the only child

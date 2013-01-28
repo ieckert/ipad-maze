@@ -14,6 +14,7 @@
 {
     NSMutableArray *pools;
 }
++(PoolManager *) createSingleton;
 
 -(void)printPoolStats:(ObjectType)type;
 -(void)printAllPoolStats;

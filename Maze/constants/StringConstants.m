@@ -11,9 +11,9 @@
 @implementation StringConstants
 
 
-NSString * const C_ATLAS_IMAGE_DEFAULT = @"atlas.png";
-NSString * const C_ATLAS_LIST_DEFAULT = @"atlas.plist";
-NSString * const C_ATLAS_IMAGE_MAZE = @"atlas_maze.png";
-NSString * const C_ATLAS_LIST_MAZE = @"atlas_maze.plist";
+NSString * const C_ATLAS_IMAGE_DEFAULT = @"atlas1.png";
+NSString * const C_ATLAS_LIST_DEFAULT = @"atlas1.plist";
+NSString * const C_ATLAS_IMAGE_MAZE = @"atlas1.png";
+NSString * const C_ATLAS_LIST_MAZE = @"atlas1.plist";
 
 @end

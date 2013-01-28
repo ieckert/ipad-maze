@@ -10,12 +10,23 @@
 #import "ObjectBuilder.h"
 
 @implementation PoolManager
+static PoolManager *singleton = nil;
 
 -(id) init {
     if( (self = [super init]) ){
         pools = [[NSMutableArray alloc] init];
     }
     return self;
+}
+
++ (PoolManager *) createSingleton
+{
+    @synchronized(singleton) {
+        if ( !singleton || singleton==nil ) {
+            singleton = [[PoolManager alloc] init];
+        }
+    }
+    return singleton;
 }
 
 - (void) dealloc{

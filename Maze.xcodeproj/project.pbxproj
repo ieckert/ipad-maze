@@ -162,12 +162,6 @@
 		3CC5AFF016ADF6A1006558BA /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CC5AFEF16ADF6A1006558BA /* HelloWorldLayer.mm */; };
 		3CC5AFF316ADF6A1006558BA /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CC5AFF216ADF6A1006558BA /* GLES-Render.mm */; };
 		3CC5AFF616ADF6A1006558BA /* blocks.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5AFF516ADF6A1006558BA /* blocks.png */; };
-		3CC5B23B16ADF7BA006558BA /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21916ADF7BA006558BA /* atlas1.plist */; };
-		3CC5B23C16ADF7BA006558BA /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21A16ADF7BA006558BA /* atlas1.png */; };
-		3CC5B23D16ADF7BA006558BA /* atlas2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21B16ADF7BA006558BA /* atlas2.plist */; };
-		3CC5B23E16ADF7BA006558BA /* atlas2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21C16ADF7BA006558BA /* atlas2.png */; };
-		3CC5B23F16ADF7BA006558BA /* atlas3.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21D16ADF7BA006558BA /* atlas3.plist */; };
-		3CC5B24016ADF7BA006558BA /* atlas3.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B21E16ADF7BA006558BA /* atlas3.png */; };
 		3CC5B24116ADF7BA006558BA /* ball_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B22016ADF7BA006558BA /* ball_1.png */; };
 		3CC5B24216ADF7BA006558BA /* ball_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B22116ADF7BA006558BA /* ball_2.png */; };
 		3CC5B24316ADF7BA006558BA /* coin_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CC5B22216ADF7BA006558BA /* coin_1.png */; };
@@ -197,6 +191,9 @@
 		3CC5B26216AE0684006558BA /* MazeObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CC5B26116AE0684006558BA /* MazeObject.mm */; };
 		3CC5B26516AE073C006558BA /* GameObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CC5B26416AE073C006558BA /* GameObject.mm */; };
 		3CE754C516B240FF00C7832A /* ObjectBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE754C416B240FF00C7832A /* ObjectBuilder.mm */; };
+		3CE9E65316B5FF2B006D83C9 /* WorldObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3CE9E65216B5FF2B006D83C9 /* WorldObject.mm */; };
+		3CE9E66416B613FF006D83C9 /* atlas1.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3CE9E66216B613FF006D83C9 /* atlas1.plist */; };
+		3CE9E66516B613FF006D83C9 /* atlas1.png in Resources */ = {isa = PBXBuildFile; fileRef = 3CE9E66316B613FF006D83C9 /* atlas1.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -518,12 +515,6 @@
 		3CC5AFF216ADF6A1006558BA /* GLES-Render.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		3CC5AFF416ADF6A1006558BA /* GameConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameConfig.h; sourceTree = "<group>"; };
 		3CC5AFF516ADF6A1006558BA /* blocks.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blocks.png; path = Resources/blocks.png; sourceTree = "<group>"; };
-		3CC5B21916ADF7BA006558BA /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
-		3CC5B21A16ADF7BA006558BA /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
-		3CC5B21B16ADF7BA006558BA /* atlas2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas2.plist; sourceTree = "<group>"; };
-		3CC5B21C16ADF7BA006558BA /* atlas2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas2.png; sourceTree = "<group>"; };
-		3CC5B21D16ADF7BA006558BA /* atlas3.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas3.plist; sourceTree = "<group>"; };
-		3CC5B21E16ADF7BA006558BA /* atlas3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas3.png; sourceTree = "<group>"; };
 		3CC5B22016ADF7BA006558BA /* ball_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_1.png; sourceTree = "<group>"; };
 		3CC5B22116ADF7BA006558BA /* ball_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ball_2.png; sourceTree = "<group>"; };
 		3CC5B22216ADF7BA006558BA /* coin_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coin_1.png; sourceTree = "<group>"; };
@@ -556,6 +547,10 @@
 		3CC5B26416AE073C006558BA /* GameObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = GameObject.mm; path = Maze/objects/GameObject.mm; sourceTree = SOURCE_ROOT; };
 		3CE754C316B240FF00C7832A /* ObjectBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectBuilder.h; path = Maze/objects/builders/ObjectBuilder.h; sourceTree = SOURCE_ROOT; };
 		3CE754C416B240FF00C7832A /* ObjectBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ObjectBuilder.mm; path = Maze/objects/builders/ObjectBuilder.mm; sourceTree = SOURCE_ROOT; };
+		3CE9E65116B5FF2B006D83C9 /* WorldObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WorldObject.h; path = Maze/objects/WorldObject.h; sourceTree = SOURCE_ROOT; };
+		3CE9E65216B5FF2B006D83C9 /* WorldObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = WorldObject.mm; path = Maze/objects/WorldObject.mm; sourceTree = SOURCE_ROOT; };
+		3CE9E66216B613FF006D83C9 /* atlas1.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = atlas1.plist; sourceTree = "<group>"; };
+		3CE9E66316B613FF006D83C9 /* atlas1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = atlas1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -645,7 +640,7 @@
 		3CC5AE2416ADF694006558BA /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				3CC5B21816ADF7BA006558BA /* SpriteSheets */,
+				3CE9E66116B613FF006D83C9 /* SpriteSheets */,
 				3CC5B21F16ADF7BA006558BA /* Images */,
 				3CC5B23616ADF7BA006558BA /* Animations */,
 				3CC5AE2516ADF694006558BA /* Default.png */,
@@ -1117,6 +1112,8 @@
 			children = (
 				3CC5B26316AE073C006558BA /* GameObject.h */,
 				3CC5B26416AE073C006558BA /* GameObject.mm */,
+				3CE9E65116B5FF2B006D83C9 /* WorldObject.h */,
+				3CE9E65216B5FF2B006D83C9 /* WorldObject.mm */,
 				3CC5B25F16AE0613006558BA /* mazes */,
 				3CC5B21216ADF7A7006558BA /* builders */,
 				3CC5B21316ADF7A7006558BA /* enemies */,
@@ -1182,20 +1179,6 @@
 			path = Levels;
 			sourceTree = "<group>";
 		};
-		3CC5B21816ADF7BA006558BA /* SpriteSheets */ = {
-			isa = PBXGroup;
-			children = (
-				3CC5B21916ADF7BA006558BA /* atlas1.plist */,
-				3CC5B21A16ADF7BA006558BA /* atlas1.png */,
-				3CC5B21B16ADF7BA006558BA /* atlas2.plist */,
-				3CC5B21C16ADF7BA006558BA /* atlas2.png */,
-				3CC5B21D16ADF7BA006558BA /* atlas3.plist */,
-				3CC5B21E16ADF7BA006558BA /* atlas3.png */,
-			);
-			name = SpriteSheets;
-			path = Resources/SpriteSheets;
-			sourceTree = "<group>";
-		};
 		3CC5B21F16ADF7BA006558BA /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -1255,6 +1238,16 @@
 			name = mazes;
 			path = Maze/objects/mazes;
 			sourceTree = SOURCE_ROOT;
+		};
+		3CE9E66116B613FF006D83C9 /* SpriteSheets */ = {
+			isa = PBXGroup;
+			children = (
+				3CE9E66216B613FF006D83C9 /* atlas1.plist */,
+				3CE9E66316B613FF006D83C9 /* atlas1.png */,
+			);
+			name = SpriteSheets;
+			path = resources/SpriteSheets;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -1316,12 +1309,6 @@
 				3CC5AE3416ADF694006558BA /* Icon@2x.png in Resources */,
 				3CC5AE3716ADF694006558BA /* iTunesArtwork in Resources */,
 				3CC5AFF616ADF6A1006558BA /* blocks.png in Resources */,
-				3CC5B23B16ADF7BA006558BA /* atlas1.plist in Resources */,
-				3CC5B23C16ADF7BA006558BA /* atlas1.png in Resources */,
-				3CC5B23D16ADF7BA006558BA /* atlas2.plist in Resources */,
-				3CC5B23E16ADF7BA006558BA /* atlas2.png in Resources */,
-				3CC5B23F16ADF7BA006558BA /* atlas3.plist in Resources */,
-				3CC5B24016ADF7BA006558BA /* atlas3.png in Resources */,
 				3CC5B24116ADF7BA006558BA /* ball_1.png in Resources */,
 				3CC5B24216ADF7BA006558BA /* ball_2.png in Resources */,
 				3CC5B24316ADF7BA006558BA /* coin_1.png in Resources */,
@@ -1348,6 +1335,8 @@
 				3CC5B25816ADF7BA006558BA /* CoinObject.plist in Resources */,
 				3CC5B25916ADF7BA006558BA /* DoorObject.plist in Resources */,
 				3CC5B25A16ADF7BA006558BA /* WallObject.plist in Resources */,
+				3CE9E66416B613FF006D83C9 /* atlas1.plist in Resources */,
+				3CE9E66516B613FF006D83C9 /* atlas1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1498,6 +1487,7 @@
 				3C4FD8AF16AF9364004E3DE0 /* PoolManager.mm in Sources */,
 				3C602BD716AFC3F300E3703D /* StringConstants.m in Sources */,
 				3CE754C516B240FF00C7832A /* ObjectBuilder.mm in Sources */,
+				3CE9E65316B5FF2B006D83C9 /* WorldObject.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

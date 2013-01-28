@@ -14,7 +14,6 @@
 //This ratio defines how many pixels correspond to 1 Box2D "metre"
 //Box2D is optimized for objects of 1x1 metre therefore it makes sense
 //to define the ratio so that your most common object type is 1x1 metre.
-#define PTM_RATIO 32
 
 // enums that will be used as tags
 enum {
@@ -56,33 +55,8 @@ enum {
 		
 		CGSize screenSize = [CCDirector sharedDirector].winSize;
 		CCLOG(@"Screen width %0.2f screen height %0.2f",screenSize.width,screenSize.height);
-		
-		// Define the gravity vector.
-		b2Vec2 gravity;
-		gravity.Set(0.0f, -10.0f);
-		
-		// Do we want to let bodies sleep?
-		// This will speed up the physics simulation
-		bool doSleep = true;
-		
-		// Construct a world object, which will hold and simulate the rigid bodies.
-		world = new b2World(gravity, doSleep);
-		
-		world->SetContinuousPhysics(true);
-		
-		// Debug Draw functions
-		m_debugDraw = new GLESDebugDraw( PTM_RATIO );
-		world->SetDebugDraw(m_debugDraw);
-		
-		uint32 flags = 0;
-		flags += b2DebugDraw::e_shapeBit;
-//		flags += b2DebugDraw::e_jointBit;
-//		flags += b2DebugDraw::e_aabbBit;
-//		flags += b2DebugDraw::e_pairBit;
-//		flags += b2DebugDraw::e_centerOfMassBit;
-		m_debugDraw->SetFlags(flags);		
-		
-		
+
+        worldObject = [WorldObject createSingleton];
 		// Define the ground body.
 		b2BodyDef groundBodyDef;
 		groundBodyDef.position.Set(0, 0); // bottom-left corner
@@ -90,7 +64,7 @@ enum {
 		// Call the body factory which allocates memory for the ground body
 		// from a pool and creates the ground box shape (also from a pool).
 		// The body is also added to the world.
-		b2Body* groundBody = world->CreateBody(&groundBodyDef);
+		b2Body* groundBody = [worldObject getWorld]->CreateBody(&groundBodyDef);
 		
 		// Define the ground box shape.
 		b2PolygonShape groundBox;		
@@ -131,8 +105,14 @@ enum {
          maze - 5
          object - 11
          */
-        
-        poolManager = [[PoolManager alloc] init];
+        poolManager = [PoolManager createSingleton];
+        GameObject* obj1 = [poolManager getObject:G_OBJET];
+        [poolManager printAllPoolStats];
+        [obj1 setHealth:75];
+        [obj1 printDebugStats];
+
+        /* TEST1
+        poolManager = [PoolManager createSingleton];
         GameObject* obj1 = [poolManager getObject:G_OBJET];
         GameObject* obj2 = [poolManager getObject:G_OBJET];
         GameObject* obj3 = [poolManager getObject:G_OBJET];
@@ -159,7 +139,7 @@ enum {
         
         [poolManager buildObjects:100 OfType:G_MAZE];
         [poolManager printPoolStats:G_MAZE];
-
+         */
 	}
 	return self;
 }
@@ -173,7 +153,7 @@ enum {
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	
-	world->DrawDebugData();
+	[worldObject getWorld]->DrawDebugData();
 	
 	// restore default GL states
 	glEnable(GL_TEXTURE_2D);
@@ -203,7 +183,7 @@ enum {
 
 	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
 	bodyDef.userData = sprite;
-	b2Body *body = world->CreateBody(&bodyDef);
+	b2Body *body = [worldObject getWorld]->CreateBody(&bodyDef);
 	
 	// Define another box shape for our dynamic body.
 	b2PolygonShape dynamicBox;
@@ -231,11 +211,11 @@ enum {
 	
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
-	world->Step(dt, velocityIterations, positionIterations);
+	[worldObject getWorld]->Step(dt, velocityIterations, positionIterations);
 
 	
 	//Iterate over the bodies in the physics world
-	for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	for (b2Body* b = [worldObject getWorld]->GetBodyList(); b; b = b->GetNext())
 	{
 		if (b->GetUserData() != NULL) {
 			//Synchronize the AtlasSprites position and rotation with the corresponding body
@@ -275,17 +255,13 @@ enum {
 	// multiply the gravity by 10
 	b2Vec2 gravity( -accelY * 10, accelX * 10);
 	
-	world->SetGravity( gravity );
+	[worldObject getWorld]->SetGravity( gravity );
 }
 
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
-	// in case you have something to dealloc, do it in this method
-	delete world;
-	world = NULL;
-	
-	delete m_debugDraw;
+
 
 	// don't forget to call "super dealloc"
 	[super dealloc];
