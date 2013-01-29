@@ -15,11 +15,11 @@
 
 -(id) init {
     if( (self = [super init]) ){
-        active = FALSE;
         type = G_OBJET;
+        body = nil;
+        [self deactivate];
         worldObject = [WorldObject createSingleton];
         [self setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:@"wall_4.png"]];
-        [self createBodyAtLocation:CGPointMake(50, 50)];
     }
     return self;
 }
@@ -108,7 +108,7 @@
 
 - (void)createBodyAtLocation:(CGPoint)location {
     b2BodyDef bodyDef;
-    bodyDef.type = b2_staticBody;
+    bodyDef.type = b2_dynamicBody;
     bodyDef.position =
     b2Vec2(location.x/PTM_RATIO, location.y/PTM_RATIO);
     body = [worldObject getWorld]->CreateBody(&bodyDef);
@@ -129,23 +129,42 @@
 
 
 /*Location*/
--(void)placeAtLocation:(CGPoint)location
-{
-    
-}
+
 
 /*Visual*/
--(void)changeSkin
+-(void)activate
 {
+    active = true;
+    [self show];
+    if (!body) {
+        [self createBodyAtLocation:self.position];
+    }
     
 }
 
--(void)display
+-(void)deactivate
+{
+    active = false;
+    [self hide];
+    if (body) {
+        [worldObject getWorld]->DestroyBody(body);
+        body = nil;
+    }
+}
+
+-(void)changeSkin:(NSString*)image
+{
+    [self setDisplayFrame:[[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:image]];
+    [self deactivate];
+    [self activate];
+}
+
+-(void)show
 {
     [self setVisible:TRUE];
 }
 
--(void)removeFromDisplay
+-(void)hide
 {
     [self setVisible:FALSE];
 }

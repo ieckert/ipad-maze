@@ -36,12 +36,13 @@
 -(CGRect)adjustedBoundingBox;
 
 /*Location*/
--(void)placeAtLocation:(CGPoint)location;
 
 /*Visual*/
--(void)changeSkin;
--(void)display;
--(void)removeFromDisplay;
+-(void)activate;
+-(void)deactivate;
+-(void)changeSkin:(NSString*)image;
+-(void)show;
+-(void)hide;
 
 /*Data*/
 -(void)removeFromPool;

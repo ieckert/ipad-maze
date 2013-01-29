@@ -78,7 +78,7 @@
     p_atlasList = list;
     p_atlasImage = image;
     [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"atlas1.plist"];
-    p_spriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png"];
+    p_spriteBatchNode = [CCSpriteBatchNode batchNodeWithFile:@"atlas1.png" capacity:C_BATCH_NODE_CAPACITY];
     [self buildObjects:count];
 }
 
@@ -129,6 +129,7 @@
 -(BOOL)returnObject:(GameObject**)gameObject
 {
     BOOL r_return = FALSE;
+    [(*gameObject) deactivate];
     [inactiveObjects addObject:*gameObject];
     [activeObjects removeObject:*gameObject];
     if ([inactiveObjects containsObject:*gameObject] && ![activeObjects containsObject:*gameObject])

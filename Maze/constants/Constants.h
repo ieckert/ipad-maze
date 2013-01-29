@@ -11,6 +11,7 @@
 
 #define PTM_RATIO ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 100.0 : 50.0)
 
+#define C_BATCH_NODE_CAPACITY 100
 #define C_POOL_SIZE 10
 #define C_POOL_MAZE_SIZE 5
 #define C_POOL_OBJET_SIZE 11

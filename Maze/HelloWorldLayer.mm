@@ -87,10 +87,7 @@ enum {
 		
 		
 		//Set up sprite
-		
-		CCSpriteBatchNode *batch = [CCSpriteBatchNode batchNodeWithFile:@"blocks.png" capacity:150];
-		[self addChild:batch z:0 tag:kTagBatchNode];
-		
+
 		[self addNewSpriteWithCoords:ccp(screenSize.width/2, screenSize.height/2)];
 		
 		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Tap screen" fontName:@"Marker Felt" fontSize:32];
@@ -106,11 +103,8 @@ enum {
          object - 11
          */
         poolManager = [PoolManager createSingleton];
-        GameObject* obj1 = [poolManager getObject:G_OBJET];
-        [poolManager printAllPoolStats];
-        [obj1 setHealth:75];
-        [obj1 printDebugStats];
-        
+        [poolManager getPool:G_OBJET];
+
         for (CCSpriteBatchNode *batchNode in [poolManager getAllBatchNodes]) {
             [self addChild:batchNode z:0];
         }
@@ -168,37 +162,18 @@ enum {
 
 -(void) addNewSpriteWithCoords:(CGPoint)p
 {
+    if ([poolManager countActiveObjectsInPool:G_OBJET]%2 == 0) {
+        for (GameObject *obj in [[poolManager getPool:G_OBJET] getActiveObjects]) {
+            //[poolManager returnObject:&obj];
+            [obj changeSkin:@"wall_2.png"];
+        }
+    }
+    
 	CCLOG(@"Add sprite %0.2f x %02.f",p.x,p.y);
-	CCSpriteBatchNode *batch = (CCSpriteBatchNode*) [self getChildByTag:kTagBatchNode];
-	
-	//We have a 64x64 sprite sheet with 4 different 32x32 images.  The following code is
-	//just randomly picking one of the images
-	int idx = (CCRANDOM_0_1() > .5 ? 0:1);
-	int idy = (CCRANDOM_0_1() > .5 ? 0:1);
-	CCSprite *sprite = [CCSprite spriteWithBatchNode:batch rect:CGRectMake(32 * idx,32 * idy,32,32)];
-	[batch addChild:sprite];
-	
-	sprite.position = ccp( p.x, p.y);
-	
-	// Define the dynamic body.
-	//Set up a 1m squared box in the physics world
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-
-	bodyDef.position.Set(p.x/PTM_RATIO, p.y/PTM_RATIO);
-	bodyDef.userData = sprite;
-	b2Body *body = [worldObject getWorld]->CreateBody(&bodyDef);
-	
-	// Define another box shape for our dynamic body.
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(.5f, .5f);//These are mid points for our 1m box
-	
-	// Define the dynamic body fixture.
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;	
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	body->CreateFixture(&fixtureDef);
+    GameObject* obj = [poolManager getObject:G_OBJET];
+    [obj setPosition:p];
+    [obj activate];
+    [poolManager printPoolStats:G_OBJET];
 }
 
 
@@ -216,7 +191,6 @@ enum {
 	// Instruct the world to perform a single step of simulation. It is
 	// generally best to keep the time step and iterations fixed.
 	[worldObject getWorld]->Step(dt, velocityIterations, positionIterations);
-
 	
 	//Iterate over the bodies in the physics world
 	for (b2Body* b = [worldObject getWorld]->GetBodyList(); b; b = b->GetNext())
