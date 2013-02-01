@@ -9,19 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "Pool.h"
 #import "Constants.h"
+#import "ObjectBuilder.h"
 
 @interface PoolManager : NSObject
 {
     NSMutableArray *pools;
+    ObjectBuilder *objectBuilder;
 }
 +(PoolManager *) createSingleton;
 
 -(void)printPoolStats:(ObjectType)type;
 -(void)printAllPoolStats;
 
--(GameObject*)getObject:(ObjectType)objectType;
--(void)buildObjects:(NSInteger)count OfType:(ObjectType)objectType;
--(BOOL)returnObject:(GameObject**)gameObject;
+-(GameObject*)getObject:(ObjectType)objectType;                         //get an inactive object to use
+-(void)buildObjects:(NSInteger)count OfType:(ObjectType)objectType;     //build more objects to be held in a pool
+-(BOOL)returnObject:(GameObject**)gameObject;                           //move an "active" object to "inactive"
 
 -(Pool*)getPool:(ObjectType)objectType;
 -(CCArray *)getActiveObjects;

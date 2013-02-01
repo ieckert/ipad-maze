@@ -10,7 +10,6 @@
 
 @implementation StringConstants
 
-
 NSString * const C_ATLAS_IMAGE_DEFAULT = @"atlas1.png";
 NSString * const C_ATLAS_LIST_DEFAULT = @"atlas1.plist";
 NSString * const C_ATLAS_IMAGE_MAZE = @"atlas1.png";

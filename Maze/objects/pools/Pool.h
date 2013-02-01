@@ -10,19 +10,22 @@
 #import "cocos2d.h"
 #import "Constants.h"
 #import "GameObject.h"
+#import "ObjectBuilder.h"
 
-@interface Pool : NSObject
+@class ObjectBuilder;
+
+@interface Pool : GameObject
 {
     CCSpriteBatchNode *p_spriteBatchNode;
     NSMutableArray *activeObjects;
     NSMutableArray *inactiveObjects;
     
+    ObjectBuilder *objectBuilder;
     ObjectType poolType;
     
     NSString *p_atlasList;
     NSString *p_atlasImage;
     
-    BOOL active;
 }
 @property (readonly) ObjectType poolType;
 

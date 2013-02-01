@@ -7,7 +7,6 @@
 //
 
 #import "Pool.h"
-#import "ObjectBuilder.h"
 
 @implementation Pool
 
@@ -18,6 +17,7 @@
     if( (self = [super init]) ){
         activeObjects = [[NSMutableArray alloc] init];
         inactiveObjects = [[NSMutableArray alloc] init];
+        objectBuilder = [ObjectBuilder createSingleton];
         poolType = objectType;
         [self setAtlasList:list AndAtlasImage:image AndRebuildObjects:size];
     }
@@ -66,7 +66,7 @@
 
 -(GameObject *)buildObject
 {
-    GameObject *r_object = [ObjectBuilder buildObject:poolType];
+    GameObject *r_object = [objectBuilder buildObject:poolType];
     [p_spriteBatchNode addChild:r_object];
     [inactiveObjects addObject:r_object];
     return r_object;

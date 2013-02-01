@@ -7,7 +7,6 @@
 //
 
 #import "PoolManager.h"
-#import "ObjectBuilder.h"
 
 @implementation PoolManager
 static PoolManager *singleton = nil;
@@ -15,6 +14,7 @@ static PoolManager *singleton = nil;
 -(id) init {
     if( (self = [super init]) ){
         pools = [[NSMutableArray alloc] init];
+        objectBuilder = [ObjectBuilder createSingleton];
     }
     return self;
 }
@@ -53,7 +53,7 @@ static PoolManager *singleton = nil;
 
 -(Pool*)buildPool:(ObjectType)objectType
 {
-    return [ObjectBuilder buildPool:objectType];
+    return [objectBuilder buildPool:objectType];
 }
 
 -(void)buildObjects:(NSInteger)count OfType:(ObjectType)objectType;
@@ -77,6 +77,7 @@ static PoolManager *singleton = nil;
 {
     NSMutableArray *r_array = [[NSMutableArray alloc] init];
     for (Pool *pool in pools) {
+        NSLog(@"gonna break");
         [r_array addObject:[pool getBatchNode]];
     }
     return r_array;

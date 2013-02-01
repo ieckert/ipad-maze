@@ -8,16 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import "Constants.h"
-
-#import "MazeObject.h"
+#import "GameObject.h"
 #import "Pool.h"
+
+@class Pool;
 
 @interface ObjectBuilder : NSObject
 {
-    
+    NSMutableArray *poolSizeLookup;
+    NSMutableArray *objectCreationLookup;
 }
 
-+(GameObject*) buildObject:(ObjectType)objectType;
-+(Pool*) buildPool:(ObjectType)poolType;
++(ObjectBuilder *) createSingleton;
+
+-(Pool*) buildPool:(ObjectType)poolType;
+-(GameObject*) buildObject:(ObjectType)objectType;
 
 @end
