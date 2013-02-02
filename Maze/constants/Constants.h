@@ -13,10 +13,10 @@
 #define PTM_RATIO ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 100.0 : 50.0)
 
 #define C_BATCH_NODE_CAPACITY 100
+
 #define C_POOL_SIZE 10
 #define C_POOL_SIZE_MAZE 5
 #define C_POOL_SIZE_OBJECT 10
-
 
 typedef enum {
     G_OBJET,

@@ -11,12 +11,12 @@
 #import "GameObject.h"
 #import "Pool.h"
 
-@class Pool;
+@class Pool;    //forward defination to prevent dependency cycles
 
 @interface ObjectBuilder : NSObject
 {
-    NSMutableArray *poolSizeLookup;
-    NSMutableArray *objectCreationLookup;
+    NSArray *poolSizeLookup;
+    NSArray *objectCreationLookup;
 }
 
 +(ObjectBuilder *) createSingleton;

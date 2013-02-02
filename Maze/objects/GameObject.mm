@@ -25,6 +25,8 @@
 }
 
 - (void) dealloc{
+    [self deactivate];
+    worldObject = nil;
     [super dealloc];
     
 }

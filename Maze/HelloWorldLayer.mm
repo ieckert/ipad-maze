@@ -97,11 +97,6 @@ enum {
 		
 		[self schedule: @selector(tick:)];
         
-        /* pool sizes:
-         default - 10
-         maze - 5
-         object - 11
-         */
         poolManager = [PoolManager createSingleton];
         [poolManager getPool:G_OBJET];
 

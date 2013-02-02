@@ -15,15 +15,30 @@ static ObjectBuilder *singleton = nil;
 
 -(id) init {
     if( (self = [super init]) ){
-        poolSizeLookup = [[NSMutableArray alloc] initWithCapacity:G_NUM_OBJECT_TYPES];
-        objectCreationLookup = [[NSMutableArray alloc] initWithCapacity:G_NUM_OBJECT_TYPES];
-        for (int i=0; i<G_NUM_OBJECT_TYPES; i++) {
-            [poolSizeLookup addObject:[NSNumber numberWithInt:0]];
-            [objectCreationLookup addObject:[NSNumber numberWithInt:0]];
-        }
-
-        [self buildObjectCreationLookup];
-        [self buildPoolSizeLookup];
+        /*
+         the order in the lookup tables is very important!
+         the index into the table is taken from the G_<TYPE>'s defined in Constants.h
+         so if you want the value for G_MAZE, the index would be the int
+         value of the enum, G_MAZE's.
+         
+         if the objects in the lookup table are out of order with the listing of GameObjects
+         in Constants.h, then you will not get the correct object for your type
+         */
+        poolSizeLookup = [[NSArray alloc] initWithObjects:
+                          [NSNumber numberWithInt:C_POOL_SIZE_OBJECT],  //G_OBJET
+                          [NSNumber numberWithInt:C_POOL_SIZE_MAZE],    //G_MAZE
+                          nil];
+        objectCreationLookup = [[NSArray alloc] initWithObjects:
+                                [^{return [[GameObject alloc] init];} copy],   //G_OBJET
+                                [^{return [[MazeObject alloc] init];} copy],   //G_MAZE
+                                [^{return nil;} copy],                         //G_PLAYER
+                                [^{return nil;} copy],                         //G_ENEMY
+                                [^{return nil;} copy],                         //G_ENEMY_SHOOTING
+                                [^{return nil;} copy],                         //G_WALL
+                                [^{return nil;} copy],                         //G_COIN
+                                [^{return nil;} copy],                         //G_DOOR
+                                [^{return nil;} copy],                         //G_POOL
+                                nil];
     }
     return self;
 }
@@ -44,27 +59,9 @@ static ObjectBuilder *singleton = nil;
     [super dealloc];
 }
 
--(void)buildPoolSizeLookup
-{
-    [poolSizeLookup replaceObjectAtIndex:G_MAZE withObject:[NSNumber numberWithInt:C_POOL_SIZE_MAZE]];
-    [poolSizeLookup replaceObjectAtIndex:G_OBJET withObject:[NSNumber numberWithInt:C_POOL_SIZE_OBJECT]];
-}
-
--(void)buildObjectCreationLookup
-{
-    [objectCreationLookup replaceObjectAtIndex:G_OBJET withObject:^{return [[GameObject alloc] init];}];
-    [objectCreationLookup replaceObjectAtIndex:G_MAZE withObject:^{return [[MazeObject alloc] init];}];
-    [objectCreationLookup replaceObjectAtIndex:G_PLAYER withObject:^{return nil;}];
-    [objectCreationLookup replaceObjectAtIndex:G_ENEMY withObject:^{return nil;}];
-    [objectCreationLookup replaceObjectAtIndex:G_ENEMY_SHOOTING withObject:^{return nil;}];
-    [objectCreationLookup replaceObjectAtIndex:G_WALL withObject:^{return nil;}];
-    [objectCreationLookup replaceObjectAtIndex:G_COIN withObject:^{return nil;}];
-    [objectCreationLookup replaceObjectAtIndex:G_DOOR withObject:^{return nil;}];    
-}
-
 -(NSInteger)checkRange:(ObjectType)poolType
 {
-    return (poolType < 0 || poolType > G_NUM_OBJECT_TYPES) ? C_POOL_SIZE : [[poolSizeLookup objectAtIndex:poolType] integerValue];
+    return (poolType < 0 || poolType >= G_NUM_OBJECT_TYPES) ? C_POOL_SIZE : [[poolSizeLookup objectAtIndex:poolType] integerValue];
 }
 
 -(Pool*) buildPool:(ObjectType)poolType

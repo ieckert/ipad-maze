@@ -12,9 +12,9 @@
 #import "GameObject.h"
 #import "ObjectBuilder.h"
 
-@class ObjectBuilder;
+@class ObjectBuilder; //forward defination to prevent dependency cycles
 
-@interface Pool : GameObject
+@interface Pool : NSObject
 {
     CCSpriteBatchNode *p_spriteBatchNode;
     NSMutableArray *activeObjects;
